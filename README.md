@@ -1,7 +1,7 @@
 Original App Design Project - README Template
 ===
 
-# PersonalApp- Name TBD
+# PersonalApp- Bop Beats
 
 ## Table of Contents
 1. [Overview](#Overview)
