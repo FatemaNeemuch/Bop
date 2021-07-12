@@ -1,7 +1,7 @@
 Original App Design Project - README Template
 ===
 
-# PersonalApp- Bop
+# Bop
 
 ## Table of Contents
 1. [Overview](#Overview)
@@ -97,7 +97,7 @@ Music app with accounts for all users. User can search up songs, artists, and al
 * Stream (2)
    * Playlist stream or Search stream (switch)
    * Details (forward)
-       * songs, artist, albums, and playlist
+      * songs, artist, albums, and playlist
 * Details
    * Stream (back to whichever one called details (finish()))
 * Creation (2)
@@ -107,17 +107,20 @@ Music app with accounts for all users. User can search up songs, artists, and al
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+![wireframes](https://user-images.githubusercontent.com/73396101/125350477-65223300-e324-11eb-9e90-ffb92a1ac8fe.jpeg)
+
 
 ### [BONUS] Digital Wireframes & Mockups
 
 ### [BONUS] Interactive Prototype
 
 ## Schema 
-[This section will be completed in Unit 9]
 ### Models
 [Add table of models]
+![models](https://user-images.githubusercontent.com/73396101/125350438-5b003480-e324-11eb-9701-8c089f812a03.jpeg)
 ### Networking
 - [Add list of network requests by screen ]
+- ![Networks and Database Calls](https://user-images.githubusercontent.com/73396101/125350403-520f6300-e324-11eb-8448-1ecf98a2de34.jpeg)
+
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
