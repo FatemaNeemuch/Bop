@@ -106,9 +106,7 @@ Music app with accounts for all users. User can search up songs, artists, and al
    *  Search Stream from Account Creation
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
 ![wireframes](https://user-images.githubusercontent.com/73396101/125350477-65223300-e324-11eb-9e90-ffb92a1ac8fe.jpeg)
-
 
 ### [BONUS] Digital Wireframes & Mockups
 
@@ -116,10 +114,9 @@ Music app with accounts for all users. User can search up songs, artists, and al
 
 ## Schema 
 ### Models
-[Add table of models]
-![models](https://user-images.githubusercontent.com/73396101/125350438-5b003480-e324-11eb-9701-8c089f812a03.jpeg)
+![models](https://user-images.githubusercontent.com/73396101/125358208-3c06a000-e32e-11eb-9dfb-ff319da84967.jpeg)
+
 ### Networking
-- [Add list of network requests by screen ]
 - ![Networks and Database Calls](https://user-images.githubusercontent.com/73396101/125350403-520f6300-e324-11eb-8448-1ecf98a2de34.jpeg)
 
 - [Create basic snippets for each Parse network request]
