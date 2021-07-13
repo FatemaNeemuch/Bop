@@ -20,8 +20,8 @@ import com.parse.ParseUser;
 public class MainActivity extends AppCompatActivity {
 
     //class constants
-//    private static final String CLIENT_ID = "your_client_id";
-//    private static final String REDIRECT_URI = "com.yourdomain.yourapp://callback";
+    private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
+    private static final String REDIRECT_URI = "bop-login://callback";
 //    private SpotifyAppRemote mSpotifyAppRemote;
 
     //instance variables
