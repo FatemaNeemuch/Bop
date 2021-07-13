@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Bop</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="signed_up">Signed Up!!</string>
+    <string name="logged_in">Logged In!!</string>
+    <string name="fullName">First and Last Name</string>
+    <string name="logout">Logout</string>
+</resources>
