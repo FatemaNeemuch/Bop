@@ -8,4 +8,5 @@
     <string name="logged_in">Logged In!!</string>
     <string name="fullName">First and Last Name</string>
     <string name="logout">Logout</string>
+    <string name="search">Search</string>
 </resources>

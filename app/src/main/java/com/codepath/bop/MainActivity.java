@@ -1,12 +1,20 @@
 package com.codepath.bop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 
 import com.parse.ParseUser;
 
@@ -27,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private SpotifyAppRemote mSpotifyAppRemote;
 
     //instance variables
-    private Button btnLogout;
     private Boolean resume;
 
     @Override
@@ -37,23 +44,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //reference to views
-        btnLogout = findViewById(R.id.btnLogout);
+//        Toolbar toolbar = (Toolbar) (findViewById(R.id.MAtoolbar));
+//        setSupportActionBar(toolbar);
 
         resume = false;
 
-        //logout button
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStop();
-                ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-                //go back to login page
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main_activity, menu);
+        //logout item
+        MenuItem logoutItem = menu.findItem(R.id.logout);
+        //search item
+        MenuItem searchItem = menu.findItem(R.id.maSearch);
+//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        searchItem.expandActionView();
+//        searchView.requestFocus();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.logout){
+            onStop();
+            ParseUser.logOut();
+            ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+            //go back to login page
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+        return true;
     }
 
     @Override
