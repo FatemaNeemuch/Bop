@@ -15,6 +15,8 @@ import android.widget.Button;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.parse.ParseUser;
 
@@ -26,6 +28,9 @@ import com.spotify.protocol.client.Subscription;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     //class constants
@@ -36,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
     //instance variables
     private Boolean resume;
+    private List<Song> songs;
+    private RecyclerView rvSongs;
+    private SongAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +52,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //reference to views
+        rvSongs = findViewById(R.id.rvSongs);
+
 //        Toolbar toolbar = (Toolbar) (findViewById(R.id.MAtoolbar));
 //        setSupportActionBar(toolbar);
+
+        //Initialize the list of tweets and adapter
+        songs = new ArrayList<>();
+        adapter = new SongAdapter(songs, MainActivity.this);
+
+        //Recycler view setup: layout manager and the adapter
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvSongs.setLayoutManager(linearLayoutManager);
+        rvSongs.setAdapter(adapter);
 
         resume = false;
 
@@ -56,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main_activity, menu);
-        //logout item
-        MenuItem logoutItem = menu.findItem(R.id.logout);
         //search item
         MenuItem searchItem = menu.findItem(R.id.maSearch);
 //        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
