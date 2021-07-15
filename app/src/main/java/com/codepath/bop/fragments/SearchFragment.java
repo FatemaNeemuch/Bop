@@ -30,9 +30,6 @@ import com.parse.ParseUser;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,9 +51,6 @@ public class SearchFragment extends Fragment {
     public static final String TAG = "Search Fragment";
     private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
     private static final String REDIRECT_URI = "com.codepath.bop://callback";
-    public static final String BASE_URL = "https://api.spotify.com/v1";
-    private static final int REQUEST_CODE = 873;
-    private static final String SCOPES = "user-read-recently-played,user-library-modify,user-read-email,user-read-private, streaming";
 
     //instance variables
     private static SpotifyAppRemote mSpotifyAppRemote;
@@ -86,6 +80,7 @@ public class SearchFragment extends Fragment {
         Log.i(TAG, "onCreateView");
 //        authenticateSpotify();
 //        Log.i(TAG, "after authenticate");
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
@@ -116,48 +111,6 @@ public class SearchFragment extends Fragment {
         mAccessToken = MainActivity.getmAccessToken();
         getTopHits("https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks");
     }
-
-//    private void authenticateSpotify() {
-//        Log.i(TAG, "authenticateSpoify");
-//        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-//        builder.setScopes(new String[]{SCOPES});
-//        AuthenticationRequest request = builder.build();
-//        Log.i(TAG, "launching login activity");
-//        AuthenticationClient.openLoginActivity(getActivity(), REQUEST_CODE, request);
-//    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-//        //super.onActivityResult(requestCode, resultCode, intent);
-//
-//        Log.i(TAG, "onActivityResult");
-//
-//        // Check if result comes from the correct activity
-//        if (requestCode == REQUEST_CODE) {
-//            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-//
-//            switch (response.getType()) {
-//                // Response was successful and contains auth token
-//                case TOKEN:
-//                    //need token for any call
-//                    Log.i(TAG, "token fetched");
-//                    mAccessToken = response.getAccessToken();
-//                    //request to get data everytime - url is whatever data you want
-//                    getTopHits("https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks");
-//                    break;
-//
-//                // Auth flow returned an error
-//                case ERROR:
-//                    Log.i(TAG, "error when getting response");
-//                    break;
-//
-//                // Most likely auth flow was cancelled
-//                default:
-//                    Log.i(TAG, "auth flow was cancelled");
-//                    // Handle other cases
-//            }
-//        }
-//    }
 
     private void getTopHits(String url) {
 
@@ -202,13 +155,13 @@ public class SearchFragment extends Fragment {
         });
     }
 
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
         // Inflate the menu; this adds items to the action bar if it is present.
-        inflater = getActivity().getMenuInflater();
+        //inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.menu_search_fragment, menu);
+        Log.i(TAG, "inflated view");
         MenuItem searchItem = menu.findItem(R.id.maSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -273,6 +226,7 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
