@@ -24,6 +24,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="9dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toStartOf="@+id/ivPlayButton"
         android:layout_toEndOf="@+id/ivCover"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Crying in the Club" />
@@ -35,7 +37,20 @@
         android:layout_below="@+id/tvSongTitle"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toStartOf="@+id/ivPlayButton"
         android:layout_toEndOf="@+id/ivCover"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Camilla Cabello" />
+
+    <ImageView
+        android:id="@+id/ivPlayButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="5dp"
+        tools:srcCompat="@drawable/ic_baseline_play_arrow_24" />
 </RelativeLayout>

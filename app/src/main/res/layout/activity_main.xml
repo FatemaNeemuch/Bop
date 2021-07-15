@@ -8,8 +8,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSongs"
-        android:layout_width="409dp"
-        android:layout_height="677dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 <!--    <androidx.appcompat.widget.Toolbar-->
 <!--        android:id="@+id/MAtoolbar"-->
