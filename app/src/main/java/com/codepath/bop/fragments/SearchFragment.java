@@ -1,40 +1,35 @@
-package com.codepath.bop;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.codepath.bop.fragments;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
+import android.view.ViewGroup;
 import android.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.codepath.bop.R;
+import com.codepath.bop.activities.LoginActivity;
+import com.codepath.bop.activities.MainActivity;
+import com.codepath.bop.adapters.SongAdapter;
+import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
-
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Track;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.loopj.android.http.*;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -42,7 +37,10 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -50,10 +48,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class SearchFragment extends Fragment {
 
     //class constants
-    public static final String TAG = "Main Activity";
+    public static final String TAG = "Search Fragment";
     private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
     private static final String REDIRECT_URI = "com.codepath.bop://callback";
     public static final String BASE_URL = "https://api.spotify.com/v1";
@@ -70,68 +68,96 @@ public class MainActivity extends AppCompatActivity {
     private static String mAccessToken;
     private Call mCall;
 
+    public SearchFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate");
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        Log.i(TAG, "onCreate");
+    }
 
+    // The onCreateView method is called when Fragment should create its View object hierarchy,
+    // either dynamically or via XML layout inflation.
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
+//        authenticateSpotify();
+//        Log.i(TAG, "after authenticate");
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_search, container, false);
+    }
+
+    // This event is triggered soon after onCreateView().
+    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        Log.i(TAG, "onViewCreated");
+        // Setup any handles to view objects here
         //reference to views
-        rvSongs = findViewById(R.id.rvSongs);
-
-//        Toolbar toolbar = (Toolbar) (findViewById(R.id.MAtoolbar));
-//        setSupportActionBar(toolbar);
+        rvSongs = view.findViewById(R.id.rvSongs);
 
         //Initialize the list of tweets and adapter
         songs = new ArrayList<>();
-        adapter = new SongAdapter(songs, MainActivity.this);
+        adapter = new SongAdapter(songs, getContext());
 
         //Recycler view setup: layout manager and the adapter
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvSongs.setLayoutManager(linearLayoutManager);
         rvSongs.setAdapter(adapter);
 
+//        mAccessToken = MainActivity.getmAccessToken();
+//        mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
+
         resume = false;
 
-        authenticateSpotify();
+        mAccessToken = MainActivity.getmAccessToken();
+        getTopHits("https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks");
     }
 
-    private void authenticateSpotify() {
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-        builder.setScopes(new String[]{SCOPES});
-        AuthenticationRequest request = builder.build();
-        AuthenticationClient.openLoginActivity(MainActivity.this, REQUEST_CODE, request);
-    }
+//    private void authenticateSpotify() {
+//        Log.i(TAG, "authenticateSpoify");
+//        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+//        builder.setScopes(new String[]{SCOPES});
+//        AuthenticationRequest request = builder.build();
+//        Log.i(TAG, "launching login activity");
+//        AuthenticationClient.openLoginActivity(getActivity(), REQUEST_CODE, request);
+//    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-
-            switch (response.getType()) {
-                // Response was successful and contains auth token
-                case TOKEN:
-                    //need token for any call
-                    mAccessToken = response.getAccessToken();
-                    //request to get data everytime - url is whatever data you want
-                    getTopHits("https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks");
-                    break;
-
-                // Auth flow returned an error
-                case ERROR:
-                    Log.i(TAG, "error when getting response");
-                    break;
-
-                // Most likely auth flow was cancelled
-                default:
-                    Log.i(TAG, "auth flow was cancelled");
-                    // Handle other cases
-            }
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+//        //super.onActivityResult(requestCode, resultCode, intent);
+//
+//        Log.i(TAG, "onActivityResult");
+//
+//        // Check if result comes from the correct activity
+//        if (requestCode == REQUEST_CODE) {
+//            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+//
+//            switch (response.getType()) {
+//                // Response was successful and contains auth token
+//                case TOKEN:
+//                    //need token for any call
+//                    Log.i(TAG, "token fetched");
+//                    mAccessToken = response.getAccessToken();
+//                    //request to get data everytime - url is whatever data you want
+//                    getTopHits("https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks");
+//                    break;
+//
+//                // Auth flow returned an error
+//                case ERROR:
+//                    Log.i(TAG, "error when getting response");
+//                    break;
+//
+//                // Most likely auth flow was cancelled
+//                default:
+//                    Log.i(TAG, "auth flow was cancelled");
+//                    // Handle other cases
+//            }
+//        }
+//    }
 
     private void getTopHits(String url) {
 
@@ -159,10 +185,10 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     final JSONObject jsonObjectHits = new JSONObject(response.body().string());
                     songs.addAll(Song.fromTopHits(jsonObjectHits.getJSONArray("items")));
-                    //jsonObject.getJSONArray("items");
-                    //Log.i(TAG, "onResponse" + jsonObject.getJSONObject("albums").getJSONArray("items").getJSONObject(0).getString("name"));
-                    Log.i(TAG, "onResponse " + jsonObjectHits.getJSONArray("items").getJSONObject(29).getJSONObject("track").getJSONObject("album").getString("name"));
-                    runOnUiThread(new Runnable() {
+                    //Log.i(TAG, "onResponse" + jsonObject.getJSONObject("albums")
+                    // .getJSONArray("items").getJSONObject(0).getString("name"));
+                    Log.i(TAG, "onResponse " + jsonObjectHits.toString());
+                    getActivity().runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
@@ -176,15 +202,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public static String getmAccessToken(){
-        return mAccessToken;
-    }
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
         // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main_activity, menu);
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_search_fragment, menu);
         MenuItem searchItem = menu.findItem(R.id.maSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -194,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 //create your own url as required code
                 HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.spotify.com/v1/search").newBuilder();
                 urlBuilder.addQueryParameter("q", query);
-                urlBuilder.addQueryParameter("type", "track");
+                urlBuilder.addQueryParameter("type", "track,album,artist");
                 String url = urlBuilder.build().toString();
 
                 final Request request = new Request.Builder()
@@ -220,13 +244,21 @@ public class MainActivity extends AppCompatActivity {
                             //jsonObject.getJSONArray("items");
                             //Log.i(TAG, "onResponse" + jsonObject.getJSONObject("albums").getJSONArray("items").getJSONObject(0).getString("name"));
                             Log.i(TAG, "onResponse" + jsonObject.toString());
-                            runOnUiThread(new Runnable() {
-
+                            Handler mainHandler = new Handler(Looper.getMainLooper());
+                            mainHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    //Update UI
                                     adapter.notifyDataSetChanged();
                                 }
                             });
+//                            getActivity().runOnUiThread(new Runnable() {
+//
+//                                @Override
+//                                public void run() {
+//                                    adapter.notifyDataSetChanged();
+//                                }
+//                            });
                         } catch (JSONException e) {
                             Log.i(TAG, "Search Failed to parse data: " + e);
                         }
@@ -241,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        return true;
     }
 
     @Override
@@ -251,14 +282,14 @@ public class MainActivity extends AppCompatActivity {
             ParseUser.logOut();
             ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
             //go back to login page
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
         }
         return true;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         Log.i(TAG, "starting");
         super.onStart();
 
@@ -270,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                         .build();
 
         //connect to spotify
-        SpotifyAppRemote.connect(this, connectionParams,
+        SpotifyAppRemote.connect(getContext(), connectionParams,
                 new Connector.ConnectionListener() {
 
                     @Override
@@ -279,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "Connected! Yay!");
 
                         // Now you can start interacting with App Remote
-                        connected();
+//                        connected();
                     }
 
                     @Override
@@ -291,49 +322,12 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void connected() {
-        Log.i(TAG, "playing a playlist");
-//        // Play a playlist
-//        if (resume){
-//            mSpotifyAppRemote.getPlayerApi().resume();
-//        }else{
-//            mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-//            resume = true;
-//        }
-//        mSpotifyAppRemote.getPlayerApi().setShuffle(true);
-//
-//        // Subscribe to PlayerState
-//        mSpotifyAppRemote.getPlayerApi()
-//                .subscribeToPlayerState()
-//                .setEventCallback(playerState -> {
-//                    final Track track = playerState.track;
-//                    if (track != null) {
-//                        Log.i(TAG, track.name + " by " + track.artist.name);
-//                    }
-//                });
-    }
-
     public static SpotifyAppRemote getmSpotifyAppRemote(){
         return mSpotifyAppRemote;
     }
 
-
-    //method not needed
-//    @Override
-//    protected void onPause() {
-//        Log.i(TAG, "pausing the music");
-//        super.onPause();
-//        mSpotifyAppRemote.getPlayerApi().getPlayerState()
-//                .setResultCallback(playerState -> {
-//                    mSpotifyAppRemote.getPlayerApi().pause();
-//                })
-//                .setErrorCallback(throwable -> {
-//                    Log.e(TAG, throwable.getMessage(), throwable);
-//                });
-//    }
-
     @Override
-    protected void onStop() {
+    public void onStop() {
         Log.i(TAG, "stopping the music");
         super.onStop();
         mSpotifyAppRemote.getPlayerApi().getPlayerState()
@@ -346,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         Log.i(TAG, "onDestroy");
         super.onDestroy();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);

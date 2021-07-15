@@ -1,7 +1,6 @@
-package com.codepath.bop;
+package com.codepath.bop.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.bop.R;
+import com.codepath.bop.activities.MainActivity;
+import com.codepath.bop.fragments.SearchFragment;
+import com.codepath.bop.models.Song;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.types.Track;
 
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull SongAdapter.ViewHolder holder, int position) {
-        //get post
+        //get song
         Song song = songs.get(position);
         holder.bind(song);
     }
@@ -69,20 +71,24 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
             tvArtistName = itemView.findViewById(R.id.tvArtistName);
             ivCover = itemView.findViewById(R.id.ivCover);
             ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
+            playing = false;
+            resume = false;
         }
 
         public void bind(Song song) {
             tvSongTitle.setText(song.getTitle());
             tvArtistName.setText(song.getArtist());
             Glide.with(context).load(song.getCoverURL()).into(ivCover);
-            Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
-            Log.i(TAG, Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton).toString());
-            playing = false;
-            resume = false;
+            if (song.isCurrentSong()){
+                Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
+            }else{
+                Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
+            }
             //play song here as well
             ivPlayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    song.setCurrentSong(song, true);
                     if (playing){
                         mSpotifyAppRemote.getPlayerApi().pause();
                         Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
@@ -90,7 +96,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                     }else{
                         playing = true;
                         resume = true;
-                        mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
+                        mSpotifyAppRemote = SearchFragment.getmSpotifyAppRemote();
 //                        if (resume){
 //                            mSpotifyAppRemote.getPlayerApi().resume();
 //                            resume = false;

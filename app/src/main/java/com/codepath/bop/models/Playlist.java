@@ -1,4 +1,4 @@
-package com.codepath.bop;
+package com.codepath.bop.models;
 
 public class Playlist {
 

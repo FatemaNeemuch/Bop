@@ -1,20 +1,11 @@
-package com.codepath.bop;
-
-import android.util.Log;
+package com.codepath.bop.models;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class Song {
 
@@ -28,6 +19,7 @@ public class Song {
     private String albumType;
     private Playlist playlist;
     private boolean isCurrentSong;
+    private Song currentSong;
     private String mAccessToken;
 
     public Song() {}
@@ -122,6 +114,11 @@ public class Song {
 
     public Playlist getPlaylist() {
         return playlist;
+    }
+
+    public void setCurrentSong(Song song, boolean currentSongState){
+        currentSong = song;
+        isCurrentSong = currentSongState;
     }
 
     public boolean isCurrentSong() {

@@ -9,4 +9,9 @@
     <string name="fullName">First and Last Name</string>
     <string name="logout">Logout</string>
     <string name="search">Search</string>
+    <string name="profile">Profile</string>
+    <string name="nearby_users">Nearby Users</string>
+    <string name="playlist">Playlist</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
