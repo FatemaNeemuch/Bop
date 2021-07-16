@@ -128,7 +128,7 @@ public class DataManager {
         //jsonArray is "items"
         List<Song> songs = new ArrayList<>();
         //make song objects and add them to songs list
-        for (int i = 0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             songs.add(Song.fromAPI(jsonArray.getJSONObject(i).getJSONObject("track")));
         }
         return songs;
@@ -138,7 +138,7 @@ public class DataManager {
         //jsonArray is "items"
         List<Song> songs = new ArrayList<>();
         //make song objects and add them to songs list
-        for (int i = 0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             songs.add(Song.fromAPI(jsonArray.getJSONObject(i)));
         }
         return songs;

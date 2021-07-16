@@ -101,6 +101,7 @@ public class SearchFragment extends Fragment {
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
                 urlBuilder.addQueryParameter("q", query);
                 urlBuilder.addQueryParameter("type", "track,album,artist");
+                urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 String url = urlBuilder.build().toString();
 
                 //get search results from DataManager
