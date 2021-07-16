@@ -23,4 +23,5 @@
     <string name="username_hint">Fatema5352</string>
     <string name="password_hint">*********</string>
     <string name="FullName_hint">Fatema Neemuchwala</string>
+    <string name="don_t_have_an_account">Do not have an account? <font color='#0E58EA'>Sign Up!</font></string>
 </resources>

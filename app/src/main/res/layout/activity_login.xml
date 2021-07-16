@@ -47,11 +47,19 @@
         android:layout_height="wrap_content"
         android:text="@string/login"/>
 
-    <Button
-        android:id="@+id/btnSignUp"
+<!--    <Button-->
+<!--        android:id="@+id/btnSignUp"-->
+<!--        android:layout_below="@+id/btnLogin"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/sign_up"/>-->
+
+    <TextView
+        android:id="@+id/tvSignUp"
         android:layout_below="@+id/btnLogin"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up"/>
+        android:layout_centerHorizontal="true"
+        android:text="@string/don_t_have_an_account"/>
 
 </RelativeLayout>
