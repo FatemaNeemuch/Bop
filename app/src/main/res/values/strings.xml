@@ -12,7 +12,6 @@
     <string name="profile">Profile</string>
     <string name="nearby_users">Nearby Users</string>
     <string name="playlist">Playlist</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fullNameParse">fullName</string>
     <string name="topHitsURL">https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks</string>

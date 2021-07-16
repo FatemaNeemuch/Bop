@@ -83,7 +83,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
             //set song cover
             Glide.with(context).load(song.getCoverURL()).into(ivCover);
             //set play button based on whether the song is playing
-            if (song.isCurrentSong()){
+            if (song.getisCurrentSong()){
                 Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
             }else{
                 Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);

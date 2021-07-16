@@ -1,6 +1,15 @@
 package com.codepath.bop.models;
 
-public class Playlist {
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
+@ParseClassName("Playlist")
+public class Playlist extends ParseObject {
+
+    //class constants
+    public static final String KEY_NAME = "name";
+    public static final String KEY_CREATOR = "creator";
+    public static final String KEY_PLAYLIST_URI = "playlistURI";
 
     //instance variables
     private String playlistURI;
@@ -15,7 +24,7 @@ public class Playlist {
         return playlist;
     }
 
-    public void saveSong(){
+    public void savePlaylist(){
         //save all the fields to the parse database here
     }
 
@@ -30,4 +39,6 @@ public class Playlist {
     public User getCreator() {
         return creator;
     }
+
+    //create getter and setter methods for the keys
 }
