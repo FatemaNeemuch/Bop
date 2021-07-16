@@ -16,4 +16,8 @@
     <string name="fullNameParse">fullName</string>
     <string name="topHitsURL">https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks</string>
     <string name="searchURL">https://api.spotify.com/v1/search</string>
+    <string name="cancelButtonDescription">go back to login activity</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="invalid_sign_up">Invalid Sign Up</string>
+    <string name="mismatch_passwords">Passwords Do Not Match</string>
 </resources>

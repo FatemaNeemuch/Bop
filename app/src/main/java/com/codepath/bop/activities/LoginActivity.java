@@ -1,6 +1,7 @@
 package com.codepath.bop.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codepath.bop.R;
+import com.codepath.bop.fragments.SignUpDialogFragment;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -24,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     //instance variables
     private EditText etUsername;
     private EditText etPassword;
-    private EditText etFullName;
     private Button btnLogin;
     private Button btnSignUp;
 
@@ -41,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         //reference to views
         etUsername = findViewById(R.id.etUsernameWrite);
         etPassword = findViewById(R.id.etPassword);
-        etFullName = findViewById(R.id.etFullNameWrite);
         btnLogin = findViewById(R.id.btnLogin);
         btnSignUp = findViewById(R.id.btnSignUp);
 
@@ -61,28 +61,15 @@ public class LoginActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create the ParseUser
-                ParseUser user = new ParseUser();
-                // Set core properties
-                user.setUsername(etUsername.getText().toString());
-                user.setPassword(etPassword.getText().toString());
-                user.put(getString(R.string.fullNameParse), etFullName.getText().toString());
-                // Invoke signUpInBackground
-                user.signUpInBackground(new SignUpCallback() {
-                    public void done(ParseException e) {
-                        //if error when creating new account, inform user
-                        if (e != null) {
-                            Log.e(TAG, "issue with sign up", e);
-                            return;
-                        } else {
-                            //if new account created, call gotoMainActivity
-                            goToMainActivity();
-                            Toast.makeText(LoginActivity.this, getString(R.string.signed_up), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                showSignUpDialog();
             }
         });
+    }
+
+    private void showSignUpDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        SignUpDialogFragment signUpDialogFragment = SignUpDialogFragment.newInstance("Sign Up Modal Overlay");
+        signUpDialogFragment.show(fm, "fragment_sign_up");
     }
 
     private void loginUser(String username, String password) {

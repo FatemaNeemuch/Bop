@@ -10,18 +10,10 @@
     tools:context=".activities.LoginActivity">
 
     <EditText
-        android:id="@+id/etFullNameWrite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:ems="10"
-        android:hint="@string/fullName" />
-
-    <EditText
         android:id="@+id/etUsernameWrite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etFullNameWrite"
+        android:layout_marginTop="250dp"
         android:ems="10"
         android:hint="@string/username" />
 

@@ -56,6 +56,7 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
         //update the presence of a menu
         setHasOptionsMenu(true);
         // Inflate the layout for this fragment
@@ -170,7 +171,6 @@ public class SearchFragment extends Fragment {
         super.onStop();
         //check if app is running in background and only pause music if its not
         //use the getActivity().isFinishing method
-
         mSpotifyAppRemote.getPlayerApi().getPlayerState()
                 .setResultCallback(playerState -> {
                     mSpotifyAppRemote.getPlayerApi().pause();
@@ -184,6 +184,5 @@ public class SearchFragment extends Fragment {
     public void onDestroy() {
         Log.i(TAG, "onDestroy");
         super.onDestroy();
-        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 }

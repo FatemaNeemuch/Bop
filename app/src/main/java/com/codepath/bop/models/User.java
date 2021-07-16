@@ -8,7 +8,7 @@ import com.parse.ParseObject;
 public class User extends ParseObject {
 
     //class constants
-    public static final String KEY_USER = "username";
+    public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_CURRENT_SONG = "currentSong";
     public static final String KEY_FULL_NAME = "fullName";

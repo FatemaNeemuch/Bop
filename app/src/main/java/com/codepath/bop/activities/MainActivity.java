@@ -15,6 +15,7 @@ import com.codepath.bop.fragments.NearbyUsersFragment;
 import com.codepath.bop.fragments.PlaylistFragment;
 import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.fragments.SearchFragment;
+import com.codepath.bop.models.Playlist;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 case TOKEN:
                     //need token for any call
                     mAccessToken = response.getAccessToken();
+                    //go to correct view that was clicked on
                     bottomNavigationView();
                     break;
 
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                 Fragment fragment;
                 //dictates which fragment to launch depending on which menu item clicked
                 switch (item.getItemId()) {
