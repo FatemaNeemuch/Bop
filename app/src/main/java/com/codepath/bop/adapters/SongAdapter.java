@@ -1,22 +1,22 @@
 package com.codepath.bop.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
-import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.fragments.SearchFragment;
 import com.codepath.bop.models.Song;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.types.Track;
 
 import java.util.List;
 
@@ -26,11 +26,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
     public static final String TAG = "Song Adapter";
 
     //instance variables
-    List<Song> songs;
-    Context context;
-    boolean playing;
-    boolean resume;
-    SpotifyAppRemote mSpotifyAppRemote;
+    private List<Song> songs;
+    private Context context;
+    private SpotifyAppRemote mSpotifyAppRemote;
+    private boolean playing;
 
     public SongAdapter(List<Song> songs, Context context) {
         this.songs = songs;
@@ -67,18 +66,23 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            //reference views
             tvSongTitle = itemView.findViewById(R.id.tvSongTitle);
             tvArtistName = itemView.findViewById(R.id.tvArtistName);
             ivCover = itemView.findViewById(R.id.ivCover);
             ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
+            //initialize variable
             playing = false;
-            resume = false;
         }
 
         public void bind(Song song) {
+            //set song title
             tvSongTitle.setText(song.getTitle());
+            //set artist
             tvArtistName.setText(song.getArtist());
+            //set song cover
             Glide.with(context).load(song.getCoverURL()).into(ivCover);
+            //set play button based on whether the song is playing
             if (song.isCurrentSong()){
                 Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
             }else{
@@ -88,34 +92,34 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
             ivPlayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    song.setCurrentSong(song, true);
+                    //update current song playing
+                    song.setCurrentSong(song);
+                    //pause song if button is clicked when song is playing
                     if (playing){
                         mSpotifyAppRemote.getPlayerApi().pause();
+                        //change icon back to play button
                         Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
+                        //update variable
                         playing = false;
                     }else{
+                        //play song if button is clicked when the song is not playing
+                        //update variable
                         playing = true;
-                        resume = true;
+                        //play song from spotify
                         mSpotifyAppRemote = SearchFragment.getmSpotifyAppRemote();
-//                        if (resume){
-//                            mSpotifyAppRemote.getPlayerApi().resume();
-//                            resume = false;
-//                        }else{
-//                            mSpotifyAppRemote.getPlayerApi().play(song.getSongURI());
-//                        }
                         mSpotifyAppRemote.getPlayerApi().play(song.getSongURI());
-//                        // Subscribe to PlayerState
-//                        mSpotifyAppRemote.getPlayerApi()
-//                                .subscribeToPlayerState()
-//                                .setEventCallback(playerState -> {
-//                                    final Track track = playerState.track;
-//                                    if (track != null) {
-//                                        Log.i(TAG, track.name + " by " + track.artist.name);
-//                                    }
-//                                });
+                        // Subscribe to PlayerState
+                        mSpotifyAppRemote.getPlayerApi()
+                                .subscribeToPlayerState()
+                                .setEventCallback(playerState -> {
+                                    final Track track = playerState.track;
+                                    if (track != null) {
+                                        Log.i(TAG, track.name + " by " + track.artist.name);
+                                    }
+                                });
+                        //change icon to pause button
                         Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
                     }
-                    Toast.makeText(context, "play song", Toast.LENGTH_SHORT).show();
                 }
             });
         }

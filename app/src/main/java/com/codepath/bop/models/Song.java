@@ -1,11 +1,7 @@
 package com.codepath.bop.models;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Song {
 
@@ -19,8 +15,6 @@ public class Song {
     private String albumType;
     private Playlist playlist;
     private boolean isCurrentSong;
-    private Song currentSong;
-    private String mAccessToken;
 
     public Song() {}
 
@@ -41,43 +35,6 @@ public class Song {
             song.releaseDate = jsonObject.getJSONObject("album").getString("release_date");
             song.songURI = jsonObject.getString("uri");
         return song;
-    }
-
-//    public static Song SearchAPI(JSONObject jsonObject) throws JSONException {
-//        Song song = new Song();
-//        song.albumType = jsonObject.getString("album_type");
-//        song.album = jsonObject.getJSONObject("album").getString("name");
-//        song.title = jsonObject.getString("name");
-//        song.artist = jsonObject.getJSONArray("artists").getJSONObject(0).getString("name");
-//        if (jsonObject.getJSONArray("artists").length() > 1){
-//            String artistName = "";
-//            for (int i = 1; i < jsonObject.getJSONArray("artists").length(); i++){
-//                artistName = artistName + ", " + jsonObject.getJSONArray("artists").getJSONObject(i).getString("name");
-//            }
-//            song.artist = song.artist + artistName;
-//        }
-//        song.coverURL = jsonObject.getJSONArray("images").getJSONObject(0).getString("url");
-//        song.releaseDate = jsonObject.getString("release_date");
-//        song.songURI = jsonObject.getString("uri");
-//        return song;
-//    }
-
-    public static List<Song> fromTopHits(JSONArray jsonArray) throws JSONException {
-        //jsonArray is "items"
-        List<Song> songs = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++){
-            songs.add(fromAPI(jsonArray.getJSONObject(i).getJSONObject("track")));
-        }
-        return songs;
-    }
-
-    public static List<Song> fromSearchArray(JSONArray jsonArray) throws JSONException {
-        //jsonArray is "items"
-        List<Song> songs = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++){
-            songs.add(fromAPI(jsonArray.getJSONObject(i)));
-        }
-        return songs;
     }
 
     public void saveSong(){
@@ -116,9 +73,15 @@ public class Song {
         return playlist;
     }
 
-    public void setCurrentSong(Song song, boolean currentSongState){
-        currentSong = song;
-        isCurrentSong = currentSongState;
+    public void setCurrentSong(Song song){
+        //update the status of last song played
+        if (User.getCurrentSong() != null){
+            User.getCurrentSong().isCurrentSong = false;
+        }
+        //set song as current song
+        User.setCurrentSong(song);
+        //update song status
+        isCurrentSong = true;
     }
 
     public boolean isCurrentSong() {

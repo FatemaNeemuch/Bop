@@ -18,4 +18,16 @@ public class Playlist {
     public void saveSong(){
         //save all the fields to the parse database here
     }
+
+    public String getPlaylistURI() {
+        return playlistURI;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
 }

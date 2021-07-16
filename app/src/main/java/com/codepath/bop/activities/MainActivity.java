@@ -1,56 +1,25 @@
 package com.codepath.bop.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import android.widget.SearchView;
-
-import androidx.core.view.MenuItemCompat;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.bop.R;
 import com.codepath.bop.fragments.NearbyUsersFragment;
 import com.codepath.bop.fragments.PlaylistFragment;
 import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.fragments.SearchFragment;
-import com.codepath.bop.models.Song;
-import com.codepath.bop.adapters.SongAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.parse.ParseUser;
-
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -80,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void authenticateSpotify() {
+        //build request with correct scopes
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
         builder.setScopes(new String[]{SCOPES});
         AuthenticationRequest request = builder.build();
@@ -90,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        Log.i(TAG, "onActivityResult");
-
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
@@ -100,9 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 // Response was successful and contains auth token
                 case TOKEN:
                     //need token for any call
-                    Log.i(TAG, "token fetched");
                     mAccessToken = response.getAccessToken();
-                    Log.i(TAG, "bottom navigation");
                     bottomNavigationView();
                     break;
 
@@ -127,24 +92,16 @@ public class MainActivity extends AppCompatActivity {
                 //dictates which fragment to launch depending on which menu item clicked
                 switch (item.getItemId()) {
                     case R.id.bnSearch:
-                        Log.i(TAG, "going to search fragment");
-                        Toast.makeText(MainActivity.this, "Search", Toast.LENGTH_SHORT).show();
                         fragment = new SearchFragment();
                         break;
                     case R.id.bnPlaylists:
-                        Log.i(TAG, "going to playlist fragment");
-                        Toast.makeText(MainActivity.this, "Playlist", Toast.LENGTH_SHORT).show();
                         fragment = new PlaylistFragment();
                         break;
                     case R.id.bnNearbyUsers:
-                        Log.i(TAG, "going to nearby users fragment");
-                        Toast.makeText(MainActivity.this, "NearbyUsers", Toast.LENGTH_SHORT).show();
                         fragment = new NearbyUsersFragment();
                         break;
                     case R.id.bnProfile:
                     default:
-                        Log.i(TAG, "going to profile fragment");
-                        Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
                         fragment = new ProfileFragment();
                         break;
                 }

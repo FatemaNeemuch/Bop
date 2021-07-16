@@ -29,8 +29,9 @@ public class NearbyUsersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        //update the presence of a menu
         setHasOptionsMenu(true);
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_nearby_users, container, false);
     }
 
@@ -44,12 +45,13 @@ public class NearbyUsersFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_remaining_fragments, menu);
-        Log.i("hi", "menu items");
         super.onCreateOptionsMenu(menu, inflater);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //logout button
         if (item.getItemId() == R.id.logout){
             onStop();
             ParseUser.logOut();

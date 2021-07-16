@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Set core properties
                 user.setUsername(etUsername.getText().toString());
                 user.setPassword(etPassword.getText().toString());
-                user.put("fullName", etFullName.getText().toString());
+                user.put(getString(R.string.fullNameParse), etFullName.getText().toString());
                 // Invoke signUpInBackground
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String username, String password) {
-        Log.i(TAG, "Attempting to login user " + username);
         //login in background so it doesn't interfere with other processes
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override

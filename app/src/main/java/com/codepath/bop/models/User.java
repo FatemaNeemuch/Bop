@@ -6,7 +6,7 @@ public class User {
     private String username;
     private String password;
     private String location; //GeoPoint or Int?
-    private Song currentSong;
+    private static Song currentSong;
     private String fullName;
 
     public User() {}
@@ -19,5 +19,29 @@ public class User {
 
     public void saveSong(){
         //save all the fields to the parse database here
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public static Song getCurrentSong() {
+        return currentSong;
+    }
+
+    public static void setCurrentSong(Song song) {
+        currentSong = song;
     }
 }
