@@ -6,46 +6,89 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <ImageButton
+        android:id="@+id/btnCancelSignUp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="4dp"
+        android:contentDescription="@string/cancelButtonDescription"
+        app:srcCompat="@android:drawable/btn_dialog" />
+
+    <TextView
+        android:id="@+id/tvFullNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnCancelSignUp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/fullName" />
+
     <EditText
         android:id="@+id/etFullNameSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:hint="@string/fullName"
+        android:layout_below="@+id/tvFullNameLabel"
+        android:hint="@string/FullName_hint"
         android:inputType="textPersonName"/>
+
+    <TextView
+        android:id="@+id/tvUsernameSignUplabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etFullNameSignUp"
+        android:layout_marginStart="8dp"
+        android:text="@string/username" />
 
     <EditText
         android:id="@+id/etUsernameSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etFullNameSignUp"
+        android:layout_below="@+id/tvUsernameSignUplabel"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:hint="@string/username"
+        android:hint="@string/username_hint"
         android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/tvPasswordSignUplabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etUsernameSignUp"
+        android:layout_marginStart="8dp"
+        android:text="@string/password"/>
 
     <EditText
         android:id="@+id/etPasswordSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etUsernameSignUp"
+        android:layout_below="@+id/tvPasswordSignUplabel"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:hint="@string/password"
+        android:hint="@string/password_hint"
         android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/tvConfirmPasswordSignUplabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etPasswordSignUp"
+        android:layout_marginStart="8dp"
+        android:text="@string/confirm_password"/>
 
     <EditText
         android:id="@+id/etConfirmPasswordSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etPasswordSignUp"
+        android:layout_below="@+id/tvConfirmPasswordSignUplabel"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:hint="@string/confirm_password"
+        android:hint="@string/password_hint"
         android:inputType="textPassword" />
 
     <Button
@@ -56,16 +99,5 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:text="@string/sign_up"/>
-
-    <ImageButton
-        android:id="@+id/btnCancelSignUp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:contentDescription="@string/cancelButtonDescription"
-        app:srcCompat="@android:drawable/btn_dialog" />
 
 </RelativeLayout>

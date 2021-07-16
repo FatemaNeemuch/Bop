@@ -20,4 +20,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="invalid_sign_up">Invalid Sign Up</string>
     <string name="mismatch_passwords">Passwords Do Not Match</string>
+    <string name="username_hint">Fatema5352</string>
+    <string name="password_hint">*********</string>
+    <string name="FullName_hint">Fatema Neemuchwala</string>
 </resources>

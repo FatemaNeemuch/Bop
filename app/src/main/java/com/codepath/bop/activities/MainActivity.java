@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //reference to views
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -91,6 +90,188 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+//                SearchFragment searchFragment = new SearchFragment();
+//                PlaylistFragment playlistFragment = new PlaylistFragment();
+//                NearbyUsersFragment nearbyUsersFragment = new NearbyUsersFragment();
+//                ProfileFragment profileFragment = new ProfileFragment();
+//
+//                fragmentManager.beginTransaction().add(R.id.flContainer, searchFragment)
+//                        .add(R.id.flContainer, playlistFragment)
+//                        .add(R.id.flContainer, nearbyUsersFragment)
+//                        .add(R.id.flContainer, profileFragment)
+//                        .commit();
+//
+//                switch (item.getItemId()){
+//                    case R.id.bnSearch:
+//                        if (searchFragment.isHidden()){
+//                            fragmentManager.beginTransaction().show(searchFragment)
+//                                    .hide(playlistFragment)
+//                                    .hide(nearbyUsersFragment)
+//                                    .hide(profileFragment)
+//                                    .commit();
+//                        }
+//                        break;
+//
+//                    case R.id.bnPlaylists:
+//
+//                        if (playlistFragment.isHidden()){
+//                            fragmentManager.beginTransaction().show(playlistFragment)
+//                                    .hide(playlistFragment)
+//                                    .hide(nearbyUsersFragment)
+//                                    .hide(profileFragment)
+//                                    .commit();
+//                        }
+//                        break;
+//
+//                    case R.id.bnNearbyUsers:
+//                        if (nearbyUsersFragment.isHidden()){
+//                            fragmentManager.beginTransaction().show(nearbyUsersFragment)
+//                                    .hide(playlistFragment)
+//                                    .hide(nearbyUsersFragment)
+//                                    .hide(profileFragment)
+//                                    .commit();
+//                        }
+//                        break;
+//
+//                    case R.id.bnProfile:
+//                    default:
+//                        if (profileFragment.isHidden()){
+//                            fragmentManager.beginTransaction().show(profileFragment)
+//                                    .hide(playlistFragment)
+//                                    .hide(nearbyUsersFragment)
+//                                    .hide(profileFragment)
+//                                    .commit();
+//                        }
+//                        break;
+//                }
+
+//                switch (item.getItemId()){
+//                    case R.id.bnSearch:
+//                        if (searchFragment.isHidden()){
+//                            fragmentManager.beginTransaction().show(searchFragment).commit();
+//                        }else{
+//                            fragmentManager.beginTransaction().hide(searchFragment).commit();
+//                        }
+//                        break;
+//
+//                    case R.id.bnPlaylists:
+//
+//                        if (playlistFragment.isHidden()){
+//                            fragmentManager.beginTransaction().show(playlistFragment).commit();
+//                        }else{
+//                            fragmentManager.beginTransaction().hide(playlistFragment).commit();
+//                        }
+//                        break;
+//
+//                    case R.id.bnNearbyUsers:
+//                        if (nearbyUsersFragment.isHidden()){
+//                            fragmentManager.beginTransaction().show(nearbyUsersFragment).commit();
+//                        }else{
+//                            fragmentManager.beginTransaction().hide(nearbyUsersFragment).commit();
+//                        }
+//                        break;
+//
+//                    case R.id.bnProfile:
+//                    default:
+//                        if (profileFragment.isHidden()){
+//                            fragmentManager.beginTransaction().show(profileFragment).commit();
+//                        }else{
+//                            fragmentManager.beginTransaction().hide(profileFragment).commit();
+//                        }
+//                        break;
+//                }
+
+
+//                SearchFragment searchFragment = new SearchFragment();
+//                PlaylistFragment playlistFragment = new PlaylistFragment();
+//                NearbyUsersFragment nearbyUsersFragment = new NearbyUsersFragment();
+//                ProfileFragment profileFragment = new ProfileFragment();
+//
+//                Fragment fragment;
+//                switch (item.getItemId()){
+//                    case R.id.bnSearch:
+//                        fragmentManager.beginTransaction().show(searchFragment)
+//                                .hide(playlistFragment)
+//                                .hide(nearbyUsersFragment)
+//                                .hide(profileFragment)
+//                                .commit();
+//                        break;
+//
+//                    case R.id.bnPlaylists:
+//
+//                        fragmentManager.beginTransaction().show(playlistFragment)
+//                                .hide(searchFragment)
+//                                .hide(nearbyUsersFragment)
+//                                .hide(profileFragment)
+//                                .commit();
+//                        break;
+//
+//                    case R.id.bnNearbyUsers:
+//                        fragmentManager.beginTransaction().show(nearbyUsersFragment)
+//                                .hide(playlistFragment)
+//                                .hide(searchFragment)
+//                                .hide(profileFragment)
+//                                .commit();
+//                        break;
+//
+//                    case R.id.bnProfile:
+//                    default:
+//                        fragmentManager.beginTransaction().show(profileFragment)
+//                                .hide(playlistFragment)
+//                                .hide(nearbyUsersFragment)
+//                                .hide(searchFragment)
+//                                .commit();
+//                        break;
+//
+//                }
+
+//                fragmentManager.beginTransaction().add(R.id.flContainer, searchFragment)
+//                        .add(R.id.flContainer, playlistFragment)
+//                        .add(R.id.flContainer, nearbyUsersFragment)
+//                        .add(R.id.flContainer, profileFragment)
+//                        .hide(searchFragment)
+//                        .hide(playlistFragment)
+//                        .hide(nearbyUsersFragment)
+//                        .hide(profileFragment)
+//                        .commit();
+//
+//                switch (item.getItemId()){
+//                    case R.id.bnSearch:
+//                        fragmentManager.beginTransaction().show(searchFragment)
+//                                .hide(playlistFragment)
+//                                .hide(nearbyUsersFragment)
+//                                .hide(profileFragment)
+//                                .commit();
+//                        break;
+//
+//                    case R.id.bnPlaylists:
+//
+//                        fragmentManager.beginTransaction().show(playlistFragment)
+//                                .hide(searchFragment)
+//                                .hide(nearbyUsersFragment)
+//                                .hide(profileFragment)
+//                                .commit();
+//                        break;
+//
+//                    case R.id.bnNearbyUsers:
+//                        fragmentManager.beginTransaction().show(nearbyUsersFragment)
+//                                .hide(playlistFragment)
+//                                .hide(searchFragment)
+//                                .hide(profileFragment)
+//                                .commit();
+//                        break;
+//
+//                    case R.id.bnProfile:
+//                    default:
+//                        fragmentManager.beginTransaction().show(profileFragment)
+//                                .hide(playlistFragment)
+//                                .hide(nearbyUsersFragment)
+//                                .hide(searchFragment)
+//                                .commit();
+//                        break;
+//
+//                }
+
                 Fragment fragment;
                 //dictates which fragment to launch depending on which menu item clicked
                 switch (item.getItemId()) {
@@ -110,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //shows the fragment clicked
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+
                 return true;
             }
         });
