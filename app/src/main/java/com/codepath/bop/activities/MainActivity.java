@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         authenticateSpotify();
+
+
     }
 
     private void authenticateSpotify() {
@@ -90,207 +92,89 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-//                SearchFragment searchFragment = new SearchFragment();
-//                PlaylistFragment playlistFragment = new PlaylistFragment();
-//                NearbyUsersFragment nearbyUsersFragment = new NearbyUsersFragment();
-//                ProfileFragment profileFragment = new ProfileFragment();
-//
-//                fragmentManager.beginTransaction().add(R.id.flContainer, searchFragment)
-//                        .add(R.id.flContainer, playlistFragment)
-//                        .add(R.id.flContainer, nearbyUsersFragment)
-//                        .add(R.id.flContainer, profileFragment)
-//                        .commit();
-//
-//                switch (item.getItemId()){
-//                    case R.id.bnSearch:
-//                        if (searchFragment.isHidden()){
-//                            fragmentManager.beginTransaction().show(searchFragment)
-//                                    .hide(playlistFragment)
-//                                    .hide(nearbyUsersFragment)
-//                                    .hide(profileFragment)
-//                                    .commit();
-//                        }
-//                        break;
-//
-//                    case R.id.bnPlaylists:
-//
-//                        if (playlistFragment.isHidden()){
-//                            fragmentManager.beginTransaction().show(playlistFragment)
-//                                    .hide(playlistFragment)
-//                                    .hide(nearbyUsersFragment)
-//                                    .hide(profileFragment)
-//                                    .commit();
-//                        }
-//                        break;
-//
-//                    case R.id.bnNearbyUsers:
-//                        if (nearbyUsersFragment.isHidden()){
-//                            fragmentManager.beginTransaction().show(nearbyUsersFragment)
-//                                    .hide(playlistFragment)
-//                                    .hide(nearbyUsersFragment)
-//                                    .hide(profileFragment)
-//                                    .commit();
-//                        }
-//                        break;
-//
-//                    case R.id.bnProfile:
-//                    default:
-//                        if (profileFragment.isHidden()){
-//                            fragmentManager.beginTransaction().show(profileFragment)
-//                                    .hide(playlistFragment)
-//                                    .hide(nearbyUsersFragment)
-//                                    .hide(profileFragment)
-//                                    .commit();
-//                        }
-//                        break;
-//                }
-
-//                switch (item.getItemId()){
-//                    case R.id.bnSearch:
-//                        if (searchFragment.isHidden()){
-//                            fragmentManager.beginTransaction().show(searchFragment).commit();
-//                        }else{
-//                            fragmentManager.beginTransaction().hide(searchFragment).commit();
-//                        }
-//                        break;
-//
-//                    case R.id.bnPlaylists:
-//
-//                        if (playlistFragment.isHidden()){
-//                            fragmentManager.beginTransaction().show(playlistFragment).commit();
-//                        }else{
-//                            fragmentManager.beginTransaction().hide(playlistFragment).commit();
-//                        }
-//                        break;
-//
-//                    case R.id.bnNearbyUsers:
-//                        if (nearbyUsersFragment.isHidden()){
-//                            fragmentManager.beginTransaction().show(nearbyUsersFragment).commit();
-//                        }else{
-//                            fragmentManager.beginTransaction().hide(nearbyUsersFragment).commit();
-//                        }
-//                        break;
-//
-//                    case R.id.bnProfile:
-//                    default:
-//                        if (profileFragment.isHidden()){
-//                            fragmentManager.beginTransaction().show(profileFragment).commit();
-//                        }else{
-//                            fragmentManager.beginTransaction().hide(profileFragment).commit();
-//                        }
-//                        break;
-//                }
-
-
-//                SearchFragment searchFragment = new SearchFragment();
-//                PlaylistFragment playlistFragment = new PlaylistFragment();
-//                NearbyUsersFragment nearbyUsersFragment = new NearbyUsersFragment();
-//                ProfileFragment profileFragment = new ProfileFragment();
-//
-//                Fragment fragment;
-//                switch (item.getItemId()){
-//                    case R.id.bnSearch:
-//                        fragmentManager.beginTransaction().show(searchFragment)
-//                                .hide(playlistFragment)
-//                                .hide(nearbyUsersFragment)
-//                                .hide(profileFragment)
-//                                .commit();
-//                        break;
-//
-//                    case R.id.bnPlaylists:
-//
-//                        fragmentManager.beginTransaction().show(playlistFragment)
-//                                .hide(searchFragment)
-//                                .hide(nearbyUsersFragment)
-//                                .hide(profileFragment)
-//                                .commit();
-//                        break;
-//
-//                    case R.id.bnNearbyUsers:
-//                        fragmentManager.beginTransaction().show(nearbyUsersFragment)
-//                                .hide(playlistFragment)
-//                                .hide(searchFragment)
-//                                .hide(profileFragment)
-//                                .commit();
-//                        break;
-//
-//                    case R.id.bnProfile:
-//                    default:
-//                        fragmentManager.beginTransaction().show(profileFragment)
-//                                .hide(playlistFragment)
-//                                .hide(nearbyUsersFragment)
-//                                .hide(searchFragment)
-//                                .commit();
-//                        break;
-//
-//                }
-
-//                fragmentManager.beginTransaction().add(R.id.flContainer, searchFragment)
-//                        .add(R.id.flContainer, playlistFragment)
-//                        .add(R.id.flContainer, nearbyUsersFragment)
-//                        .add(R.id.flContainer, profileFragment)
-//                        .hide(searchFragment)
-//                        .hide(playlistFragment)
-//                        .hide(nearbyUsersFragment)
-//                        .hide(profileFragment)
-//                        .commit();
-//
-//                switch (item.getItemId()){
-//                    case R.id.bnSearch:
-//                        fragmentManager.beginTransaction().show(searchFragment)
-//                                .hide(playlistFragment)
-//                                .hide(nearbyUsersFragment)
-//                                .hide(profileFragment)
-//                                .commit();
-//                        break;
-//
-//                    case R.id.bnPlaylists:
-//
-//                        fragmentManager.beginTransaction().show(playlistFragment)
-//                                .hide(searchFragment)
-//                                .hide(nearbyUsersFragment)
-//                                .hide(profileFragment)
-//                                .commit();
-//                        break;
-//
-//                    case R.id.bnNearbyUsers:
-//                        fragmentManager.beginTransaction().show(nearbyUsersFragment)
-//                                .hide(playlistFragment)
-//                                .hide(searchFragment)
-//                                .hide(profileFragment)
-//                                .commit();
-//                        break;
-//
-//                    case R.id.bnProfile:
-//                    default:
-//                        fragmentManager.beginTransaction().show(profileFragment)
-//                                .hide(playlistFragment)
-//                                .hide(nearbyUsersFragment)
-//                                .hide(searchFragment)
-//                                .commit();
-//                        break;
-//
-//                }
-
-                Fragment fragment;
-                //dictates which fragment to launch depending on which menu item clicked
-                switch (item.getItemId()) {
+                switch (item.getItemId()){
                     case R.id.bnSearch:
-                        fragment = new SearchFragment();
+                        if(fragmentManager.findFragmentByTag("search") != null) {
+                            //if the fragment exists, show it.
+                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("search")).commit();
+                        } else {
+                            //if the fragment does not exist, add it to fragment manager.
+                            fragmentManager.beginTransaction().add(R.id.flContainer, new SearchFragment(), "search").commit();
+                        }
+                        //if the other fragments are visible, hide them.
+                        if(fragmentManager.findFragmentByTag("playlist") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("playlist")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("profile") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("profile")).commit();
+                        }
                         break;
+
                     case R.id.bnPlaylists:
-                        fragment = new PlaylistFragment();
+
+                        if(fragmentManager.findFragmentByTag("playlist") != null) {
+                            //if the fragment exists, show it.
+                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("playlist")).commit();
+                        } else {
+                            //if the fragment does not exist, add it to fragment manager.
+                            fragmentManager.beginTransaction().add(R.id.flContainer, new PlaylistFragment(), "playlist").commit();
+                        }
+                        //if the other fragments are visible, hide them.
+                        if(fragmentManager.findFragmentByTag("search") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("profile") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("profile")).commit();
+                        }
                         break;
+
                     case R.id.bnNearbyUsers:
-                        fragment = new NearbyUsersFragment();
+                        if(fragmentManager.findFragmentByTag("nearbyUsers") != null) {
+                            //if the fragment exists, show it.
+                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
+                        } else {
+                            //if the fragment does not exist, add it to fragment manager.
+                            fragmentManager.beginTransaction().add(R.id.flContainer, new NearbyUsersFragment(), "nearbyUsers").commit();
+                        }
+                        //if the other fragments are visible, hide them.
+                        if(fragmentManager.findFragmentByTag("search") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("playlist") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("playlist")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("profile") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("profile")).commit();
+                        }
                         break;
+
                     case R.id.bnProfile:
                     default:
-                        fragment = new ProfileFragment();
+                        if(fragmentManager.findFragmentByTag("profile") != null) {
+                            //if the fragment exists, show it.
+                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("profile")).commit();
+                        } else {
+                            //if the fragment does not exist, add it to fragment manager.
+                            fragmentManager.beginTransaction().add(R.id.flContainer, new ProfileFragment(), "profile").commit();
+                        }
+                        //if the other fragments are visible, hide them.
+                        if(fragmentManager.findFragmentByTag("search") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("playlist") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("playlist")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
+                        }
                         break;
                 }
-                //shows the fragment clicked
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
 
                 return true;
             }

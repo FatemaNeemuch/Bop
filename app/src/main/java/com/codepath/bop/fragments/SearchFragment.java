@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.bop.DataManager;
+import com.codepath.bop.EndlessRecyclerViewScrollListener;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
@@ -46,6 +47,8 @@ public class SearchFragment extends Fragment {
     private RecyclerView rvSongs;
     private SongAdapter adapter;
     private static String mAccessToken;
+    private String staticQuery;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -78,6 +81,26 @@ public class SearchFragment extends Fragment {
         rvSongs.setLayoutManager(linearLayoutManager);
         rvSongs.setAdapter(adapter);
 
+        // Retain an instance so that you can call `resetState()` for fresh searches
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+
+//                //create url for search query
+//                HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
+//                urlBuilder.addQueryParameter("q", staticQuery);
+//                urlBuilder.addQueryParameter("type", "track,album,artist");
+//                urlBuilder.addQueryParameter("limit", String.valueOf(50));
+//                urlBuilder.addQueryParameter("offset", String.valueOf(20));
+//                String url = urlBuilder.build().toString();
+//                DataManager.SearchResults(url);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvSongs.addOnScrollListener(scrollListener);
+
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
         //get top hits from DataManager
@@ -96,6 +119,8 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+                staticQuery = query;
 
                 //create url for search query
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
