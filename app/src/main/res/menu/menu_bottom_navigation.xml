@@ -9,7 +9,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/bnPlaylists"
-        android:icon="@drawable/ic_baseline_queue_music_24"
+        android:icon="@drawable/ic_baseline_library_music_24"
         android:title="@string/playlist"
         app:showAsAction="always" />
     <item

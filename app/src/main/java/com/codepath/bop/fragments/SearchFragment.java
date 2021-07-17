@@ -136,6 +136,11 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()){
+                    songs.clear();
+                    adapter.notifyDataSetChanged();
+                    DataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
+                }
                 return false;
             }
         });
@@ -196,13 +201,15 @@ public class SearchFragment extends Fragment {
         super.onStop();
         //check if app is running in background and only pause music if its not
         //use the getActivity().isFinishing method
-        mSpotifyAppRemote.getPlayerApi().getPlayerState()
-                .setResultCallback(playerState -> {
-                    mSpotifyAppRemote.getPlayerApi().pause();
-                })
-                .setErrorCallback(throwable -> {
-                    Log.e(TAG, throwable.getMessage(), throwable);
-                });
+        if (getActivity().isFinishing() || getActivity().isDestroyed()){
+            mSpotifyAppRemote.getPlayerApi().getPlayerState()
+                    .setResultCallback(playerState -> {
+                        mSpotifyAppRemote.getPlayerApi().pause();
+                    })
+                    .setErrorCallback(throwable -> {
+                        Log.e(TAG, throwable.getMessage(), throwable);
+                    });
+        }
     }
 
     @Override
