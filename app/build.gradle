@@ -47,4 +47,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation "androidx.appcompat:appcompat:${appCompatVersion}"
     implementation "com.google.android.material:material:${designSupportVersion}"
+    implementation "com.google.android.gms:play-services-location:17.0.0"
 }

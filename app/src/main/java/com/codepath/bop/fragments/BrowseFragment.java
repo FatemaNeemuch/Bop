@@ -240,7 +240,7 @@ public class BrowseFragment extends Fragment {
         super.onStop();
         //check if app is running in background and only pause music if its not
         //use the getActivity().isFinishing method
-        if (getActivity().isFinishing() || getActivity().isDestroyed()){
+        //if (getActivity().isFinishing() || getActivity().isDestroyed()){
             mSpotifyAppRemote.getPlayerApi().getPlayerState()
                     .setResultCallback(playerState -> {
                         mSpotifyAppRemote.getPlayerApi().pause();
@@ -248,7 +248,7 @@ public class BrowseFragment extends Fragment {
                     .setErrorCallback(throwable -> {
                         Log.e(TAG, throwable.getMessage(), throwable);
                     });
-        }
+        //}
     }
 
     @Override
