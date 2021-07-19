@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +26,8 @@ import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import java.util.ArrayList;
@@ -34,10 +35,12 @@ import java.util.List;
 
 import okhttp3.HttpUrl;
 
-public class SearchFragment extends Fragment {
+public class BrowseFragment extends Fragment {
 
     //class constants
-    public static final String TAG = "Search Fragment";
+    public static final String TAG = "Browse Fragment";
+    private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
+    private static final String REDIRECT_URI = "com.codepath.bop://callback";
 
     //instance variables
     private static SpotifyAppRemote mSpotifyAppRemote;
@@ -47,10 +50,11 @@ public class SearchFragment extends Fragment {
     private static String mAccessToken;
     private String staticQuery;
     private EndlessRecyclerViewScrollListener scrollListener;
-    FragmentManager fragmentManager;
+//    private final FragmentManager fragmentManager = getChildFragmentManager();
+    private FragmentManager fragmentManager;
 
-    public SearchFragment(){
-
+    public BrowseFragment() {
+        // Required empty public constructor
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
@@ -58,7 +62,6 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "lauched search fragment");
         //update the presence of a menu
         setHasOptionsMenu(true);
         // Inflate the layout for this fragment
@@ -100,11 +103,11 @@ public class SearchFragment extends Fragment {
         };
         // Adds the scroll listener to RecyclerView
         rvSongs.addOnScrollListener(scrollListener);
-//
-//        //get access token
-//        mAccessToken = MainActivity.getmAccessToken();
-//        //get top hits from DataManager
-//        DataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
+
+        //get access token
+        mAccessToken = MainActivity.getmAccessToken();
+        //get top hits from DataManager
+        DataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
 
     }
 
@@ -115,33 +118,44 @@ public class SearchFragment extends Fragment {
         //find view
         MenuItem searchItem = menu.findItem(R.id.maSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        fragmentManager = getChildFragmentManager();
-//        searchView.setOnClickListener(new View.OnClickListener() {
+//        if (isAdded()){
+//            fragmentManager = getChildFragmentManager();
+//        }
+//        searchView.setOnSearchClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                //launch the Search Fragment here
 //                //move all query code over to new fragment
-//                if(fragmentManager.findFragmentByTag("search") != null) {
-//                    //if the fragment exists, show it.
-//                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("search")).commit();
-//                } else {
-//                    //if the fragment does not exist, add it to fragment manager.
-//                    fragmentManager.beginTransaction().add(R.id.flContainer, new SearchFragment(), "search").commit();
+//                Log.i(TAG, isAdded() + "");
+////                if (isVisible()){
+//                Log.i(TAG, "browse fragment: " + getParentFragmentManager().findFragmentByTag("browse"));
+//                    getParentFragmentManager().beginTransaction().hide(getParentFragmentManager().findFragmentByTag("browse"));
+////                }
+//                if(isAdded()){
+//                    if(fragmentManager.findFragmentByTag("search") != null) {
+//                        //if the fragment exists, show it.
+//                        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("search")).addToBackStack(null).commit();
+//                    } else {
+//                        //if the fragment does not exist, add it to fragment manager.
+//                        fragmentManager.beginTransaction().add(R.id.flContainerSF, new SearchFragment(), "search").addToBackStack(null).commit();
+//                    }
 //                }
 //            }
 //        });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-//                songs.clear();
-//                adapter.notifyDataSetChanged();
-//                getActivity().finish();
-//                DataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
                 songs.clear();
                 adapter.notifyDataSetChanged();
-                if (fragmentManager.findFragmentByTag("search").isVisible()){
-                    fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search"));
-                }
+                DataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
+//                songs.clear();
+//                adapter.notifyDataSetChanged();
+//                if (isAdded()){
+//                    Log.i(TAG, "search fragment: " + fragmentManager.findFragmentByTag("search"));
+//                    if (fragmentManager.findFragmentByTag("search").isAdded() && fragmentManager.findFragmentByTag("search").isVisible()){
+//                        fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search"));
+//                    }
+//                }
                 return false;
             }
         });
@@ -184,5 +198,63 @@ public class SearchFragment extends Fragment {
             startActivity(intent);
         }
         return true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Set the connection parameters - get user authorization
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        //connect to spotify
+        SpotifyAppRemote.connect(getContext(), connectionParams,
+                new Connector.ConnectionListener() {
+
+                    @Override
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote;
+                        Log.i(TAG, "Connected! Yay!");
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Log.e(TAG, throwable.getMessage(), throwable);
+
+                        // Something went wrong when attempting to connect! Handle errors here
+                    }
+                });
+    }
+
+    public static SpotifyAppRemote getmSpotifyAppRemote(){
+        return mSpotifyAppRemote;
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, "stopping the music");
+        super.onStop();
+        //check if app is running in background and only pause music if its not
+        //use the getActivity().isFinishing method
+        if (getActivity().isFinishing() || getActivity().isDestroyed()){
+            mSpotifyAppRemote.getPlayerApi().getPlayerState()
+                    .setResultCallback(playerState -> {
+                        mSpotifyAppRemote.getPlayerApi().pause();
+                    })
+                    .setErrorCallback(throwable -> {
+                        Log.e(TAG, throwable.getMessage(), throwable);
+                    });
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 }

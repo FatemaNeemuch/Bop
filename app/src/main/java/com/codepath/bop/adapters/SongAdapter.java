@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
-import com.codepath.bop.fragments.SearchFragment;
+import com.codepath.bop.fragments.BrowseFragment;
 import com.codepath.bop.models.Song;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
@@ -99,6 +99,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                         mSpotifyAppRemote.getPlayerApi().pause();
                         //change icon back to play button
                         Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
+                        //update current song playing
+                        song.setCurrentSong(null);
                         //update variable
                         playing = false;
                     }else{
@@ -106,7 +108,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                         //update variable
                         playing = true;
                         //play song from spotify
-                        mSpotifyAppRemote = SearchFragment.getmSpotifyAppRemote();
+                        mSpotifyAppRemote = BrowseFragment.getmSpotifyAppRemote();
                         mSpotifyAppRemote.getPlayerApi().play(song.getSongURI());
                         // Subscribe to PlayerState
                         mSpotifyAppRemote.getPlayerApi()

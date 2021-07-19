@@ -117,8 +117,10 @@ public class Song extends ParseObject {
         }
         //set song as current song
         User.setCurrentSong(song);
-        //update song status
-        isCurrentSong = true;
+        if (song != null){
+            //update song status
+            song.isCurrentSong = true;
+        }
     }
 
     public boolean getisCurrentSong() {

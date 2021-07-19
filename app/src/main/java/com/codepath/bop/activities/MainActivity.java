@@ -7,15 +7,13 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.codepath.bop.R;
 import com.codepath.bop.fragments.NearbyUsersFragment;
 import com.codepath.bop.fragments.PlaylistFragment;
 import com.codepath.bop.fragments.ProfileFragment;
-import com.codepath.bop.fragments.SearchFragment;
-import com.codepath.bop.models.Playlist;
+import com.codepath.bop.fragments.BrowseFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     //instance variables
     private static String mAccessToken;
     private BottomNavigationView bottomNavigationView;
-    final FragmentManager fragmentManager = getSupportFragmentManager();
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
 
 
     @Override
@@ -94,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.bnSearch:
-                        if(fragmentManager.findFragmentByTag("search") != null) {
+                        if(fragmentManager.findFragmentByTag("browse") != null) {
                             //if the fragment exists, show it.
-                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("search")).commit();
+                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("browse")).commit();
                         } else {
                             //if the fragment does not exist, add it to fragment manager.
-                            fragmentManager.beginTransaction().add(R.id.flContainer, new SearchFragment(), "search").commit();
+                            fragmentManager.beginTransaction().add(R.id.flContainer, new BrowseFragment(), "browse").commit();
                         }
                         //if the other fragments are visible, hide them.
                         if(fragmentManager.findFragmentByTag("playlist") != null){
@@ -123,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().add(R.id.flContainer, new PlaylistFragment(), "playlist").commit();
                         }
                         //if the other fragments are visible, hide them.
-                        if(fragmentManager.findFragmentByTag("search") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
+                        if(fragmentManager.findFragmentByTag("browse") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("browse")).commit();
                         }
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
@@ -143,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().add(R.id.flContainer, new NearbyUsersFragment(), "nearbyUsers").commit();
                         }
                         //if the other fragments are visible, hide them.
-                        if(fragmentManager.findFragmentByTag("search") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
+                        if(fragmentManager.findFragmentByTag("browse") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("browse")).commit();
                         }
                         if(fragmentManager.findFragmentByTag("playlist") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("playlist")).commit();
@@ -164,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().add(R.id.flContainer, new ProfileFragment(), "profile").commit();
                         }
                         //if the other fragments are visible, hide them.
-                        if(fragmentManager.findFragmentByTag("search") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
+                        if(fragmentManager.findFragmentByTag("browse") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("browse")).commit();
                         }
                         if(fragmentManager.findFragmentByTag("playlist") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("playlist")).commit();
