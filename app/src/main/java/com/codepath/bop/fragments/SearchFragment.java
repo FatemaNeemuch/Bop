@@ -15,15 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codepath.bop.DataManager;
+import com.codepath.bop.managers.DataManager;
 import com.codepath.bop.EndlessRecyclerViewScrollListener;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
-import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
@@ -34,6 +32,7 @@ import java.util.List;
 
 import okhttp3.HttpUrl;
 
+//not being used as of now
 public class SearchFragment extends Fragment {
 
     //class constants

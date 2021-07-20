@@ -92,8 +92,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
             ivPlayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //update current song playing
-                    song.setCurrentSong(song);
                     //pause song if button is clicked when song is playing
                     if (playing){
                         mSpotifyAppRemote.getPlayerApi().pause();
@@ -104,6 +102,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                         //update variable
                         playing = false;
                     }else{
+                        //update current song playing
+                        song.setCurrentSong(song);
                         //play song if button is clicked when the song is not playing
                         //update variable
                         playing = true;

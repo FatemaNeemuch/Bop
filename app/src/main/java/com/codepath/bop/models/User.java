@@ -1,11 +1,18 @@
 package com.codepath.bop.models;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import com.codepath.bop.activities.MainActivity;
 import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 @ParseClassName("User")
 public class User extends ParseObject {
+
+    //might not need this model
 
     //class constants
     public static final String KEY_USERNAME = "username";
@@ -24,14 +31,10 @@ public class User extends ParseObject {
 
     public User() {}
 
-    public User fromAPI(){
+    public User fromDatabase(){
         User user = new User();
         //set all the fields here
         return user;
-    }
-
-    public void saveUser(){
-        //save all the fields to the parse database here
     }
 
     //probs not needed
@@ -59,6 +62,14 @@ public class User extends ParseObject {
 
     public static void setCurrentSong(Song song) {
         currentSong = song;
+        Song.saveSong(song);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null){
+            currentUser.put("currentSong", song);
+            currentUser.saveInBackground();
+            //Toast.makeText(, "", Toast.LENGTH_SHORT).show();
+            Log.i("User", "currentSong saved");
+        }
     }
 
     //create getter and setter methods for the keys

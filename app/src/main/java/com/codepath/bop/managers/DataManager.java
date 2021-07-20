@@ -1,4 +1,4 @@
-package com.codepath.bop;
+package com.codepath.bop.managers;
 
 import android.os.Handler;
 import android.os.Looper;

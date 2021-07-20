@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //logout button
-        if (item.getItemId() == R.id.logout){
+        if (item.getItemId() == R.id.Rlogout){
             onStop();
             ParseUser.logOut();
             ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null

@@ -13,7 +13,6 @@
     <string name="nearby_users">Nearby Users</string>
     <string name="playlist">Playlist</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="fullNameParse">fullName</string>
     <string name="topHitsURL">https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks</string>
     <string name="searchURL">https://api.spotify.com/v1/search</string>
     <string name="cancelButtonDescription">go back to login activity</string>
@@ -24,4 +23,6 @@
     <string name="password_hint">*********</string>
     <string name="FullName_hint">Fatema Neemuchwala</string>
     <string name="don_t_have_an_account">Do not have an account? <font color='#0E58EA'>Sign Up!</font></string>
+    <string name="google_maps_api_key">AIzaSyDHTf5QWPK-f0jjS-9d5w9-YegPm4_matM</string>
+    <string name="you_must_allow_bop_access_to_your_location_while_using_app">You must allow Bop access to your location while using app</string>
 </resources>

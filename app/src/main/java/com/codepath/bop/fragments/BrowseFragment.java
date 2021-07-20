@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codepath.bop.DataManager;
+import com.codepath.bop.managers.DataManager;
 import com.codepath.bop.EndlessRecyclerViewScrollListener;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
@@ -240,15 +240,16 @@ public class BrowseFragment extends Fragment {
         super.onStop();
         //check if app is running in background and only pause music if its not
         //use the getActivity().isFinishing method
-        if (getActivity().isFinishing() || getActivity().isDestroyed()){
-            mSpotifyAppRemote.getPlayerApi().getPlayerState()
-                    .setResultCallback(playerState -> {
-                        mSpotifyAppRemote.getPlayerApi().pause();
-                    })
-                    .setErrorCallback(throwable -> {
-                        Log.e(TAG, throwable.getMessage(), throwable);
-                    });
-        }
+//        if (getActivity().isFinishing() || getActivity().isDestroyed()){
+//
+//        }
+        mSpotifyAppRemote.getPlayerApi().getPlayerState()
+                .setResultCallback(playerState -> {
+                    mSpotifyAppRemote.getPlayerApi().pause();
+                })
+                .setErrorCallback(throwable -> {
+                    Log.e(TAG, throwable.getMessage(), throwable);
+                });
     }
 
     @Override

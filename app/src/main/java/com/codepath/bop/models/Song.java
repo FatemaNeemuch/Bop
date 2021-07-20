@@ -65,7 +65,9 @@ public class Song extends ParseObject {
         song.setKeyCoverUrl(song.coverURL);
         song.setKeyReleaseDate(song.releaseDate);
         song.setKeySongUri(song.songURI);
-        song.setKeyPlaylist(song.playlist);
+        if (song.playlist != null){
+            song.setKeyPlaylist(song.playlist);
+        }
         song.setKeyIsCurrentSong(song.isCurrentSong);
         song.saveInBackground(new SaveCallback() {
             @Override
@@ -115,11 +117,11 @@ public class Song extends ParseObject {
         if (User.getCurrentSong() != null){
             User.getCurrentSong().isCurrentSong = false;
         }
-        //set song as current song
-        User.setCurrentSong(song);
         if (song != null){
             //update song status
             song.isCurrentSong = true;
+            //set song as current song
+            User.setCurrentSong(song);
         }
     }
 
