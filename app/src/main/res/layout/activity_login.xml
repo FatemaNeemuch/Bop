@@ -9,35 +9,50 @@
     android:orientation="vertical"
     tools:context=".activities.LoginActivity">
 
-    <TextView
-        android:id="@+id/tvUsernamelabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="240dp"
-        android:text="@string/username" />
+<!--    <TextView-->
+<!--        android:id="@+id/tvUsernamelabel"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="3dp"-->
+<!--        android:layout_marginTop="240dp"-->
+<!--        android:text="@string/username" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/etUsernameWrite"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/tvUsernamelabel"-->
+<!--        android:hint="@string/username_hint" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvPasswordlabel"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/etUsernameWrite"-->
+<!--        android:layout_marginStart="3dp"-->
+<!--        android:text="@string/password"/>-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/etPassword"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/tvPasswordlabel"-->
+<!--        android:hint="@string/password_hint"-->
+<!--        android:inputType="textPassword" />-->
 
     <EditText
         android:id="@+id/etUsernameWrite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvUsernamelabel"
-        android:hint="@string/username_hint" />
-
-    <TextView
-        android:id="@+id/tvPasswordlabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etUsernameWrite"
-        android:layout_marginStart="3dp"
-        android:text="@string/password"/>
+        android:layout_marginTop="220dp"
+        android:hint="@string/username" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPasswordlabel"
-        android:hint="@string/password_hint"
+        android:layout_below="@+id/etUsernameWrite"
+        android:hint="@string/password"
         android:inputType="textPassword" />
 
     <Button
@@ -46,13 +61,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login"/>
-
-<!--    <Button-->
-<!--        android:id="@+id/btnSignUp"-->
-<!--        android:layout_below="@+id/btnLogin"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/sign_up"/>-->
 
     <TextView
         android:id="@+id/tvSignUp"
