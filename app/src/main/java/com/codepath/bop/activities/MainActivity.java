@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.codepath.bop.R;
 import com.codepath.bop.fragments.NearbyUsersFragment;
-import com.codepath.bop.fragments.PlaylistFragment;
 import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.fragments.BrowseFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -99,31 +98,6 @@ public class MainActivity extends AppCompatActivity {
                             //if the fragment does not exist, add it to fragment manager.
                             fragmentManager.beginTransaction().add(R.id.flContainer, new BrowseFragment(), "browse").commit();
                         }
-                        //if the other fragments are visible, hide them.
-                        if(fragmentManager.findFragmentByTag("playlist") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("playlist")).commit();
-                        }
-                        if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
-                        }
-                        if(fragmentManager.findFragmentByTag("profile") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("profile")).commit();
-                        }
-                        break;
-
-                    case R.id.bnPlaylists:
-
-                        if(fragmentManager.findFragmentByTag("playlist") != null) {
-                            //if the fragment exists, show it.
-                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("playlist")).commit();
-                        } else {
-                            //if the fragment does not exist, add it to fragment manager.
-                            fragmentManager.beginTransaction().add(R.id.flContainer, new PlaylistFragment(), "playlist").commit();
-                        }
-                        //if the other fragments are visible, hide them.
-                        if(fragmentManager.findFragmentByTag("browse") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("browse")).commit();
-                        }
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
                         }
@@ -144,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
                         if(fragmentManager.findFragmentByTag("browse") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("browse")).commit();
                         }
-                        if(fragmentManager.findFragmentByTag("playlist") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("playlist")).commit();
-                        }
                         if(fragmentManager.findFragmentByTag("profile") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("profile")).commit();
                         }
@@ -164,9 +135,6 @@ public class MainActivity extends AppCompatActivity {
                         //if the other fragments are visible, hide them.
                         if(fragmentManager.findFragmentByTag("browse") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("browse")).commit();
-                        }
-                        if(fragmentManager.findFragmentByTag("playlist") != null){
-                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("playlist")).commit();
                         }
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();

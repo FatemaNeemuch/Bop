@@ -91,7 +91,7 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
             //get song object
             Song pUserSong = (Song) pUser.get(User.KEY_CURRENT_SONG);
             //get current user's song object
-            Song currentUserSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
+//            Song currentUserSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
             Log.i(TAG, ParseUser.getCurrentUser().getUsername());
             //set song title
             tvSongTitleNU.setText(pUserSong.getKEY_TITLE());
@@ -99,17 +99,13 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
             tvArtistNameNU.setText(pUserSong.getKEY_ARTIST());
             //set song cover
             Glide.with(context).load(pUserSong.getKEY_COVER_URL()).into(ivCover);
-//            Log.i(TAG, "pUser Title: " + pUserSong.getKEY_TITLE());
-//            Log.i(TAG, "currentUser Title: " + currentUserSong.getObjectId());
-//            Log.i(TAG, "pUser Artist: " + pUserSong.getObjectId());
-//            Log.i(TAG, "currentUser Artist: " + currentUserSong.getObjectId());
-            //set play button based on whether the song is playing
+            //set play button based on whether the song is playing in recycler view
 //            if (sameSong(pUserSong, currentUserSong)){
-            if (false){
-                Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButtonNU);
-            }else{
-                Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
-            }
+//                Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButtonNU);
+//            }else{
+//                Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
+//            }
+            Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
             //play song here as well
             ivPlayButtonNU.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,16 +146,13 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
 
         }
 
-//        private boolean sameSong(Song pUserSong, Song currentUserSong){
-//            if (pUserSong.getKEY_TITLE() == currentUserSong.getTitle()
-//                    && pUserSong.getKEY_ARTIST() == currentUserSong.getArtist()){
-//                Log.i(TAG, "pUser Title: " + pUserSong.getKEY_TITLE());
-//                Log.i(TAG, "currentUser Title: " + currentUserSong.getTitle());
-//                Log.i(TAG, "pUser Artist: " + pUserSong.getKEY_ARTIST());
-//                Log.i(TAG, "currentUser Artist: " + currentUserSong.getArtist());
-//                return true;
-//            }
-//            return false;
-//        }
+        private boolean sameSong(Song pUserSong, Song currentUserSong){
+            if (pUserSong.getObjectId().equals(currentUserSong.getObjectId())){
+                Log.i(TAG, "pUserSong object ID: " + pUserSong.getObjectId());
+                Log.i(TAG, "currentUserSong object ID: " + currentUserSong.getObjectId());
+                return true;
+            }
+            return false;
+        }
     }
 }

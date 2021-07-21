@@ -8,11 +8,6 @@
         android:title="@string/search"
         app:showAsAction="always" />
     <item
-        android:id="@+id/bnPlaylists"
-        android:icon="@drawable/ic_baseline_library_music_24"
-        android:title="@string/playlist"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/bnNearbyUsers"
         android:icon="@drawable/ic_baseline_location_on_24"
         android:title="@string/nearby_users"
@@ -20,6 +15,6 @@
     <item
         android:id="@+id/bnProfile"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="@string/profile"
+        android:title="@string/account"
         app:showAsAction="always" />
 </menu>
