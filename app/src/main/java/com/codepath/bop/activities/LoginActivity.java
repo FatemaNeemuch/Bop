@@ -49,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //if user is already logged in, stay logged in (persistence)
         if(ParseUser.getCurrentUser() != null){
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            saveCurrentUserLocation();
             goToMainActivity();
         }
 

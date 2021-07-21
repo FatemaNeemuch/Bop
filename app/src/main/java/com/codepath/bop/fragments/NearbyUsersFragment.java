@@ -55,6 +55,8 @@ public class NearbyUsersFragment extends Fragment {
                              Bundle savedInstanceState) {
         //update the presence of a menu
         setHasOptionsMenu(true);
+        //set title
+//        getActivity().setTitle("Nearby Users");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_nearby_users, container, false);
     }

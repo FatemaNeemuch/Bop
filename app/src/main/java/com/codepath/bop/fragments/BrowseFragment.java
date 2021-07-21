@@ -64,6 +64,8 @@ public class BrowseFragment extends Fragment {
                              Bundle savedInstanceState) {
         //update the presence of a menu
         setHasOptionsMenu(true);
+        //set title
+//        getActivity().setTitle("Search");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search_browse, container, false);
     }
