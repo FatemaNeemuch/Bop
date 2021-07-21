@@ -26,4 +26,6 @@
     <string name="google_maps_api_key">AIzaSyDHTf5QWPK-f0jjS-9d5w9-YegPm4_matM</string>
     <string name="you_must_allow_bop_access_to_your_location_while_using_app">You must allow Bop access to your location while using app</string>
     <string name="account">Account</string>
+    <string name="profile_greeting">Hi Fatema!</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

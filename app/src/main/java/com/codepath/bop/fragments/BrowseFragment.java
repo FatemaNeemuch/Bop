@@ -51,7 +51,7 @@ public class BrowseFragment extends Fragment {
     private String staticQuery;
     private EndlessRecyclerViewScrollListener scrollListener;
 //    private final FragmentManager fragmentManager = getChildFragmentManager();
-    private FragmentManager fragmentManager;
+//    private FragmentManager fragmentManager;
 
     public BrowseFragment() {
         // Required empty public constructor
@@ -72,6 +72,7 @@ public class BrowseFragment extends Fragment {
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //reference to views
         rvSongs = view.findViewById(R.id.rvSongs);
 
@@ -83,26 +84,6 @@ public class BrowseFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvSongs.setLayoutManager(linearLayoutManager);
         rvSongs.setAdapter(adapter);
-
-        // Retain an instance so that you can call `resetState()` for fresh searches
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-
-//                //create url for search query
-//                HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
-//                urlBuilder.addQueryParameter("q", staticQuery);
-//                urlBuilder.addQueryParameter("type", "track,album,artist");
-//                urlBuilder.addQueryParameter("limit", String.valueOf(50));
-//                urlBuilder.addQueryParameter("offset", String.valueOf(20));
-//                String url = urlBuilder.build().toString();
-//                DataManager.SearchResults(url);
-            }
-        };
-        // Adds the scroll listener to RecyclerView
-        rvSongs.addOnScrollListener(scrollListener);
 
         //get access token
         mAccessToken = MainActivity.getmAccessToken();

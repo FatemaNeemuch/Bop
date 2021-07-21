@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +15,33 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
+import com.codepath.bop.adapters.ProfileAdapter;
+import com.codepath.bop.models.Playlist;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProfileFragment extends Fragment {
+
+    //class constants
+    public static final String TAG = "Profile Fragment";
+
+    //instance variables
+    private RecyclerView rvPlaylists;
+    private ProfileAdapter adapter;
+    private List<Playlist> playlists; //figure out if you should post Playlist to spotify or upload to Parse
+    private TextView tvUsernameProfile;
+    private ImageView ivProfilePic;
+    private Button btnEditProfile;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -39,8 +62,44 @@ public class ProfileFragment extends Fragment {
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // Setup any handles to view objects here
-        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
+        super.onViewCreated(view, savedInstanceState);
+
+        //reference to views
+        rvPlaylists = view.findViewById(R.id.rvPlaylists);
+        tvUsernameProfile = view.findViewById(R.id.tvUsernameProfile);
+        ivProfilePic = view.findViewById(R.id.ivProfilePic);
+        btnEditProfile = view.findViewById(R.id.btnEditProfile);
+
+        playlists = new ArrayList<>();
+        adapter = new ProfileAdapter(getContext(), playlists);
+
+        //Recycler view setup: layout manager and the adapter
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rvPlaylists.setLayoutManager(linearLayoutManager);
+        rvPlaylists.setAdapter(adapter);
+
+        //set username and profile pic
+        tvUsernameProfile.setText("Hi " + ParseUser.getCurrentUser().getUsername() + "!");
+        //to get profile pic:
+            //add a ParseFile profilePic property to User
+            //launch camera functionality
+            //save profile pic to parse database
+            //ParseFile profilePic = ParseUser.getCurrentUser().get("profilePic")
+            //Glide.with(getContext()).load(profilePic.getURl()).into(ivProfilePic);
+        //for now add a placeholder
+            Glide.with(getContext())
+                    .load(R.drawable.sample_profile_pic)
+                    .circleCrop()
+                    .into(ivProfilePic);
+
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //start an intent to either a modal overlay or another activity where you can
+                //edit the User model fields and then save to Parse Database
+            }
+        });
+
     }
 
     @Override

@@ -63,6 +63,7 @@ public class NearbyUsersFragment extends Fragment {
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //reference to views
         rvNearbyUsers = view.findViewById(R.id.rvNearbyUsers);
 
