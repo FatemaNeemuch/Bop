@@ -130,6 +130,7 @@ public class SignUpDialogFragment extends DialogFragment {
                 // Set core properties
                 user.setUsername(etUsernameSignUp.getText().toString());
                 user.setPassword(etPasswordSignUp.getText().toString());
+                //set additional properties
                 user.put("fullName", etFullNameSignUp.getText().toString());
                 user.put("location", userLocation);
                 // Invoke signUpInBackground
@@ -152,8 +153,10 @@ public class SignUpDialogFragment extends DialogFragment {
                     }
                 });
             }else{
+                //notify me and the user if location is null
                 Log.i(TAG, "location is null");
                 Toast.makeText(getContext(), "location is null", Toast.LENGTH_SHORT).show();
+                //go back to the login activity
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }

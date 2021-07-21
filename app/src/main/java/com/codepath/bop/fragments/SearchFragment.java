@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codepath.bop.managers.DataManager;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.EndlessRecyclerViewScrollListener;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
@@ -159,7 +159,7 @@ public class SearchFragment extends Fragment {
                 String url = urlBuilder.build().toString();
 
                 //get search results from DataManager
-                DataManager.SearchResults(url);
+                SpotifyDataManager.SearchResults(url);
                 return true;
             }
 

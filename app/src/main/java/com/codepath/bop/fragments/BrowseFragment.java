@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codepath.bop.managers.DataManager;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.EndlessRecyclerViewScrollListener;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
@@ -107,7 +107,7 @@ public class BrowseFragment extends Fragment {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
         //get top hits from DataManager
-        DataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
+        SpotifyDataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
 
     }
 
@@ -147,7 +147,7 @@ public class BrowseFragment extends Fragment {
             public boolean onClose() {
                 songs.clear();
                 adapter.notifyDataSetChanged();
-                DataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
+                SpotifyDataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
 //                songs.clear();
 //                adapter.notifyDataSetChanged();
 //                if (isAdded()){
@@ -174,7 +174,7 @@ public class BrowseFragment extends Fragment {
                 String url = urlBuilder.build().toString();
 
                 //get search results from DataManager
-                DataManager.SearchResults(url);
+                SpotifyDataManager.SearchResults(url);
                 return true;
             }
 

@@ -195,8 +195,8 @@ public class Song extends ParseObject {
         put(KEY_PLAYLIST, playlist);
     }
 
-    public String getKEY_IS_CURRENT_SONG() {
-        return getString(KEY_IS_CURRENT_SONG);
+    public boolean getKEY_IS_CURRENT_SONG() {
+        return getBoolean(KEY_IS_CURRENT_SONG);
     }
 
     public void setKeyIsCurrentSong(boolean status){

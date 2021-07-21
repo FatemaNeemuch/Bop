@@ -99,8 +99,10 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 Log.i(TAG, "done user: " + user.getUsername() + ", currentUser: " + ParseUser.getCurrentUser().getUsername());
-                saveCurrentUserLocation();
-                if (getCurrentUserLocation() != null){
+                //save the user location to Parse
+                boolean saved = saveCurrentUserLocation();
+                //only go to main activity if location successfully saved
+                if (saved){
                     //if valid username and password, call gotoMainActivity
                     goToMainActivity();
                     Toast.makeText(LoginActivity.this, getString(R.string.logged_in), Toast.LENGTH_SHORT).show();
@@ -124,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 // if it isn't, save it to Back4App Dashboard
                 ParseGeoPoint currentUserLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
                 Toast.makeText(this, "Location: " + location.getLatitude() + ", " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
                 if (currentUser != null) {
@@ -135,12 +138,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             else {
+                //notify me and the user if location is null
                 Log.i(TAG, "location is null");
                 Toast.makeText(this, "location is null", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
             }
         }
+        //return false if location not saved for any reason
         return false;
     }
 
@@ -155,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private ParseGeoPoint getCurrentUserLocation(){
+    public static ParseGeoPoint getCurrentUserLocation(){
 
         // finding currentUser
         ParseUser currentUser = ParseUser.getCurrentUser();

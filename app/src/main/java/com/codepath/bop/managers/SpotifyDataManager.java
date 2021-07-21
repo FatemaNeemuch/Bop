@@ -4,8 +4,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.models.Song;
+import com.codepath.bop.models.User;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,10 +28,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class DataManager {
+public class SpotifyDataManager {
 
     //class constants
-    public static final String TAG = "Data Manager";
+    public static final String TAG = "Spotify Data Manager";
 
     //instance variables
     private static List<Song> staticSongs;
