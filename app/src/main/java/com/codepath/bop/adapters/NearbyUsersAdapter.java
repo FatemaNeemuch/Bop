@@ -51,7 +51,7 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull NearbyUsersAdapter.ViewHolder holder, int position) {
-        //get song
+        //get user
         ParseUser pUser = nearbyUsers.get(position);
         holder.bind(pUser);
     }

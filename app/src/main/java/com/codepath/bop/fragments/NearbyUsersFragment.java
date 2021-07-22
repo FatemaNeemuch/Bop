@@ -19,10 +19,7 @@ import android.view.ViewGroup;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.adapters.NearbyUsersAdapter;
-import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.managers.ParseDatabaseManager;
-import com.codepath.bop.managers.SpotifyDataManager;
-import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -84,7 +81,7 @@ public class NearbyUsersFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.menu_remaining_fragments, menu);
+        inflater.inflate(R.menu.menu_nearby_users, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
     @Override

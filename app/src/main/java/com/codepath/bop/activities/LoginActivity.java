@@ -97,6 +97,8 @@ public class LoginActivity extends AppCompatActivity {
                 //if username or password are incorrect or any other error, inform user
                 if (e != null){
                     Log.e(TAG, "issue with login", e);
+                    etUsername.setText("");
+                    etPassword.setText("");
                     Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }

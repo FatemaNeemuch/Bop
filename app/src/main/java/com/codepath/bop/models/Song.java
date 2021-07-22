@@ -22,7 +22,6 @@ public class Song extends ParseObject {
     public static final String KEY_RELEASE_DATE = "releaseDate";
     public static final String KEY_COVER_URL = "coverURL";
     public static final String KEY_ALBUM_TYPE = "albumType";
-    public static final String KEY_PLAYLIST = "playlist";
     public static final String KEY_IS_CURRENT_SONG = "isCurrentSong";
 
     //instance variables
@@ -33,7 +32,6 @@ public class Song extends ParseObject {
     private String releaseDate;
     private String coverURL;
     private String albumType;
-    private Playlist playlist;
     private boolean isCurrentSong;
 
     public Song() {}
@@ -65,9 +63,6 @@ public class Song extends ParseObject {
         song.setKeyCoverUrl(song.coverURL);
         song.setKeyReleaseDate(song.releaseDate);
         song.setKeySongUri(song.songURI);
-        if (song.playlist != null){
-            song.setKeyPlaylist(song.playlist);
-        }
         song.setKeyIsCurrentSong(song.isCurrentSong);
         song.saveInBackground(new SaveCallback() {
             @Override
@@ -106,10 +101,6 @@ public class Song extends ParseObject {
 
     public String getAlbumType() {
         return albumType;
-    }
-
-    public Playlist getPlaylist() {
-        return playlist;
     }
 
     public void setCurrentSong(Song song){
@@ -185,14 +176,6 @@ public class Song extends ParseObject {
 
     public void setKeyAlbumType(String type){
         put(KEY_ALBUM_TYPE, type);
-    }
-
-    public ParseObject getKEY_PLAYLIST() {
-        return getParseObject(KEY_PLAYLIST);
-    }
-
-    public void setKeyPlaylist(ParseObject playlist){
-        put(KEY_PLAYLIST, playlist);
     }
 
     public boolean getKEY_IS_CURRENT_SONG() {

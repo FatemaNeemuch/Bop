@@ -2,7 +2,9 @@ package com.codepath.bop.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
+//probs not needed
 @ParseClassName("Playlist")
 public class Playlist extends ParseObject {
 
@@ -14,9 +16,13 @@ public class Playlist extends ParseObject {
     //instance variables
     private String playlistURI;
     private String name;
-    private User creator;
+    private ParseUser creator;
 
-    public Playlist() {}
+    public Playlist() {
+        playlistURI = "92usd93n9wf823n";
+        name = "Favorites";
+        creator = ParseUser.getCurrentUser();
+    }
 
     public Playlist fromAPI(){
         Playlist playlist = new Playlist();
@@ -36,7 +42,7 @@ public class Playlist extends ParseObject {
         return name;
     }
 
-    public User getCreator() {
+    public ParseUser getCreator() {
         return creator;
     }
 

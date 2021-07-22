@@ -5,10 +5,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +23,7 @@ import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.adapters.ProfileAdapter;
 import com.codepath.bop.models.Playlist;
+import com.codepath.bop.models.User;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -73,11 +73,18 @@ public class ProfileFragment extends Fragment {
         btnEditProfile = view.findViewById(R.id.btnEditProfile);
 
         playlists = new ArrayList<>();
+        playlists.add(new Playlist());
+        playlists.add(new Playlist());
+        playlists.add(new Playlist());
+        playlists.add(new Playlist());
+        playlists.add(new Playlist());
+        playlists.add(new Playlist());
+        playlists.add(new Playlist());
         adapter = new ProfileAdapter(getContext(), playlists);
 
         //Recycler view setup: layout manager and the adapter
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvPlaylists.setLayoutManager(linearLayoutManager);
+        GridLayoutManager layout = new GridLayoutManager(getContext(), 2);
+        rvPlaylists.setLayoutManager(layout);
         rvPlaylists.setAdapter(adapter);
 
         //set username and profile pic
@@ -90,7 +97,7 @@ public class ProfileFragment extends Fragment {
             //Glide.with(getContext()).load(profilePic.getURl()).into(ivProfilePic);
         //for now add a placeholder
             Glide.with(getContext())
-                    .load(R.drawable.sample_profile_pic)
+                    .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC).getUrl())
                     .circleCrop()
                     .into(ivProfilePic);
 
@@ -107,19 +114,21 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.menu_remaining_fragments, menu);
+        inflater.inflate(R.menu.menu_profile, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //logout button
-        if (item.getItemId() == R.id.Rlogout){
+        if (item.getItemId() == R.id.Plogout){
             onStop();
             ParseUser.logOut();
             ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
             //go back to login page
             Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
+        }else if (item.getItemId() == R.id.btnAddPlaylist){
+            //add code here to post playlist to Spotify
         }
         return true;
     }

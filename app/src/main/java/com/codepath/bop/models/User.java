@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.codepath.bop.activities.MainActivity;
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -12,7 +13,7 @@ import com.parse.ParseUser;
 @ParseClassName("User")
 public class User extends ParseObject {
 
-    //might not need this model
+    //clean up this model class
 
     //class constants
     public static final String KEY_USERNAME = "username";
@@ -20,6 +21,7 @@ public class User extends ParseObject {
     public static final String KEY_CURRENT_SONG = "currentSong";
     public static final String KEY_FULL_NAME = "fullName";
     public static final String KEY_LOCATION = "location";
+    public static final String KEY_PROFILE_PIC = "profilePic";
 
 
     //instance variables
@@ -28,6 +30,7 @@ public class User extends ParseObject {
     private ParseGeoPoint location;
     private static Song currentSong;
     private String fullName;
+    private ParseFile profilePic;
 
     public User() {}
 
@@ -65,10 +68,24 @@ public class User extends ParseObject {
         Song.saveSong(song);
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null){
-            currentUser.put("currentSong", song);
+            currentUser.put(KEY_CURRENT_SONG, song);
             currentUser.saveInBackground();
-            //Toast.makeText(, "", Toast.LENGTH_SHORT).show();
             Log.i("User", "currentSong saved");
+        }
+    }
+
+    private ParseFile getProfilePic(){
+        return profilePic;
+    }
+
+    private void setProfilePic(ParseFile pic){
+        profilePic = pic;
+        //check save ParseFile code written here
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null){
+            currentUser.put(KEY_PROFILE_PIC, pic);
+            currentUser.saveInBackground();
+            Log.i("User", "profilePic saved");
         }
     }
 
