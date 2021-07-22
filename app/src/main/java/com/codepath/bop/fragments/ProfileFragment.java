@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,13 +22,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
+import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.ProfileAdapter;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.User;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.HttpUrl;
 
 public class ProfileFragment extends Fragment {
 
@@ -41,7 +46,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvUsernameProfile;
     private ImageView ivProfilePic;
     private Button btnEditProfile;
-
+    private static String mAccessToken;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -73,13 +78,6 @@ public class ProfileFragment extends Fragment {
         btnEditProfile = view.findViewById(R.id.btnEditProfile);
 
         playlists = new ArrayList<>();
-        playlists.add(new Playlist());
-        playlists.add(new Playlist());
-        playlists.add(new Playlist());
-        playlists.add(new Playlist());
-        playlists.add(new Playlist());
-        playlists.add(new Playlist());
-        playlists.add(new Playlist());
         adapter = new ProfileAdapter(getContext(), playlists);
 
         //Recycler view setup: layout manager and the adapter
@@ -96,10 +94,24 @@ public class ProfileFragment extends Fragment {
             //ParseFile profilePic = ParseUser.getCurrentUser().get("profilePic")
             //Glide.with(getContext()).load(profilePic.getURl()).into(ivProfilePic);
         //for now add a placeholder
+
+        //THIS WILL CAUSE AN ISSUE WHEN USER WANTS TO SAVE PROFILE PIC BECAUSE SPOTIFY PIC WILL
+        //STILL HAVE A URL SO IT WON'T GET THE PICTURE THE USER TOOK FROM PARSE
+        if (SpotifyDataManager.getProfilePicURl().equals("")){
             Glide.with(getContext())
-                    .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC).getUrl())
+                    .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC_FILE).getUrl())
                     .circleCrop()
                     .into(ivProfilePic);
+        }else{
+            Glide.with(getContext())
+                    .load(SpotifyDataManager.getProfilePicURl())
+                    .circleCrop()
+                    .into(ivProfilePic);
+        }
+//        Glide.with(getContext())
+//                .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC_FILE).getUrl())
+//                .circleCrop()
+//                .into(ivProfilePic);
 
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +120,16 @@ public class ProfileFragment extends Fragment {
                 //edit the User model fields and then save to Parse Database
             }
         });
+
+        //get access token
+        mAccessToken = MainActivity.getmAccessToken();
+        //create url for user playlists query
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.spotify.com/v1/me/playlists").newBuilder();
+        urlBuilder.addQueryParameter("limit", String.valueOf(50));
+        String playlistUrl = urlBuilder.build().toString();
+        Log.i(TAG, "Playlist URL: " + playlistUrl);
+        //get user's playlists from SpotifyDataManager
+        SpotifyDataManager.getPlaylists("https://api.spotify.com/v1/me/playlists?limit=50", mAccessToken, playlists, adapter);
 
     }
 

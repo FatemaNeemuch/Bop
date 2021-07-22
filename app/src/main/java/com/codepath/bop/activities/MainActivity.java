@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
     private static final String REDIRECT_URI = "com.codepath.bop://callback";
     private static final int REQUEST_CODE = 873;
-    private static final String SCOPES = "user-read-recently-played,user-library-modify,user-read-email,user-read-private, streaming";
+    private static final String SCOPES = "user-read-recently-played,user-library-modify,user-read-email,user-read-private,streaming,playlist-read-private";
 
     //instance variables
     private static String mAccessToken;

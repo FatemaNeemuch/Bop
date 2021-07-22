@@ -111,6 +111,12 @@ public class LoginActivity extends AppCompatActivity {
                     goToMainActivity();
                     Toast.makeText(LoginActivity.this, getString(R.string.logged_in), Toast.LENGTH_SHORT).show();
                 }
+//                //save the user location to Parse
+//                boolean saved = saveCurrentUserLocation();
+//                if (saved){
+//                    //check if the user has a Spotify account
+//                    boolean correctAccount = SpotifyDataManager.confirmUserSpotify("https://api.spotify.com/v1/me", userEmail);
+//                }
             }
         });
     }
@@ -183,4 +189,14 @@ public class LoginActivity extends AppCompatActivity {
         // the app instead of going back to log in screen
         finish();
     }
+
+//    //method that makes an intent to go to MainActivity
+//    public static void goToMainActivity() {
+//        Intent intent = new Intent(context, MainActivity.class);
+//        context.startActivity(intent);
+//        //finish intent so that going to previous screen after logging in closes
+//        // the app instead of going back to log in screen
+//        context.finish();
+//    }
+
 }

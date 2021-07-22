@@ -70,7 +70,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             Log.i(TAG, "Playlist Object: " + playlist.getName());
             //get playlist name and cover from Spotify API
             tvPlaylistName.setText(playlist.getName());
-            Glide.with(context).load(R.drawable.sample_record_image).centerCrop().into(ivPlaylistCover);
+            if (playlist.getCoverURL().equals("")){
+                Glide.with(context).load(R.drawable.sample_record_image).into(ivPlaylistCover);
+            }else{
+                Glide.with(context).load(playlist.getCoverURL()).centerCrop().into(ivPlaylistCover);
+            }
         }
     }
 }

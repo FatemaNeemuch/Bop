@@ -21,7 +21,7 @@ public class User extends ParseObject {
     public static final String KEY_CURRENT_SONG = "currentSong";
     public static final String KEY_FULL_NAME = "fullName";
     public static final String KEY_LOCATION = "location";
-    public static final String KEY_PROFILE_PIC = "profilePic";
+    public static final String KEY_PROFILE_PIC_FILE = "profilePicFile";
 
 
     //instance variables
@@ -30,7 +30,7 @@ public class User extends ParseObject {
     private ParseGeoPoint location;
     private static Song currentSong;
     private String fullName;
-    private ParseFile profilePic;
+    private static ParseFile profilePicFile;
 
     public User() {}
 
@@ -74,16 +74,16 @@ public class User extends ParseObject {
         }
     }
 
-    private ParseFile getProfilePic(){
-        return profilePic;
+    public ParseFile getProfilePic(){
+        return profilePicFile;
     }
 
-    private void setProfilePic(ParseFile pic){
-        profilePic = pic;
+    public static void setProfilePicFile(ParseFile pic){
+        profilePicFile = pic;
         //check save ParseFile code written here
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null){
-            currentUser.put(KEY_PROFILE_PIC, pic);
+            currentUser.put(KEY_PROFILE_PIC_FILE, pic);
             currentUser.saveInBackground();
             Log.i("User", "profilePic saved");
         }
