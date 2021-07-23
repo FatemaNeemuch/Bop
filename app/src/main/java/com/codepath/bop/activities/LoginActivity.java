@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.codepath.bop.R;
 import com.codepath.bop.dialog.SignUpDialogFragment;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -51,8 +52,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-//        authenticateSpotify();
 
         //if user is already logged in, stay logged in (persistence)
         if(ParseUser.getCurrentUser() != null){
@@ -190,47 +189,4 @@ public class LoginActivity extends AppCompatActivity {
         // the app instead of going back to log in screen
         finish();
     }
-
-    private void authenticateSpotify() {
-        //build request with correct scopes
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-        builder.setScopes(new String[]{SCOPES});
-        AuthenticationRequest request = builder.build();
-        AuthenticationClient.openLoginActivity(LoginActivity.this, REQUEST_CODE, request);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-
-            switch (response.getType()) {
-                // Response was successful and contains auth token
-                case TOKEN:
-                    //need token for any call
-                    mAccessToken = response.getAccessToken();
-//                    //get User profile information
-//                    SpotifyDataManager.getUserProfile("https://api.spotify.com/v1/me", mAccessToken);
-                    break;
-
-                // Auth flow returned an error
-                case ERROR:
-                    Log.i(TAG, "error when getting response");
-                    break;
-
-                // Most likely auth flow was cancelled
-                default:
-                    Log.i(TAG, "auth flow was cancelled");
-                    // Handle other cases
-            }
-        }
-    }
-
-    public static String getmAccessToken() {
-        return mAccessToken;
-    }
-
 }

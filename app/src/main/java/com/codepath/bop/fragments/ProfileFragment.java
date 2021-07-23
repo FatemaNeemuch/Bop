@@ -111,6 +111,12 @@ public class ProfileFragment extends Fragment {
                     .into(ivProfilePic);
         }
 
+//        //use Spotify profile picture if available
+//        Glide.with(getContext())
+//                .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC_FILE).getUrl())
+//                .circleCrop()
+//                .into(ivProfilePic);
+
         //AMEND CODE WHEN IMPLEMENTING OPTIONAL FEATURE OF USER CHANGING PROFILE PICTURE
 
         btnEditProfile.setOnClickListener(new View.OnClickListener() {

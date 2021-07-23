@@ -90,8 +90,8 @@ public class BrowseFragment extends Fragment {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
-        //get user profile information
-        SpotifyDataManager.getUserProfile("https://api.spotify.com/v1/me", mAccessToken);
+//        //get user profile information
+//        SpotifyDataManager.getUserProfile("https://api.spotify.com/v1/me", mAccessToken);
 
         //get top hits from SpotifyDataManager
         SpotifyDataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);

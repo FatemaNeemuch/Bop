@@ -62,7 +62,7 @@ public class SpotifyDataManager {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i(TAG, "onFailure" + e.getMessage());
+                Log.e(TAG, "onFailure" + e.getMessage());
             }
 
             @Override
@@ -128,13 +128,14 @@ public class SpotifyDataManager {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i(TAG, "onFailure" + e.getMessage());
+                Log.e(TAG, "onFailure" + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     final JSONObject jsonObjectHits = new JSONObject(response.body().string());
+                    Log.i(TAG, "onResponse: " + jsonObjectHits.getJSONArray("items"));
                     //parse data to get song objects and add them to staticSongs list
                     staticSongs.addAll(fromTopHits(jsonObjectHits.getJSONArray("items")));
                     Log.i(TAG, "onResponse getTopHits");
@@ -148,7 +149,7 @@ public class SpotifyDataManager {
                         }
                     });
                 } catch (JSONException e) {
-                    Log.i(TAG, "TopHits Failed to parse data: " + e);
+                    Log.e(TAG, "TopHits Failed to parse data: " + e);
                 }
             }
         });
@@ -169,7 +170,7 @@ public class SpotifyDataManager {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i(TAG, "onFailure" + e.getMessage());
+                Log.e(TAG, "onFailure" + e.getMessage());
             }
 
             @Override
@@ -191,7 +192,7 @@ public class SpotifyDataManager {
                         }
                     });
                 } catch (JSONException e) {
-                    Log.i(TAG, "Search Failed to parse data: " + e);
+                    Log.e(TAG, "Search Failed to parse data: " + e);
                 }
             }
         });
@@ -212,7 +213,7 @@ public class SpotifyDataManager {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i(TAG, "onFailure" + e.getMessage());
+                Log.e(TAG, "onFailure" + e.getMessage());
             }
 
             @Override
