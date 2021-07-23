@@ -113,11 +113,6 @@ public class ProfileFragment extends Fragment {
 
         //AMEND CODE WHEN IMPLEMENTING OPTIONAL FEATURE OF USER CHANGING PROFILE PICTURE
 
-//        Glide.with(getContext())
-//                .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC_FILE).getUrl())
-//                .circleCrop()
-//                .into(ivProfilePic);
-
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
