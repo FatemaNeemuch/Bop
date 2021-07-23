@@ -30,14 +30,6 @@ public class SplashActivity extends AppCompatActivity {
         authenticateSpotify();
     }
 
-    public void gotoLoginActivity(){
-        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-        // Start home activity
-        startActivity(intent);
-        // close splash activity
-        finish();
-    }
-
     private void authenticateSpotify() {
         Log.i(TAG, "authenticate Spotify");
         //build request with correct scopes
@@ -68,8 +60,7 @@ public class SplashActivity extends AppCompatActivity {
                     mAccessToken = response.getAccessToken();
                     Log.i(TAG, "called get User Profile");
                     //get User profile information
-                    SpotifyDataManager.getUserProfile("https://api.spotify.com/v1/me", mAccessToken);
-                    gotoLoginActivity();
+                    SpotifyDataManager.getUserProfile("https://api.spotify.com/v1/me", mAccessToken, SplashActivity.this);
                     break;
 
                 // Auth flow returned an error

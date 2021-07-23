@@ -19,7 +19,9 @@ import android.view.ViewGroup;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.adapters.NearbyUsersAdapter;
+import com.codepath.bop.adapters.NearbyUsersFreeAdapter;
 import com.codepath.bop.managers.ParseDatabaseManager;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -40,6 +42,7 @@ public class NearbyUsersFragment extends Fragment {
     private List<ParseUser> nearbyUsers;
     private RecyclerView rvNearbyUsers;
     private NearbyUsersAdapter adapter;
+    private NearbyUsersFreeAdapter freeAdapter;
 
     public NearbyUsersFragment() {
         // Required empty public constructor
@@ -66,16 +69,32 @@ public class NearbyUsersFragment extends Fragment {
         //reference to views
         rvNearbyUsers = view.findViewById(R.id.rvNearbyUsers);
 
-        //Initialize the list of tweets and adapter
+        //Initialize the list of songs
         nearbyUsers = new ArrayList<>();
-        adapter = new NearbyUsersAdapter(nearbyUsers, getContext());
-
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvNearbyUsers.setLayoutManager(linearLayoutManager);
-        rvNearbyUsers.setAdapter(adapter);
 
-        ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
+        //check if account is premium
+        boolean premium = SpotifyDataManager.getProduct().equals("premium");
+
+        if (premium){
+            //Initialize the adapter
+            adapter = new NearbyUsersAdapter(nearbyUsers, getContext());
+
+            //setup the adapter
+            rvNearbyUsers.setAdapter(adapter);
+
+            ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
+        }else{
+            //Initialize the adapter
+            freeAdapter = new NearbyUsersFreeAdapter(nearbyUsers, getContext());
+
+            //setup the adapter
+            rvNearbyUsers.setAdapter(freeAdapter);
+
+            ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
+        }
     }
 
     @Override

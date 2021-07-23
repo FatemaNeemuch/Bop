@@ -71,9 +71,11 @@ public class SearchFragment extends Fragment {
         //reference to views
         rvSongs = view.findViewById(R.id.rvSongs);
 
+        boolean premium = SpotifyDataManager.getProduct().equals("premium");
+
         //Initialize the list of tweets and adapter
         songs = new ArrayList<>();
-        adapter = new SongAdapter(songs, getContext());
+        adapter = new SongAdapter(songs, getContext(), premium);
 
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

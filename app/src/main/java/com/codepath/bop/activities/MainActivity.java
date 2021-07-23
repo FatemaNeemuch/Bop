@@ -42,51 +42,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         mAccessToken = SplashActivity.getmAccessToken();
-        Log.i(TAG, "access token: " + mAccessToken);
         bottomNavigationView();
-
-//        authenticateSpotify();
-
-
     }
-
-    private void authenticateSpotify() {
-        //build request with correct scopes
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-        builder.setScopes(new String[]{SCOPES});
-        AuthenticationRequest request = builder.build();
-        AuthenticationClient.openLoginActivity(MainActivity.this, REQUEST_CODE, request);
-    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-//        super.onActivityResult(requestCode, resultCode, intent);
-//
-//        // Check if result comes from the correct activity
-//        if (requestCode == REQUEST_CODE) {
-//            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-//
-//            switch (response.getType()) {
-//                // Response was successful and contains auth token
-//                case TOKEN:
-//                    //need token for any call
-//                    mAccessToken = response.getAccessToken();
-//                    //go to correct view that was clicked on
-//                    bottomNavigationView();
-//                    break;
-//
-//                // Auth flow returned an error
-//                case ERROR:
-//                    Log.i(TAG, "error when getting response");
-//                    break;
-//
-//                // Most likely auth flow was cancelled
-//                default:
-//                    Log.i(TAG, "auth flow was cancelled");
-//                    // Handle other cases
-//            }
-//        }
-//    }
 
     public void bottomNavigationView(){
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {

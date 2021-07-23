@@ -98,8 +98,6 @@ public class SignUpDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 password = etPasswordSignUp.getText().toString();
                 confirmPassword = etConfirmPasswordSignUp.getText().toString();
-                Log.i(TAG, "password: " + password);
-                Log.i(TAG, "password: " + confirmPassword);
                 if (samePassword() && notEmpty()){
                     saveNewUser();
                 }else{

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.adapters.NearbyUsersAdapter;
+import com.codepath.bop.adapters.NearbyUsersFreeAdapter;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
@@ -28,6 +29,7 @@ public class ParseDatabaseManager {
     //instance variables
     private static List<ParseUser> staticNearbyUsers;
     private static NearbyUsersAdapter staticAdapter;
+    private static NearbyUsersFreeAdapter staticFreeAdapter;
 
     public static void queryNearbyUsers(List<ParseUser> nearbyUsers, NearbyUsersAdapter adapter){
         staticNearbyUsers = nearbyUsers;
@@ -61,6 +63,41 @@ public class ParseDatabaseManager {
                         public void run() {
                             //Update UI
                             staticAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    Log.e(TAG, "error getting nearby users", e);
+                    return;
+                }
+            }
+        });
+        ParseQuery.clearAllCachedResults();
+    }
+
+    public static void queryNearbyUsersFree(List<ParseUser> nearbyUsers, NearbyUsersFreeAdapter freeAdapter) {
+        staticNearbyUsers = nearbyUsers;
+        staticFreeAdapter = freeAdapter;
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.include(User.KEY_CURRENT_SONG);
+        query.whereNear("location", LoginActivity.getCurrentUserLocation());
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override  public void done(List<ParseUser> nearUsers, ParseException e) {
+                if (e == null) {
+                    // avoiding null pointer
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    // set the closestUser to the one that isn't the current user
+                    for(int i = 0; i < nearUsers.size(); i++) {
+                        if (!nearUsers.get(i).getObjectId().equals(currentUser.getObjectId()) && nearUsers.get(i).get(User.KEY_CURRENT_SONG) != null) {
+                            staticNearbyUsers.add(nearUsers.get(i));
+                        }
+                    }
+                    //update the views on the main thread in a static method
+                    Handler mainHandler = new Handler(Looper.getMainLooper());
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Update UI
+                            staticFreeAdapter.notifyDataSetChanged();
                         }
                     });
                 } else {

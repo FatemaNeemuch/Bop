@@ -1,10 +1,13 @@
 package com.codepath.bop.managers;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
 import com.codepath.bop.activities.LoginActivity;
+import com.codepath.bop.activities.SplashActivity;
 import com.codepath.bop.adapters.ProfileAdapter;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.models.Playlist;
@@ -48,7 +51,7 @@ public class SpotifyDataManager {
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
     private static Call mCall;
 
-    public static void getUserProfile(String url, String mAccessToken) {
+    public static void getUserProfile(String url, String mAccessToken, Context context) {
         //build request
         final Request request = new Request.Builder()
                 .url(url)
@@ -81,6 +84,10 @@ public class SpotifyDataManager {
                     displayName = jsonObjectUser.getString("display_name");
                     email = jsonObjectUser.getString("email");
                     product = jsonObjectUser.getString("product");
+                    Log.i(TAG, "product " + product);
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+                    ((SplashActivity) context).finish();
                 } catch (JSONException e) {
                     Log.e(TAG, "UserProfile Failed to parse data: " + e);
                 }

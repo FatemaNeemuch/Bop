@@ -78,9 +78,12 @@ public class BrowseFragment extends Fragment {
         //reference to views
         rvSongs = view.findViewById(R.id.rvSongs);
 
-        //Initialize the list of tweets and adapter
+        //check if account is premium
+        boolean premium = SpotifyDataManager.getProduct().equals("premium");
+
+        //Initialize the list of songs and adapter
         songs = new ArrayList<>();
-        adapter = new SongAdapter(songs, getContext());
+        adapter = new SongAdapter(songs, getContext(), premium);
 
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -89,9 +92,6 @@ public class BrowseFragment extends Fragment {
 
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
-
-//        //get user profile information
-//        SpotifyDataManager.getUserProfile("https://api.spotify.com/v1/me", mAccessToken);
 
         //get top hits from SpotifyDataManager
         SpotifyDataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
