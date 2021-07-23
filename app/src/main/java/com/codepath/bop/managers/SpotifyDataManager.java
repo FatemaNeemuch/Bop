@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.bumptech.glide.RequestBuilder;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.SplashActivity;
 import com.codepath.bop.adapters.ProfileAdapter;
@@ -28,9 +29,12 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SpotifyDataManager {
@@ -93,6 +97,10 @@ public class SpotifyDataManager {
                 }
             }
         });
+    }
+
+    public static String getUserID(){
+        return userID;
     }
 
     public static String getProduct(){
@@ -247,17 +255,55 @@ public class SpotifyDataManager {
         });
     }
 
+    public static void createDefaultPlaylist(String url, String mAccessToken, String username) {
+        //build body
+        final RequestBody formBody = new FormBody.Builder()
+                .add("name", username  + "'s Favs")
+                .build();
+
+        //String json = "{\"name\":\"Favs\"}";
+        String json = "{\"name\":\"" + username + "'s Favs\"}";
+        RequestBody body = RequestBody.create(
+                MediaType.parse("application/json"), json);
+
+        //build request
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .addHeader("Authorization", "Bearer " + mAccessToken)
+                .build();
+
+        //make the call
+        mCall = mOkHttpClient.newCall(request);
+
+        //asynch call enqueued
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "onFailure" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    final JSONObject jsonObjectFavs = new JSONObject(response.body().string());
+                    Log.i(TAG, "successfully added playlist");
+                } catch (JSONException e) {
+                    Log.e(TAG, "postPlaylist Failed to parse data: " + e);
+                }
+            }
+        });
+    }
+
     public static List<Playlist> fromUserPlaylists(JSONArray jsonArray) throws JSONException {
         //jsonArray is "items
         List<Playlist> playlists = new ArrayList<>();
         Log.i(TAG, "json Array length: " + jsonArray.length());
         //make playlist objects and add them to playlist list
         for (int i = 0; i < jsonArray.length(); i++) {
-            Log.i(TAG, "inside for loop");
             //only get the playlist if the current user is a/the owner
             if (jsonArray.getJSONObject(i).getJSONObject("owner").getString("id").equals(userID)){
                 playlists.add(Playlist.fromAPI(jsonArray.getJSONObject(i)));
-                Log.i(TAG, "playlist added");
             }
         }
         Log.i(TAG, "filtered playlist length: " + playlists.size());

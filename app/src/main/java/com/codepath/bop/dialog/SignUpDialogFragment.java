@@ -24,10 +24,14 @@ import androidx.fragment.app.DialogFragment;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
+import com.codepath.bop.activities.SplashActivity;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import okhttp3.HttpUrl;
 
 public class SignUpDialogFragment extends DialogFragment {
 
@@ -125,11 +129,14 @@ public class SignUpDialogFragment extends DialogFragment {
                 // Create the ParseUser
                 ParseUser user = new ParseUser();
                 // Set core properties
-                user.setUsername(etUsernameSignUp.getText().toString());
+                String username = etUsernameSignUp.getText().toString();
+                user.setUsername(username);
                 user.setPassword(etPasswordSignUp.getText().toString());
                 //set additional properties
                 user.put("fullName", etFullNameSignUp.getText().toString());
                 user.put("location", userLocation);
+//                user.put("userID", SpotifyDataManager.getUserID());
+//                user.put("userURI", SpotifyDataManager.getUserURI());
                 // Invoke signUpInBackground
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
@@ -138,15 +145,13 @@ public class SignUpDialogFragment extends DialogFragment {
                             Log.e(TAG, "issue with sign up", e);
                             Toast.makeText(getContext(), getString(R.string.invalid_sign_up), Toast.LENGTH_SHORT).show();
                             return;
-                        } else {
-                            //if new account created, call gotoMainActivity
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
-                            //finish intent so that going to previous screen after logging in closes
-                            // the app instead of going back to log in screen
-                            getActivity().finish();
-                            Toast.makeText(getContext(), getString(R.string.signed_up), Toast.LENGTH_SHORT).show();
                         }
+                        //create url for posting a playlist
+                        String url = "https://api.spotify.com/v1/users/" + SpotifyDataManager.getUserID() + "/playlists";
+                        SpotifyDataManager.createDefaultPlaylist(url, SplashActivity.getmAccessToken(), username);
+                        //if new account created, call gotoMainActivity
+                        gotoMainActivity();
+                        Toast.makeText(getContext(), getString(R.string.signed_up), Toast.LENGTH_SHORT).show();
                     }
                 });
             }else{
@@ -182,6 +187,14 @@ public class SignUpDialogFragment extends DialogFragment {
                 saveNewUser();
                 break;
         }
+    }
+
+    private void gotoMainActivity(){
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+        //finish intent so that going to previous screen after logging in closes
+        // the app instead of going back to log in screen
+        getActivity().finish();
     }
 
     private boolean samePassword(){

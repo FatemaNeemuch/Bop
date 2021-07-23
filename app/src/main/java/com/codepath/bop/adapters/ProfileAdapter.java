@@ -66,7 +66,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         }
 
         public void bind(Playlist playlist) {
-            Log.i(TAG, "Playlist Object: " + playlist.getName());
             //get playlist name and cover from Spotify API
             tvPlaylistName.setText(playlist.getName());
             if (playlist.getCoverURL().equals("")){
