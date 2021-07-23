@@ -40,13 +40,14 @@
             android:id="@+id/tvPlaylistName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/playlist_name"
             android:layout_below="@+id/ivPlaylistCover"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:hint="@string/playlist_name"
+            android:inputType="textMultiLine"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     </RelativeLayout>
 

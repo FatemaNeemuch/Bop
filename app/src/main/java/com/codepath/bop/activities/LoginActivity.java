@@ -20,12 +20,16 @@ import android.widget.Toast;
 
 import com.codepath.bop.R;
 import com.codepath.bop.fragments.SignUpDialogFragment;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import org.w3c.dom.Text;
 
@@ -34,6 +38,11 @@ public class LoginActivity extends AppCompatActivity {
     //class constants
     public static final String TAG = "LoginActivity";
     private static final int REQUEST_LOCATION = 1;
+    private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
+    private static final String REDIRECT_URI = "com.codepath.bop://callback";
+    private static final int REQUEST_CODE = 873;
+    private static final String SCOPES = "user-read-recently-played,user-library-modify,user-read-email,user-read-private,streaming,playlist-read-private,user-top-read";
+
 
     //instance variables
     private EditText etUsername;
@@ -41,11 +50,14 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView tvSignUp;
     private LocationManager locationManager;
+    private static String mAccessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+//        authenticateSpotify();
 
         //if user is already logged in, stay logged in (persistence)
         if(ParseUser.getCurrentUser() != null){
@@ -111,12 +123,6 @@ public class LoginActivity extends AppCompatActivity {
                     goToMainActivity();
                     Toast.makeText(LoginActivity.this, getString(R.string.logged_in), Toast.LENGTH_SHORT).show();
                 }
-//                //save the user location to Parse
-//                boolean saved = saveCurrentUserLocation();
-//                if (saved){
-//                    //check if the user has a Spotify account
-//                    boolean correctAccount = SpotifyDataManager.confirmUserSpotify("https://api.spotify.com/v1/me", userEmail);
-//                }
             }
         });
     }
@@ -190,13 +196,46 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-//    //method that makes an intent to go to MainActivity
-//    public static void goToMainActivity() {
-//        Intent intent = new Intent(context, MainActivity.class);
-//        context.startActivity(intent);
-//        //finish intent so that going to previous screen after logging in closes
-//        // the app instead of going back to log in screen
-//        context.finish();
-//    }
+    private void authenticateSpotify() {
+        //build request with correct scopes
+        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+        builder.setScopes(new String[]{SCOPES});
+        AuthenticationRequest request = builder.build();
+        AuthenticationClient.openLoginActivity(LoginActivity.this, REQUEST_CODE, request);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        // Check if result comes from the correct activity
+        if (requestCode == REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+
+            switch (response.getType()) {
+                // Response was successful and contains auth token
+                case TOKEN:
+                    //need token for any call
+                    mAccessToken = response.getAccessToken();
+//                    //get User profile information
+//                    SpotifyDataManager.getUserProfile("https://api.spotify.com/v1/me", mAccessToken);
+                    break;
+
+                // Auth flow returned an error
+                case ERROR:
+                    Log.i(TAG, "error when getting response");
+                    break;
+
+                // Most likely auth flow was cancelled
+                default:
+                    Log.i(TAG, "auth flow was cancelled");
+                    // Handle other cases
+            }
+        }
+    }
+
+    public static String getmAccessToken() {
+        return mAccessToken;
+    }
 
 }

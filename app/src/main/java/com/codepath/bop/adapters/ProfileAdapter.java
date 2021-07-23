@@ -50,7 +50,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "Playlist size is " + playlists.size());
         return playlists.size();
     }
 

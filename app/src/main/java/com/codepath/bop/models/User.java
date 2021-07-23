@@ -22,6 +22,7 @@ public class User extends ParseObject {
     public static final String KEY_FULL_NAME = "fullName";
     public static final String KEY_LOCATION = "location";
     public static final String KEY_PROFILE_PIC_FILE = "profilePicFile";
+    public static final String KEY_USER_URI = "userURI";
 
 
     //instance variables
@@ -31,6 +32,7 @@ public class User extends ParseObject {
     private static Song currentSong;
     private String fullName;
     private static ParseFile profilePicFile;
+    private static String userURI;
 
     public User() {}
 
@@ -86,6 +88,17 @@ public class User extends ParseObject {
             currentUser.put(KEY_PROFILE_PIC_FILE, pic);
             currentUser.saveInBackground();
             Log.i("User", "profilePic saved");
+        }
+    }
+
+    public static void setUserURI(String uri){
+        userURI = uri;
+        //check save ParseFile code written here
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null){
+            currentUser.put(KEY_USER_URI, uri);
+            currentUser.saveInBackground();
+            Log.i("User", "userURI saved");
         }
     }
 

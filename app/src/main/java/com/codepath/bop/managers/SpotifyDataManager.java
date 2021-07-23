@@ -41,43 +41,12 @@ public class SpotifyDataManager {
     private static String staticMAccessToken;
     private static String userID;
     private static String profilePic;
+    private static String userURI;
+    private static String displayName;
+    private static String email;
+    private static String product;
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
     private static Call mCall;
-
-//    public static void confirmUserSpotify(String url, String userEmail, String mAccessToken){
-//
-//        staticMAccessToken = mAccessToken;
-//
-//        //build request
-//        final Request request = new Request.Builder()
-//                .url(url)
-//                .addHeader("Authorization", "Bearer " + staticMAccessToken)
-//                .build();
-//
-//        //make call
-//        mCall = mOkHttpClient.newCall(request);
-//
-//        //asynch call enqueued
-//        mCall.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.i(TAG, "onFailure" + e.getMessage());
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                try {
-//                    final JSONObject jsonObjectUser = new JSONObject(response.body().string());
-//                    if (jsonObjectUser.getString("email").equals(userEmail)){
-//                        //if valid username and password, call gotoMainActivity
-//                        LoginActivity.goToMainActivity();
-//                    }
-//                } catch (JSONException e) {
-//                    Log.i(TAG, "Confirm Spotify Failed to parse data: " + e);
-//                }
-//            }
-//        });
-//    }
 
     public static void getUserProfile(String url, String mAccessToken) {
         //build request
@@ -99,20 +68,40 @@ public class SpotifyDataManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    //Log.i(TAG, "onResponse: " + response.body().string());
                     final JSONObject jsonObjectUser = new JSONObject(response.body().string());
-                    Log.i(TAG, "got jsonObject");
                     //get UserID
                     userID = jsonObjectUser.getString("id");
-                    profilePic = "";
+                    //get profile pic url if there is a profile pic
+                    profilePic = ".";
                     if (jsonObjectUser.getJSONArray("images").length() >= 1){
                         profilePic = jsonObjectUser.getJSONArray("images").getJSONObject(0).getString("url");
                     }
+                    Log.i(TAG, "profile pic from JSON Object " + profilePic);
+                    userURI = jsonObjectUser.getString("uri");
+                    displayName = jsonObjectUser.getString("display_name");
+                    email = jsonObjectUser.getString("email");
+                    product = jsonObjectUser.getString("product");
                 } catch (JSONException e) {
-                    Log.i(TAG, "UserProfile Failed to parse data: " + e);
+                    Log.e(TAG, "UserProfile Failed to parse data: " + e);
                 }
             }
         });
+    }
+
+    public static String getProduct(){
+        return product;
+    }
+
+    public static String getDisplayName() {
+        return displayName;
+    }
+
+    public static String getEmail() {
+        return email;
+    }
+
+    public static String getUserURI(){
+        return userURI;
     }
 
     public static String getProfilePicURl(){
@@ -148,7 +137,7 @@ public class SpotifyDataManager {
                     final JSONObject jsonObjectHits = new JSONObject(response.body().string());
                     //parse data to get song objects and add them to staticSongs list
                     staticSongs.addAll(fromTopHits(jsonObjectHits.getJSONArray("items")));
-                    Log.i(TAG, "onResponse " + jsonObjectHits.toString());
+                    Log.i(TAG, "onResponse getTopHits");
                     //update the views on the main thread in a static method
                     Handler mainHandler = new Handler(Looper.getMainLooper());
                     mainHandler.post(new Runnable() {

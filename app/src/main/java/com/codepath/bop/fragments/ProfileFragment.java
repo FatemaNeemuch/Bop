@@ -97,17 +97,22 @@ public class ProfileFragment extends Fragment {
 
         //THIS WILL CAUSE AN ISSUE WHEN USER WANTS TO SAVE PROFILE PIC BECAUSE SPOTIFY PIC WILL
         //STILL HAVE A URL SO IT WON'T GET THE PICTURE THE USER TOOK FROM PARSE
-        if (SpotifyDataManager.getProfilePicURl().equals("")){
+        if (SpotifyDataManager.getProfilePicURl().equals(".")){
+            //use generic profile pic saved on parse if no Spotify profile picture
             Glide.with(getContext())
                     .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC_FILE).getUrl())
                     .circleCrop()
                     .into(ivProfilePic);
         }else{
+            //use Spotify profile picture if available
             Glide.with(getContext())
                     .load(SpotifyDataManager.getProfilePicURl())
                     .circleCrop()
                     .into(ivProfilePic);
         }
+
+        //AMEND CODE WHEN IMPLEMENTING OPTIONAL FEATURE OF USER CHANGING PROFILE PICTURE
+
 //        Glide.with(getContext())
 //                .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC_FILE).getUrl())
 //                .circleCrop()
@@ -123,11 +128,13 @@ public class ProfileFragment extends Fragment {
 
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
+
         //create url for user playlists query
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.spotify.com/v1/me/playlists").newBuilder();
         urlBuilder.addQueryParameter("limit", String.valueOf(50));
         String playlistUrl = urlBuilder.build().toString();
         Log.i(TAG, "Playlist URL: " + playlistUrl);
+
         //get user's playlists from SpotifyDataManager
         SpotifyDataManager.getPlaylists("https://api.spotify.com/v1/me/playlists?limit=50", mAccessToken, playlists, adapter);
 
