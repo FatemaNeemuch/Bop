@@ -1,4 +1,4 @@
-package com.codepath.bop.fragments;
+package com.codepath.bop.dialog;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;

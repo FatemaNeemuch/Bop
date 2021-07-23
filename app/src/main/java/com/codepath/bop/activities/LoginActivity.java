@@ -19,19 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.bop.R;
-import com.codepath.bop.fragments.SignUpDialogFragment;
-import com.codepath.bop.managers.SpotifyDataManager;
+import com.codepath.bop.dialog.SignUpDialogFragment;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
-
-import org.w3c.dom.Text;
 
 public class LoginActivity extends AppCompatActivity {
 
