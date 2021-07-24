@@ -28,5 +28,7 @@
     <string name="account">Account</string>
     <string name="profile_greeting">Hi Fatema!</string>
     <string name="edit_profile">Edit Profile</string>
-    <string name="playlist_name">Study Music</string>
+    <string name="playlist_name_example">Study Music</string>
+    <string name="playlist_name">Playlist Name</string>
+    <string name="create_playlist">Create Playlist</string>
 </resources>

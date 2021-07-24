@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,8 @@ import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.ProfileAdapter;
+import com.codepath.bop.dialog.CreateNewPlaylistDialogFragment;
+import com.codepath.bop.dialog.SignUpDialogFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.User;
@@ -41,8 +44,8 @@ public class ProfileFragment extends Fragment {
 
     //instance variables
     private RecyclerView rvPlaylists;
-    private ProfileAdapter adapter;
-    private List<Playlist> playlists; //figure out if you should post Playlist to spotify or upload to Parse
+    private static ProfileAdapter adapter;
+    private static List<Playlist> playlists; //figure out if you should post Playlist to spotify or upload to Parse
     private TextView tvUsernameProfile;
     private ImageView ivProfilePic;
     private Button btnEditProfile;
@@ -130,15 +133,17 @@ public class ProfileFragment extends Fragment {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
+        getPlaylists(false, null);
+    }
+
+    public static void getPlaylists(boolean fromCreatePlaylist, CreateNewPlaylistDialogFragment createNewPlaylistDialogFragment){
         //create url for user playlists query
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.spotify.com/v1/me/playlists").newBuilder();
         urlBuilder.addQueryParameter("limit", String.valueOf(50));
         String playlistUrl = urlBuilder.build().toString();
-        Log.i(TAG, "Playlist URL: " + playlistUrl);
 
         //get user's playlists from SpotifyDataManager
-        SpotifyDataManager.getPlaylists("https://api.spotify.com/v1/me/playlists?limit=50", mAccessToken, playlists, adapter);
-
+        SpotifyDataManager.getPlaylists("https://api.spotify.com/v1/me/playlists?limit=50", mAccessToken, playlists, adapter, fromCreatePlaylist, createNewPlaylistDialogFragment);
     }
 
     @Override
@@ -158,8 +163,14 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
         }else if (item.getItemId() == R.id.btnAddPlaylist){
-            //add code here to post playlist to Spotify
+            showCreateNewPlaylistDialog();
         }
         return true;
+    }
+
+    private void showCreateNewPlaylistDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        CreateNewPlaylistDialogFragment createNewPlaylistDialogFragment = CreateNewPlaylistDialogFragment.newInstance("Create New Playlist");
+        createNewPlaylistDialogFragment.show(fm, "fragment_create_new_playlist");
     }
 }

@@ -92,8 +92,7 @@ public class SignUpDialogFragment extends DialogFragment {
         btnCancelSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                dismiss();
             }
         });
 
@@ -148,6 +147,7 @@ public class SignUpDialogFragment extends DialogFragment {
                         }
                         //create url for posting a playlist
                         String url = "https://api.spotify.com/v1/users/" + SpotifyDataManager.getUserID() + "/playlists";
+                        //make call to create default playlist at sign up
                         SpotifyDataManager.createDefaultPlaylist(url, SplashActivity.getmAccessToken(), username);
                         //if new account created, call gotoMainActivity
                         gotoMainActivity();

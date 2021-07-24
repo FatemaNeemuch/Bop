@@ -45,7 +45,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:fontFamily="sans-serif-smallcaps"
-            android:hint="@string/playlist_name"
+            android:hint="@string/playlist_name_example"
             android:inputType="textMultiLine"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
