@@ -56,8 +56,17 @@ public class LoginActivity extends AppCompatActivity {
 
         //if user is already logged in, stay logged in (persistence)
         if(ParseUser.getCurrentUser() != null){
-            saveCurrentUserLocation();
-            goToMainActivity();
+            if (correctAccount()){
+                saveCurrentUserLocation();
+                goToMainActivity();
+            }else{
+                onStop();
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+                //go back to login page
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
         }
 
         //reference to views
@@ -84,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -102,16 +112,30 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 Log.i(TAG, "done user: " + user.getUsername() + ", currentUser: " + ParseUser.getCurrentUser().getUsername());
-                //save the user location to Parse
-                boolean saved = saveCurrentUserLocation();
-                //only go to main activity if location successfully saved
-                if (saved){
-                    //if valid username and password, call gotoMainActivity
-                    goToMainActivity();
-                    Toast.makeText(LoginActivity.this, getString(R.string.logged_in), Toast.LENGTH_SHORT).show();
+                //check if correct Spotify account
+                boolean correctAccount = correctAccount();
+                //only move forward if correct spotify account
+                if (correctAccount){
+                    //save the user location to Parse
+                    boolean saved = saveCurrentUserLocation();
+                    //only go to main activity if location successfully saved
+                    if (saved){
+                        //if valid username and password, call gotoMainActivity
+                        goToMainActivity();
+                        Toast.makeText(LoginActivity.this, getString(R.string.logged_in), Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(LoginActivity.this, getString(R.string.wrong_spotify_account), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private boolean correctAccount() {
+        if (ParseUser.getCurrentUser().getString("userURI").equals(SpotifyDataManager.getUserURI())){
+            return true;
+        }
+        return false;
     }
 
     private boolean saveCurrentUserLocation() {

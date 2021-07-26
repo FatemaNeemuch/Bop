@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
+import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.fragments.BrowseFragment;
 import com.codepath.bop.models.Song;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -111,7 +112,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                             //update variable
                             playing = true;
                             //play song from spotify
-                            mSpotifyAppRemote = BrowseFragment.getmSpotifyAppRemote();
+                            mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
                             mSpotifyAppRemote.getPlayerApi().play(song.getSongURI());
                             // Subscribe to PlayerState
                             mSpotifyAppRemote.getPlayerApi()

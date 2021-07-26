@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
+import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.fragments.BrowseFragment;
 import com.codepath.bop.fragments.NearbyUsersFragment;
 import com.codepath.bop.models.Song;
@@ -127,7 +128,7 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
                         //update variable
                         playing = true;
                         //play song from spotify
-                        mSpotifyAppRemote = NearbyUsersFragment.getmSpotifyAppRemote();
+                        mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
                         mSpotifyAppRemote.getPlayerApi().play(pUserSong.getKEY_SONG_URI());
                         // Subscribe to PlayerState
                         mSpotifyAppRemote.getPlayerApi()
