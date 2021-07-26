@@ -1,7 +1,9 @@
 package com.codepath.bop.models;
 
+import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.gson.annotations.SerializedName;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -9,9 +11,11 @@ import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 @ParseClassName("Song")
-public class Song extends ParseObject {
+@Parcel(analyze = Song.class)
+public class Song extends ParseObject implements Parcelable {
 
     //class constants
     public static final String TAG = "Song Model";
@@ -25,16 +29,76 @@ public class Song extends ParseObject {
     public static final String KEY_IS_CURRENT_SONG = "isCurrentSong";
 
     //instance variables
-    private String songURI;
-    private String title;
-    private String album;
-    private String artist;
-    private String releaseDate;
-    private String coverURL;
-    private String albumType;
-    private boolean isCurrentSong;
+    @SerializedName("song_song_uri")
+    String songURI;
+    @SerializedName("song_song_title")
+    String title;
+    @SerializedName("song_song_album")
+    String album;
+    @SerializedName("song_song_artist")
+    String artist;
+    @SerializedName("song_song_release_date")
+    String releaseDate;
+    @SerializedName("song_song_cover_url")
+    String coverURL;
+    @SerializedName("song_song_album_type")
+    String albumType;
+    @SerializedName("song_song_is_current_song")
+    boolean isCurrentSong;
 
     public Song() {}
+
+    public Song(String songURI, String title, String album, String artist, String releaseDate, String coverURL, String albumType, boolean isCurrentSong){
+        this.songURI = songURI;
+        this.title = title;
+        this.album = album;
+        this.artist = artist;
+        this.releaseDate = releaseDate;
+        this.coverURL = coverURL;
+        this.albumType = albumType;
+        this.isCurrentSong = isCurrentSong;
+    }
+
+    protected Song(android.os.Parcel in) {
+        songURI = in.readString();
+        title = in.readString();
+        album = in.readString();
+        artist = in.readString();
+        releaseDate = in.readString();
+        coverURL = in.readString();
+        albumType = in.readString();
+        isCurrentSong = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(songURI);
+        dest.writeString(title);
+        dest.writeString(album);
+        dest.writeString(artist);
+        dest.writeString(releaseDate);
+        dest.writeString(coverURL);
+        dest.writeString(albumType);
+        dest.writeByte((byte) (isCurrentSong ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(android.os.Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     public static Song fromAPI(JSONObject jsonObject) throws JSONException {
         Song song = new Song();
@@ -52,6 +116,7 @@ public class Song extends ParseObject {
             song.coverURL = jsonObject.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url");
             song.releaseDate = jsonObject.getJSONObject("album").getString("release_date");
             song.songURI = jsonObject.getString("uri");
+            song.isCurrentSong = false;
         return song;
     }
 

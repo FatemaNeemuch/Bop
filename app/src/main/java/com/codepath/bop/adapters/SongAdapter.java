@@ -1,12 +1,14 @@
 package com.codepath.bop.adapters;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,13 +61,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         return songs.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         //instance variables
         private TextView tvSongTitle;
         private TextView tvArtistName;
         private ImageView ivCover;
         private ImageView ivPlayButton;
+        private boolean isDoubleClicked;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -129,6 +132,38 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                     }
                 });
             }
+
+            //Double click post to like:
+            isDoubleClicked=false;
+
+            Handler handler=new Handler();
+            Runnable r=new Runnable(){
+                @Override
+                public void run(){
+                    //Actions when Single Clicked
+                    isDoubleClicked = false;
+                }
+            };
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isDoubleClicked){
+                        //actions when double clicked
+                        //add song to favs playlist
+                        Toast.makeText(context, "Double clicked if", Toast.LENGTH_SHORT).show();
+                        //optional: delete songs from playlist
+                        isDoubleClicked = false;
+                        //remove callbacks for Handlers
+                        handler.removeCallbacks(r);
+                    }else{
+                        //Toast.makeText(context, "Double clicked else", Toast.LENGTH_SHORT).show();
+                        //single click I think
+                        isDoubleClicked=true;
+                        handler.postDelayed(r,500);
+                    }
+                }
+            });
         }
     }
 }

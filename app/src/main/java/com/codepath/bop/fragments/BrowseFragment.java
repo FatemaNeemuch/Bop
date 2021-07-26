@@ -96,10 +96,6 @@ public class BrowseFragment extends Fragment {
 
         //get top hits from SpotifyDataManager
         SpotifyDataManager.getTopHits(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
-
-//        //create url for posting a playlist
-//        String url = "https://api.spotify.com/v1/users/" + SpotifyDataManager.getUserID() + "/playlists";
-//        SpotifyDataManager.createDefaultPlaylist(url, SplashActivity.getmAccessToken(), ParseUser.getCurrentUser().getUsername());
     }
 
     @Override
