@@ -26,7 +26,6 @@ import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.ProfileAdapter;
 import com.codepath.bop.dialog.CreateNewPlaylistDialogFragment;
-import com.codepath.bop.dialog.SignUpDialogFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.User;

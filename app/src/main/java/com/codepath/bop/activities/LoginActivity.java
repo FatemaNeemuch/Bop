@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.bop.R;
-import com.codepath.bop.dialog.SignUpDialogFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
