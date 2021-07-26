@@ -81,19 +81,25 @@ public class SpotifyDataManager {
                     final JSONObject jsonObjectUser = new JSONObject(response.body().string());
                     //get UserID
                     userID = jsonObjectUser.getString("id");
+                    //get user URI
+                    userURI = jsonObjectUser.getString("uri");
                     //get profile pic url if there is a profile pic
                     profilePic = ".";
                     if (jsonObjectUser.getJSONArray("images").length() >= 1){
                         profilePic = jsonObjectUser.getJSONArray("images").getJSONObject(0).getString("url");
                     }
                     Log.i(TAG, "profile pic from JSON Object " + profilePic);
-                    userURI = jsonObjectUser.getString("uri");
+                    //get username
                     displayName = jsonObjectUser.getString("display_name");
+                    //get user email
                     email = jsonObjectUser.getString("email");
+                    //get whether the account is premium or free
                     product = jsonObjectUser.getString("product");
+                    //launch an intent to go to login activity after request is successful
                     Log.i(TAG, "product " + product);
                     Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
+                    //finish SplashActivity so user can swipe backwards to it
                     ((SplashActivity) context).finish();
                 } catch (JSONException e) {
                     Log.e(TAG, "UserProfile Failed to parse data: " + e);

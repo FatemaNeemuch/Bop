@@ -131,9 +131,12 @@ public class SignUpDialogFragment extends DialogFragment {
                 String username = etUsernameSignUp.getText().toString();
                 user.setUsername(username);
                 user.setPassword(etPasswordSignUp.getText().toString());
+                user.setEmail(SpotifyDataManager.getEmail());
                 //set additional properties
                 user.put("fullName", etFullNameSignUp.getText().toString());
                 user.put("location", userLocation);
+                user.put("userURI", SpotifyDataManager.getUserURI());
+                user.put("userID", SpotifyDataManager.getUserID());
 //                user.put("userID", SpotifyDataManager.getUserID());
 //                user.put("userURI", SpotifyDataManager.getUserURI());
                 // Invoke signUpInBackground
