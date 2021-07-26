@@ -3,27 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    tools:context=".activities.SignUpActivity">
 
 
     <ImageButton
         android:id="@+id/btnCancelSignUp"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="4dp"
+        android:layout_alignParentStart="true"
+        android:backgroundTint="@color/white"
         android:contentDescription="@string/cancelButtonDescription"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
 
     <EditText
         android:id="@+id/etFullNameSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginTop="150dp"
         android:layout_below="@+id/btnCancelSignUp"
-        android:layout_marginEnd="5dp"
         android:hint="@string/fullName"
         android:inputType="textPersonName"/>
 
@@ -32,8 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etFullNameSignUp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:hint="@string/username"
         android:inputType="text"/>
 
@@ -43,8 +41,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/etUsernameSignUp"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:hint="@string/password"
         android:inputType="textPassword" />
 
@@ -54,8 +50,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/etPasswordSignUp"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:hint="@string/confirm_password"
         android:inputType="textPassword" />
 
@@ -64,11 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etConfirmPasswordSignUp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:text="@string/you_must_allow_bop_access_to_your_location_while_using_app"/>
 
@@ -77,8 +68,6 @@
         android:layout_below="@+id/needLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:text="@string/sign_up"/>
 
 </RelativeLayout>

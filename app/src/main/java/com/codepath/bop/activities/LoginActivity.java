@@ -83,15 +83,10 @@ public class LoginActivity extends AppCompatActivity {
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSignUpDialog();
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
-    }
-
-    private void showSignUpDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        SignUpDialogFragment signUpDialogFragment = SignUpDialogFragment.newInstance("Sign Up Modal Overlay");
-        signUpDialogFragment.show(fm, "fragment_sign_up");
     }
 
     private void loginUser(String username, String password) {
