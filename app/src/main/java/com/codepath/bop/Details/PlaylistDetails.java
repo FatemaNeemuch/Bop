@@ -1,22 +1,29 @@
 package com.codepath.bop.Details;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
+import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
+import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 
@@ -119,5 +126,30 @@ public class PlaylistDetails extends AppCompatActivity {
 
         //get playlist songs from SpotifyDataManager
         SpotifyDataManager.getTracks("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks", playlistSongs, adapter, mAccessToken);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_playlist_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.PDLogout){
+            onStop();
+            ParseUser.logOut();
+            ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+            //go back to login page
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+//        else if (item.getItemId() == R.id.addSong){
+//            SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks",
+//                    MainActivity.getmAccessToken(), new Song());
+//        }
+        return super.onOptionsItemSelected(item);
     }
 }
