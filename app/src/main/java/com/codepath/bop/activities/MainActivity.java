@@ -59,10 +59,15 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bnSearch:
                         if(fragmentManager.findFragmentByTag("browse") != null) {
                             //if the fragment exists, show it.
-                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("browse")).commit();
+                            fragmentManager.beginTransaction()
+                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                    .show(fragmentManager.findFragmentByTag("browse"))
+                                    .commit();
                         } else {
                             //if the fragment does not exist, add it to fragment manager.
-                            fragmentManager.beginTransaction().add(R.id.flContainer, new BrowseFragment(), "browse").commit();
+                            fragmentManager.beginTransaction()
+                                    .add(R.id.flContainer, new BrowseFragment(), "browse")
+                                    .commit();
                         }
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
@@ -75,10 +80,15 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bnNearbyUsers:
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null) {
                             //if the fragment exists, show it.
-                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
+                            fragmentManager.beginTransaction()
+                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                    .show(fragmentManager.findFragmentByTag("nearbyUsers"))
+                                    .commit();
                         } else {
                             //if the fragment does not exist, add it to fragment manager.
-                            fragmentManager.beginTransaction().add(R.id.flContainer, new NearbyUsersFragment(), "nearbyUsers").commit();
+                            fragmentManager.beginTransaction()
+                                    .add(R.id.flContainer, new NearbyUsersFragment(), "nearbyUsers")
+                                    .commit();
                         }
                         //if the other fragments are visible, hide them.
                         if(fragmentManager.findFragmentByTag("browse") != null){
@@ -93,10 +103,15 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         if(fragmentManager.findFragmentByTag("profile") != null) {
                             //if the fragment exists, show it.
-                            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("profile")).commit();
+                            fragmentManager.beginTransaction()
+                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                    .show(fragmentManager.findFragmentByTag("profile"))
+                                    .commit();
                         } else {
                             //if the fragment does not exist, add it to fragment manager.
-                            fragmentManager.beginTransaction().add(R.id.flContainer, new ProfileFragment(), "profile").commit();
+                            fragmentManager.beginTransaction()
+                                    .add(R.id.flContainer, new ProfileFragment(), "profile")
+                                    .commit();
                         }
                         //if the other fragments are visible, hide them.
                         if(fragmentManager.findFragmentByTag("browse") != null){

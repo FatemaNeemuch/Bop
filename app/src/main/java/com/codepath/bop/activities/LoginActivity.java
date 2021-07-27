@@ -57,15 +57,13 @@ public class LoginActivity extends AppCompatActivity {
         //if user is already logged in, stay logged in (persistence)
         if(ParseUser.getCurrentUser() != null){
             if (correctAccount()){
-                saveCurrentUserLocation();
-                goToMainActivity();
+                if (saveCurrentUserLocation()){
+                    goToMainActivity();
+                }else{
+                    logout();
+                }
             }else{
-                onStop();
-                ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-                //go back to login page
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                logout();
             }
         }
 
@@ -205,5 +203,14 @@ public class LoginActivity extends AppCompatActivity {
         //finish intent so that going to previous screen after logging in closes
         // the app instead of going back to log in screen
         finish();
+    }
+
+    public void logout(){
+        onStop();
+        ParseUser.logOut();
+        ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+        //go back to login page
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }

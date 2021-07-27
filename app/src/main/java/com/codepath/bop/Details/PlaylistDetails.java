@@ -65,11 +65,6 @@ public class PlaylistDetails extends AppCompatActivity {
 //        playlist = getIntent().getParcelableExtra(Playlist.class.getSimpleName());
         playlist = getIntent().getExtras().getParcelable(Playlist.class.getSimpleName());
 
-        Log.i(TAG, "playlist object: " + playlist);
-        Log.i(TAG, "playlist name: " + playlist.getName());
-        Log.i(TAG, "playlist URI: " + playlist.getPlaylistURI());
-        Log.i(TAG, "playlist cover URL: " + playlist.getCoverURL());
-
         //set playlist name
         tvPlaylistNameDetails.setText(playlist.getName());
 
@@ -78,6 +73,7 @@ public class PlaylistDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
             }
         });
 

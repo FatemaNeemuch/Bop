@@ -2,6 +2,7 @@ package com.codepath.bop.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.bop.Details.PlaylistDetails;
 import com.codepath.bop.R;
+import com.codepath.bop.activities.MainActivity;
+import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.models.Playlist;
 
 import org.parceler.Parcels;
@@ -88,10 +91,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             if (position != RecyclerView.NO_POSITION) {
                 // get the playlist at the position, this won't work if the class is static
                 Playlist playlist = playlists.get(position);
-                Log.i(TAG, "Aplaylist object: " + playlist);
-                Log.i(TAG, "Aplaylist name: " + playlist.getName());
-                Log.i(TAG, "Aplaylist URI: " + playlist.getPlaylistURI());
-                Log.i(TAG, "Aplaylist cover URL: " + playlist.getCoverURL());
                 Bundle bundle1 = new Bundle();
                 bundle1.putParcelable(Playlist.class.getSimpleName(), playlist);
                 // create intent for the new activity
@@ -100,6 +99,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
                 intent.putExtras(bundle1);
                 // show the activity
                 context.startActivity(intent);
+                ((MainActivity) context).overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
             }
         }
     }

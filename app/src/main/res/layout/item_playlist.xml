@@ -34,7 +34,7 @@
             android:layout_height="160dp"
             android:layout_margin="15dp"
             android:contentDescription="@string/playlist"
-            android:src="@drawable/sample_record_image" />
+            android:src="@drawable/sample_record_image"/>
 
         <TextView
             android:id="@+id/tvPlaylistName"
