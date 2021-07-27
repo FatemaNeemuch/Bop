@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, getString(R.string.logged_in), Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    Toast.makeText(LoginActivity.this, getString(R.string.wrong_spotify_account), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.wrong_spotify_account) + " " +SpotifyDataManager.getDisplayName(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

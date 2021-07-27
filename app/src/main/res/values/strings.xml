@@ -31,7 +31,7 @@
     <string name="playlist_name_example">Study Music</string>
     <string name="playlist_name">Playlist Name</string>
     <string name="create_playlist">Create Playlist</string>
-    <string name="wrong_spotify_account">You are not logged into the correct Spotify Account</string>
+    <string name="wrong_spotify_account">Incorrect Spotify Account. The current Spotify account is: </string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
 </resources>

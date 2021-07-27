@@ -1,31 +1,24 @@
 package com.codepath.bop.Details;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
-import com.codepath.bop.adapters.PlaylistDetailsAdapter;
 import com.codepath.bop.adapters.SongAdapter;
-import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
