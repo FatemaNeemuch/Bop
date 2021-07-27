@@ -29,6 +29,9 @@ public class Playlist extends ParseObject implements Parcelable {
     String name;
     @SerializedName("playlist_cover")
     String coverURL;
+    @SerializedName("playlist_id")
+    String playlistID;
+    @SerializedName("playlist_songs")
     List<Song> songs;
     @SerializedName("playlist_URI")
     String playlistURI;
@@ -37,16 +40,19 @@ public class Playlist extends ParseObject implements Parcelable {
     public Playlist() {
     }
 
-    public Playlist(String name, String coverURL, String playlistURI){
+    public Playlist(String name, String coverURL, String playlistURI, String playlistID){
         this.name = name;
         this.coverURL = coverURL;
         this.playlistURI = playlistURI;
+        this.playlistID = playlistID;
+
     }
 
     protected Playlist(android.os.Parcel in) {
         name = in.readString();
         coverURL = in.readString();
         playlistURI = in.readString();
+        playlistID = in.readString();
     }
 
     @Override
@@ -54,6 +60,7 @@ public class Playlist extends ParseObject implements Parcelable {
         dest.writeString(name);
         dest.writeString(coverURL);
         dest.writeString(playlistURI);
+        dest.writeString(playlistID);
     }
 
     @Override
@@ -83,6 +90,7 @@ public class Playlist extends ParseObject implements Parcelable {
         }
 //        playlist.songs.addAll() - figure out this property; can just call a preexisting request
         playlist.playlistURI = jsonObject.getString("uri");
+        playlist.playlistID = jsonObject.getString("id");
         return playlist;
     }
 
@@ -100,6 +108,10 @@ public class Playlist extends ParseObject implements Parcelable {
 
     public String getCoverURL() {
         return coverURL;
+    }
+
+    public String getPlaylistID(){
+        return playlistID;
     }
 
 //    public List<Song> getSongs() {

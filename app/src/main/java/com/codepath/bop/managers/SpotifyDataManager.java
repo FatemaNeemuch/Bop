@@ -132,7 +132,7 @@ public class SpotifyDataManager {
         return profilePic;
     }
 
-    public static void getTopHits(String url, List<Song> songs, SongAdapter adapter, String mAccessToken) {
+    public static void getTracks(String url, List<Song> songs, SongAdapter adapter, String mAccessToken) {
 
         //instantiate instance variables
         staticSongs = songs;

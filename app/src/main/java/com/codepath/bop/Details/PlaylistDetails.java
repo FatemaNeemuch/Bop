@@ -17,7 +17,9 @@ import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.PlaylistDetailsAdapter;
+import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.fragments.ProfileFragment;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -36,13 +38,14 @@ public class PlaylistDetails extends AppCompatActivity {
     //instance variables
     private RecyclerView rvPlaylistSongs;
     private List<Song> playlistSongs;
-    private PlaylistDetailsAdapter adapter;
+    private SongAdapter adapter;
     private ImageButton ibBackPD;
     private TextView tvPlaylistNameDetails;
     private ImageButton ibPlayButtonPD;
     private Playlist playlist;
     private SpotifyAppRemote mSpotifyAppRemote;
     private boolean playing;
+    private static String mAccessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +58,10 @@ public class PlaylistDetails extends AppCompatActivity {
         tvPlaylistNameDetails = findViewById(R.id.tvPlaylistNameDetails);
         ibPlayButtonPD = findViewById(R.id.ibPlayButtonPD);
 
+        boolean premium = SpotifyDataManager.getProduct().equals("premium");
+
         playlistSongs = new ArrayList<>();
-        adapter = new PlaylistDetailsAdapter(playlistSongs, this);
+        adapter = new SongAdapter(playlistSongs, this, premium);
 
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -119,5 +124,11 @@ public class PlaylistDetails extends AppCompatActivity {
                 }
             }
         });
+
+        //get access token
+        mAccessToken = MainActivity.getmAccessToken();
+
+        //get playlist songs from SpotifyDataManager
+        SpotifyDataManager.getTracks("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks", playlistSongs, adapter, mAccessToken);
     }
 }
