@@ -17,7 +17,9 @@ import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.fragments.BrowseFragment;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Song;
+import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 
@@ -151,8 +153,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                     if (isDoubleClicked){
                         //actions when double clicked
                         //add song to favs playlist
-                        Toast.makeText(context, "Double clicked if", Toast.LENGTH_SHORT).show();
-                        //optional: delete songs from playlist
+                        SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + ParseUser.getCurrentUser().get("defaultPlaylistID") + "/tracks",
+                                MainActivity.getmAccessToken(), songs.get(getAdapterPosition()));
+                        Toast.makeText(context, context.getString(R.string.added_song) + " " + ParseUser.getCurrentUser().getUsername() + context.getString(R.string.default_favs), Toast.LENGTH_SHORT).show();
                         isDoubleClicked = false;
                         //remove callbacks for Handlers
                         handler.removeCallbacks(r);

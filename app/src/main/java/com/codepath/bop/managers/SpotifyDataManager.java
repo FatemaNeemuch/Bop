@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.bumptech.glide.RequestBuilder;
+import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.activities.SplashActivity;
@@ -55,6 +56,7 @@ public class SpotifyDataManager {
     private static String displayName;
     private static String email;
     private static String product;
+    private static String defaultID;
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
     private static Call mCall;
 
@@ -269,7 +271,6 @@ public class SpotifyDataManager {
     }
 
     public static void createDefaultPlaylist(String url, String mAccessToken, String username) {
-        //String json = "{\"name\":\"Favs\"}";
         String json = "{\"name\":\"" + username + "'s Favs\"}";
         RequestBody body = RequestBody.create(
                 MediaType.parse("application/json"), json);
@@ -295,12 +296,20 @@ public class SpotifyDataManager {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     final JSONObject jsonObjectFavs = new JSONObject(response.body().string());
+                    defaultID = jsonObjectFavs.getString("id");
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    currentUser.put("defaultPlaylistID", defaultID);
+                    currentUser.saveInBackground();
                     Log.i(TAG, "successfully added default playlist");
                 } catch (JSONException e) {
                     Log.e(TAG, "postPlaylist Failed to parse data: " + e);
                 }
             }
         });
+    }
+
+    public static String getDefaultID(){
+        return defaultID;
     }
 
     public static void createNewPlaylist(String url, String mAccessToken, String playlistName, Context context, CreateNewPlaylistDialogFragment createNewPlaylistDialogFragment) {
@@ -331,6 +340,44 @@ public class SpotifyDataManager {
                     final JSONObject jsonObjectNewPlaylist = new JSONObject(response.body().string());
                     ProfileFragment.getPlaylists(true, createNewPlaylistDialogFragment);
                     Log.i(TAG, "successfully added new playlist");
+                } catch (JSONException e) {
+                    Log.e(TAG, "postPlaylist Failed to parse data: " + e);
+                }
+            }
+        });
+    }
+
+    public static void addSong(String baseurl, String mAccessToken, Song song) {
+        RequestBody body = RequestBody
+                .create(MediaType.parse("application/json"), "");
+
+        //create url for search query
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(baseurl).newBuilder();
+        urlBuilder.addQueryParameter("uris", song.getSongURI());
+        String url = urlBuilder.build().toString();
+
+        //build request
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .addHeader("Authorization", "Bearer " + mAccessToken)
+                .build();
+
+        //make the call
+        mCall = mOkHttpClient.newCall(request);
+
+        //asynch call enqueued
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "onFailure" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    final JSONObject jsonObjectSong = new JSONObject(response.body().string());
+                    Log.i(TAG, "successfully added " + song.getTitle() + " to default playlist");
                 } catch (JSONException e) {
                     Log.e(TAG, "postPlaylist Failed to parse data: " + e);
                 }

@@ -133,6 +133,7 @@ public class ConfirmSpotifyDialogFragment extends DialogFragment {
                 // Set core properties
                 user.setUsername(SignUpActivity.getUsername());
                 user.setPassword(SignUpActivity.getPassword());
+                user.setEmail(SpotifyDataManager.getEmail());
                 //set additional properties
                 user.put("fullName", SignUpActivity.getFullName());
                 user.put("location", userLocation);

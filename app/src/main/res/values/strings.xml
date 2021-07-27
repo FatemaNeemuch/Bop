@@ -34,4 +34,6 @@
     <string name="wrong_spotify_account">Incorrect Spotify Account. The current Spotify account is: </string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+    <string name="added_song">Song Added to </string>
+    <string name="default_favs">\'s Favs</string>
 </resources>
