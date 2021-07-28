@@ -3,6 +3,7 @@ package com.codepath.bop.models;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.codepath.bop.Music;
 import com.google.gson.annotations.SerializedName;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -15,7 +16,7 @@ import org.parceler.Parcel;
 
 @ParseClassName("Song")
 @Parcel(analyze = Song.class)
-public class Song extends ParseObject implements Parcelable {
+public class Song extends ParseObject implements Parcelable, Music {
 
     //class constants
     public static final String TAG = "Song Model";
@@ -118,6 +119,11 @@ public class Song extends ParseObject implements Parcelable {
             song.songURI = jsonObject.getString("uri");
             song.isCurrentSong = false;
         return song;
+    }
+
+    @Override
+    public int getType() {
+        return Music.TYPE_SONG;
     }
 
     public static void saveSong(Song song){

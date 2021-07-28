@@ -7,8 +7,10 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.codepath.bop.Details.PlaylistDetails;
+import com.codepath.bop.Music;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.SplashActivity;
+import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.adapters.ProfileAdapter;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.dialog.CreateNewPlaylistDialogFragment;
@@ -41,7 +43,7 @@ public class SpotifyDataManager {
 
     //instance variables
     private static List<Song> staticSongs;
-    private static SongAdapter staticAdapter;
+    private static MusicAdapter staticAdapter;
     private static String staticMAccessToken;
     private static String userID;
     private static String profilePic;
@@ -127,7 +129,7 @@ public class SpotifyDataManager {
         return profilePic;
     }
 
-    public static void getTracks(String url, List<Song> songs, SongAdapter adapter, String mAccessToken, boolean isPlaylistDetails) {
+    public static void getTracks(String url, List<Song> songs, MusicAdapter adapter, String mAccessToken, boolean isPlaylistDetails) {
 
         //instantiate instance variables
         staticSongs = songs;
@@ -167,7 +169,8 @@ public class SpotifyDataManager {
                         @Override
                         public void run() {
                             //Update UI
-                            staticAdapter.notifyDataSetChanged();
+//                            staticAdapter.notifyDataSetChanged();
+                            staticAdapter.setMusicList(staticSongs);
                         }
                     });
                 } catch (JSONException e) {
@@ -177,7 +180,7 @@ public class SpotifyDataManager {
         });
     }
 
-    public static void SearchResults(String url, SongAdapter adapter){
+    public static void SearchResults(String url, MusicAdapter adapter){
 
         //build request
         final Request request = new Request.Builder()
@@ -211,7 +214,8 @@ public class SpotifyDataManager {
                         public void run() {
                             Log.i(TAG, "adpater updated");
                             //Update UI
-                            adapter.notifyDataSetChanged();
+//                            adapter.notifyDataSetChanged();
+                            adapter.setMusicList(staticSongs);
                         }
                     });
                 } catch (JSONException e) {

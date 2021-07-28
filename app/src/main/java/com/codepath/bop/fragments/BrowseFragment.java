@@ -18,7 +18,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.codepath.bop.Music;
 import com.codepath.bop.activities.SplashActivity;
+import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.EndlessRecyclerViewScrollListener;
 import com.codepath.bop.R;
@@ -45,11 +47,14 @@ public class BrowseFragment extends Fragment {
 
     //instance variables
     private static SpotifyAppRemote mSpotifyAppRemote;
-    private List<Song> songs;
+//    private List<Song> songs;
     private RecyclerView rvSongs;
-    private SongAdapter adapter;
+//    private SongAdapter adapter;
     private static String mAccessToken;
     private boolean premium;
+    private List<Song> musicItems;
+    private MusicAdapter musicAdapter;
+    private List<? extends Music> musicSearchResults;
     private String staticQuery;
     private EndlessRecyclerViewScrollListener scrollListener;
 //    private final FragmentManager fragmentManager = getChildFragmentManager();
@@ -84,19 +89,22 @@ public class BrowseFragment extends Fragment {
         premium = SpotifyDataManager.getProduct().equals("premium");
 
         //Initialize the list of songs and adapter
-        songs = new ArrayList<>();
-        adapter = new SongAdapter(songs, getContext(), premium);
+//        songs = new ArrayList<>();
+        musicItems = new ArrayList<>();
+//        adapter = new SongAdapter(songs, getContext(), premium);
+        musicAdapter = new MusicAdapter(musicItems, getContext());
 
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvSongs.setLayoutManager(linearLayoutManager);
-        rvSongs.setAdapter(adapter);
+//        rvSongs.setAdapter(adapter);
+        rvSongs.setAdapter(musicAdapter);
 
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
         //get top hits from SpotifyDataManager
-        SpotifyDataManager.getTracks(getString(R.string.topHitsURL), songs, adapter, mAccessToken, false);
+        SpotifyDataManager.getTracks(getString(R.string.topHitsURL), (List<Song>) musicItems, musicAdapter, mAccessToken, false);
     }
 
     @Override
@@ -133,9 +141,9 @@ public class BrowseFragment extends Fragment {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                songs.clear();
-                adapter.notifyDataSetChanged();
-                SpotifyDataManager.getTracks(getString(R.string.topHitsURL), songs, adapter, mAccessToken, false);
+                musicItems.clear();
+                musicAdapter.notifyDataSetChanged();
+                SpotifyDataManager.getTracks(getString(R.string.topHitsURL), (List<Song>) musicItems, musicAdapter, mAccessToken, false);
 //                songs.clear();
 //                adapter.notifyDataSetChanged();
 //                if (isAdded()){
@@ -157,13 +165,13 @@ public class BrowseFragment extends Fragment {
                 //create url for search query
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
                 urlBuilder.addQueryParameter("q", query);
-                urlBuilder.addQueryParameter("type", "track,artist,album");
-//                urlBuilder.addQueryParameter("type", "track");
+//                urlBuilder.addQueryParameter("type", "track,artist,album,playlist");
+                urlBuilder.addQueryParameter("type", "track,album");
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 String url = urlBuilder.build().toString();
 
                 //get search results from DataManager
-                SpotifyDataManager.SearchResults(url, adapter);
+                SpotifyDataManager.SearchResults(url, musicAdapter);
                 return true;
             }
 

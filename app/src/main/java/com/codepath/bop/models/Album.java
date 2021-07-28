@@ -1,4 +1,11 @@
 package com.codepath.bop.models;
 
-public class Album {
+import com.codepath.bop.Music;
+
+public class Album implements Music {
+
+    @Override
+    public int getType() {
+        return Music.TYPE_ALBUM;
+    }
 }

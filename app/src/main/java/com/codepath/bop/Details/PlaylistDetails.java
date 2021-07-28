@@ -16,9 +16,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.bop.Music;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
+import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Playlist;
@@ -38,8 +40,8 @@ public class PlaylistDetails extends AppCompatActivity {
 
     //instance variables
     private RecyclerView rvPlaylistSongs;
-    private List<Song> playlistSongs;
-    private SongAdapter adapter;
+    private List<? extends Music> playlistSongs;
+//    private SongAdapter adapter;
     private ImageButton ibBackPD;
     private TextView tvPlaylistNameDetails;
     private ImageButton ibPlayButtonPD;
@@ -48,6 +50,7 @@ public class PlaylistDetails extends AppCompatActivity {
     private boolean playing;
     private static String mAccessToken;
     public static List<Song> songsListForCurrentSong;
+    private MusicAdapter musicAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +66,14 @@ public class PlaylistDetails extends AppCompatActivity {
         boolean premium = SpotifyDataManager.getProduct().equals("premium");
 
         playlistSongs = new ArrayList<>();
-        adapter = new SongAdapter(playlistSongs, this, premium);
+//        adapter = new SongAdapter(playlistSongs, this, premium);
+        musicAdapter = new MusicAdapter(playlistSongs, this);
 
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvPlaylistSongs.setLayoutManager(linearLayoutManager);
-        rvPlaylistSongs.setAdapter(adapter);
+//        rvPlaylistSongs.setAdapter(adapter);
+        rvPlaylistSongs.setAdapter(musicAdapter);
 
         //unwrap the playlist passed by the intent, using the simple name as key
 //        playlist = getIntent().getParcelableExtra(Playlist.class.getSimpleName());
@@ -129,7 +134,7 @@ public class PlaylistDetails extends AppCompatActivity {
                                 boolean songSaved = false;
                                 Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
                                 for (int i = 0; i < songsListForCurrentSong.size(); i++){
-                                    Song songFromPlaylist = songsListForCurrentSong.get(i);
+                                    Song songFromPlaylist = (Song) songsListForCurrentSong.get(i);
                                     if (track.name.equals(songFromPlaylist.getTitle())){
                                         songFromPlaylist.setCurrentSong(songFromPlaylist);
                                         songSaved = true;
@@ -152,7 +157,7 @@ public class PlaylistDetails extends AppCompatActivity {
         mAccessToken = MainActivity.getmAccessToken();
 
         //get playlist songs from SpotifyDataManager
-        SpotifyDataManager.getTracks("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks", playlistSongs, adapter, mAccessToken, true);
+        SpotifyDataManager.getTracks("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks", (List<Song>) playlistSongs, musicAdapter, mAccessToken, true);
     }
 
     @Override
