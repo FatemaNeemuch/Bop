@@ -114,6 +114,9 @@ public class PlaylistDetails extends AppCompatActivity {
                                 if (track != null) {
                                     Log.i(TAG, track.name + " by " + track.artist.name);
                                 }
+                                Song song = new Song(track.uri, track.name, track.album.name, track.artist.name, "1/1/2011", track.imageUri.raw, "album", true);
+                                //save this song as the current song
+                                song.setCurrentSong(song);
                             });
                     //change icon to pause button
                     Glide.with(PlaylistDetails.this).load(R.drawable.ic_baseline_pause_24).circleCrop().into(ibPlayButtonPD);
