@@ -157,8 +157,8 @@ public class BrowseFragment extends Fragment {
                 //create url for search query
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
                 urlBuilder.addQueryParameter("q", query);
-//                urlBuilder.addQueryParameter("type", "track,album,artist");
-                urlBuilder.addQueryParameter("type", "track");
+                urlBuilder.addQueryParameter("type", "track,artist,album");
+//                urlBuilder.addQueryParameter("type", "track");
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 String url = urlBuilder.build().toString();
 
