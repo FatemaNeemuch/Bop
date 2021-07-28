@@ -15,10 +15,12 @@ import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ParseDatabaseManager {
@@ -79,7 +81,6 @@ public class ParseDatabaseManager {
         staticFreeAdapter = freeAdapter;
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.include(User.KEY_CURRENT_SONG);
-        query.whereNear("location", LoginActivity.getCurrentUserLocation());
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override  public void done(List<ParseUser> nearUsers, ParseException e) {
                 if (e == null) {
@@ -91,6 +92,7 @@ public class ParseDatabaseManager {
                             staticNearbyUsers.add(nearUsers.get(i));
                         }
                     }
+                    sortOnDistance(staticNearbyUsers);
                     //update the views on the main thread in a static method
                     Handler mainHandler = new Handler(Looper.getMainLooper());
                     mainHandler.post(new Runnable() {
@@ -107,5 +109,22 @@ public class ParseDatabaseManager {
             }
         });
         ParseQuery.clearAllCachedResults();
+    }
+
+    //insertion sort
+    public static void sortOnDistance(List<ParseUser> nearbyUsers){
+        ParseGeoPoint currentUserLocation = LoginActivity.getCurrentUserLocation();
+        for (int i = 1; i < nearbyUsers.size(); i++){
+            double tempDistance = currentUserLocation.distanceInMilesTo(nearbyUsers.get(i).getParseGeoPoint("location"));
+            ParseUser tempUser = nearbyUsers.get(i);
+            int j = i;
+            //if temp distance is less than the distance of user in front of it, swap users
+            while (j > 0 && tempDistance < currentUserLocation.distanceInMilesTo(nearbyUsers.get(j - 1).getParseGeoPoint("location"))){
+                //swap users
+                nearbyUsers.set(j, nearbyUsers.get(j - 1));
+                nearbyUsers.set(j -1, tempUser);
+                j--;
+            }
+        }
     }
 }
