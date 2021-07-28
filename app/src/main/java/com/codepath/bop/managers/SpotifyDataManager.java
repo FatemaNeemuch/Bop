@@ -177,7 +177,7 @@ public class SpotifyDataManager {
         });
     }
 
-    public static void SearchResults(String url){
+    public static void SearchResults(String url, SongAdapter adapter){
 
         //build request
         final Request request = new Request.Builder()
@@ -211,7 +211,7 @@ public class SpotifyDataManager {
                         public void run() {
                             Log.i(TAG, "adpater updated");
                             //Update UI
-                            staticAdapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
                         }
                     });
                 } catch (JSONException e) {

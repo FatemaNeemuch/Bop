@@ -161,7 +161,7 @@ public class SearchFragment extends Fragment {
                 String url = urlBuilder.build().toString();
 
                 //get search results from DataManager
-                SpotifyDataManager.SearchResults(url);
+                SpotifyDataManager.SearchResults(url, adapter);
                 return true;
             }
 
