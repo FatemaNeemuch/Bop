@@ -25,6 +25,8 @@ import com.spotify.protocol.types.Track;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class NearbyUsersFreeAdapter extends RecyclerView.Adapter<NearbyUsersFreeAdapter.ViewHolder>{
 
     //class constants
@@ -91,7 +93,7 @@ public class NearbyUsersFreeAdapter extends RecyclerView.Adapter<NearbyUsersFree
             //set artist
             FtvArtistNameNU.setText(pUserSong.getKEY_ARTIST());
             //set song cover
-            Glide.with(context).load(pUserSong.getKEY_COVER_URL()).into(FivCover);
+            Glide.with(context).load(pUserSong.getKEY_COVER_URL()).transform(new RoundedCornersTransformation(30, 5)).into(FivCover);
         }
     }
 }

@@ -1,12 +1,14 @@
 package com.codepath.bop.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.fragments.BrowseFragment;
@@ -24,6 +27,9 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 
 import java.util.List;
+import java.util.Random;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
 
@@ -70,6 +76,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         private TextView tvArtistName;
         private ImageView ivCover;
         private ImageView ivPlayButton;
+//        private RelativeLayout parent;
         private boolean isDoubleClicked;
 
         public ViewHolder(@NonNull View itemView) {
@@ -79,17 +86,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
             tvArtistName = itemView.findViewById(R.id.tvArtistName);
             ivCover = itemView.findViewById(R.id.ivCover);
             ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
+//            parent = itemView.findViewById(R.id.parent);
             //initialize variable
             playing = false;
         }
 
         public void bind(Song song) {
+//            //set background
+//            parent.setBackgroundColor(Color.argb(100, 98, 0, 238));
             //set song title
             tvSongTitle.setText(song.getTitle());
             //set artist
             tvArtistName.setText(song.getArtist());
             //set song cover
-            Glide.with(context).load(song.getCoverURL()).into(ivCover);
+            Glide.with(context).load(song.getCoverURL()).transform(new RoundedCornersTransformation(30, 5)).into(ivCover);
             if (premium){
                 //set play button based on whether the song is playing
                 if (song.getisCurrentSong()){

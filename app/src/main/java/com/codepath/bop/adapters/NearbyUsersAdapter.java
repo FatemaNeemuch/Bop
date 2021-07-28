@@ -26,6 +26,8 @@ import com.spotify.protocol.types.Track;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.ViewHolder>{
 
     //class constants
@@ -99,7 +101,7 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
             //set artist
             tvArtistNameNU.setText(pUserSong.getKEY_ARTIST());
             //set song cover
-            Glide.with(context).load(pUserSong.getKEY_COVER_URL()).into(ivCover);
+            Glide.with(context).load(pUserSong.getKEY_COVER_URL()).transform(new RoundedCornersTransformation(30, 5)).into(ivCover);
             //set play button based on whether the song is playing in recycler view
 //            if (sameSong(pUserSong, currentUserSong)){
 //                Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButtonNU);
