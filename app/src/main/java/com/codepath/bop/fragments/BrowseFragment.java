@@ -49,6 +49,7 @@ public class BrowseFragment extends Fragment {
     private RecyclerView rvSongs;
     private SongAdapter adapter;
     private static String mAccessToken;
+    private boolean premium;
     private String staticQuery;
     private EndlessRecyclerViewScrollListener scrollListener;
 //    private final FragmentManager fragmentManager = getChildFragmentManager();
@@ -80,7 +81,7 @@ public class BrowseFragment extends Fragment {
         rvSongs = view.findViewById(R.id.rvSongs);
 
         //check if account is premium
-        boolean premium = SpotifyDataManager.getProduct().equals("premium");
+        premium = SpotifyDataManager.getProduct().equals("premium");
 
         //Initialize the list of songs and adapter
         songs = new ArrayList<>();
@@ -156,7 +157,8 @@ public class BrowseFragment extends Fragment {
                 //create url for search query
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
                 urlBuilder.addQueryParameter("q", query);
-                urlBuilder.addQueryParameter("type", "track,album,artist");
+//                urlBuilder.addQueryParameter("type", "track,album,artist");
+                urlBuilder.addQueryParameter("type", "track");
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 String url = urlBuilder.build().toString();
 
@@ -186,67 +188,4 @@ public class BrowseFragment extends Fragment {
         }
         return true;
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        // Set the connection parameters - get user authorization
-//        ConnectionParams connectionParams =
-//                new ConnectionParams.Builder(CLIENT_ID)
-//                        .setRedirectUri(REDIRECT_URI)
-//                        .showAuthView(true)
-//                        .build();
-//
-//        //connect to spotify
-//        SpotifyAppRemote.connect(getContext(), connectionParams,
-//                new Connector.ConnectionListener() {
-//
-//                    @Override
-//                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-//                        mSpotifyAppRemote = spotifyAppRemote;
-//                        Log.i(TAG, "Connected! Yay!");
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable throwable) {
-//                        Log.e(TAG, throwable.getMessage(), throwable);
-//
-//                        // Something went wrong when attempting to connect! Handle errors here
-//                    }
-//                });
-//    }
-//
-//    public static SpotifyAppRemote getmSpotifyAppRemote(){
-//        return mSpotifyAppRemote;
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        Log.i(TAG, "stopping the music");
-//        super.onStop();
-//        //check if app is running in background and only pause music if its not
-//        //use the getActivity().isFinishing method
-////        if (getActivity().isFinishing() || getActivity().isDestroyed()){
-////
-////        }
-//        if (SpotifyDataManager.getProduct().equals("premium")){
-//            mSpotifyAppRemote.getPlayerApi().getPlayerState()
-//                    .setResultCallback(playerState -> {
-//                        mSpotifyAppRemote.getPlayerApi().pause();
-//                    })
-//                    .setErrorCallback(throwable -> {
-//                        Log.e(TAG, throwable.getMessage(), throwable);
-//                    });
-//        }
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        Log.i(TAG, "onDestroy");
-//        super.onDestroy();
-//        if (SpotifyDataManager.getProduct().equals("premium")){
-//            SpotifyAppRemote.disconnect(mSpotifyAppRemote);
-//        }
-//    }
 }
