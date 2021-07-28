@@ -106,6 +106,7 @@ public class PlaylistDetails extends AppCompatActivity {
                     //play song from spotify
                     mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
                     mSpotifyAppRemote.getPlayerApi().play(playlist.getPlaylistURI());
+                    mSpotifyAppRemote.getPlayerApi().setShuffle(true);
                     // Subscribe to PlayerState
                     mSpotifyAppRemote.getPlayerApi()
                             .subscribeToPlayerState()
