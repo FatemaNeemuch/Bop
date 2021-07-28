@@ -6,10 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.bumptech.glide.RequestBuilder;
-import com.codepath.bop.R;
+import com.codepath.bop.Details.PlaylistDetails;
 import com.codepath.bop.activities.LoginActivity;
-import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.activities.SplashActivity;
 import com.codepath.bop.adapters.ProfileAdapter;
 import com.codepath.bop.adapters.SongAdapter;
@@ -17,10 +15,6 @@ import com.codepath.bop.dialog.CreateNewPlaylistDialogFragment;
 import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
-import com.codepath.bop.models.User;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -33,7 +27,6 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -134,7 +127,7 @@ public class SpotifyDataManager {
         return profilePic;
     }
 
-    public static void getTracks(String url, List<Song> songs, SongAdapter adapter, String mAccessToken) {
+    public static void getTracks(String url, List<Song> songs, SongAdapter adapter, String mAccessToken, boolean isPlaylistDetails) {
 
         //instantiate instance variables
         staticSongs = songs;
@@ -164,6 +157,9 @@ public class SpotifyDataManager {
                     Log.i(TAG, "onResponse: " + jsonObjectHits.getJSONArray("items"));
                     //parse data to get song objects and add them to staticSongs list
                     staticSongs.addAll(fromTopHits(jsonObjectHits.getJSONArray("items")));
+                    if (isPlaylistDetails){
+                        PlaylistDetails.songsListForCurrentSong.addAll(staticSongs);
+                    }
                     Log.i(TAG, "onResponse getTopHits");
                     //update the views on the main thread in a static method
                     Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -207,12 +203,13 @@ public class SpotifyDataManager {
                     staticSongs.clear();
                     //parse data to get song objects and add them to staticSongs list
                     staticSongs.addAll(fromSearchArray(jsonObject.getJSONObject("tracks").getJSONArray("items")));
-                    Log.i(TAG, "onResponse" + jsonObject.toString());
+                    Log.i(TAG, "Search Query onResponse" + jsonObject.toString());
                     //update the views on the main thread in a static method
                     Handler mainHandler = new Handler(Looper.getMainLooper());
                     mainHandler.post(new Runnable() {
                         @Override
                         public void run() {
+                            Log.i(TAG, "adpater updated");
                             //Update UI
                             staticAdapter.notifyDataSetChanged();
                         }

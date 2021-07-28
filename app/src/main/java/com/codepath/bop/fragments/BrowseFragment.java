@@ -96,7 +96,7 @@ public class BrowseFragment extends Fragment {
         mAccessToken = MainActivity.getmAccessToken();
 
         //get top hits from SpotifyDataManager
-        SpotifyDataManager.getTracks(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
+        SpotifyDataManager.getTracks(getString(R.string.topHitsURL), songs, adapter, mAccessToken, false);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class BrowseFragment extends Fragment {
             public boolean onClose() {
                 songs.clear();
                 adapter.notifyDataSetChanged();
-                SpotifyDataManager.getTracks(getString(R.string.topHitsURL), songs, adapter, mAccessToken);
+                SpotifyDataManager.getTracks(getString(R.string.topHitsURL), songs, adapter, mAccessToken, false);
 //                songs.clear();
 //                adapter.notifyDataSetChanged();
 //                if (isAdded()){

@@ -25,6 +25,7 @@ import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.types.Artist;
 import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class PlaylistDetails extends AppCompatActivity {
     private SpotifyAppRemote mSpotifyAppRemote;
     private boolean playing;
     private static String mAccessToken;
+    public static List<Song> songsListForCurrentSong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,8 @@ public class PlaylistDetails extends AppCompatActivity {
         //set playlist name
         tvPlaylistNameDetails.setText(playlist.getName());
 
+        songsListForCurrentSong = new ArrayList<>();
+
         //go back to the profile fragment
         ibBackPD.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +107,7 @@ public class PlaylistDetails extends AppCompatActivity {
                 }else{
                     //update variable
                     playing = true;
+                    Log.i(TAG, playlist.getName());
                     //play song from spotify
                     mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
                     mSpotifyAppRemote.getPlayerApi().play(playlist.getPlaylistURI());
@@ -115,9 +120,27 @@ public class PlaylistDetails extends AppCompatActivity {
                                 if (track != null) {
                                     Log.i(TAG, track.name + " by " + track.artist.name);
                                 }
-                                Song song = new Song(track.uri, track.name, track.album.name, track.artist.name, "1/1/2011", track.imageUri.raw, "album", true);
-                                //save this song as the current song
-                                song.setCurrentSong(song);
+                                String artistName = track.artists.get(0).name;;
+                                if (track.artists.size() > 1){
+                                    for (int i = 1; i < track.artists.size(); i++){
+                                        artistName = artistName + ", " + track.artists.get(i).name;
+                                    }
+                                }
+                                boolean songSaved = false;
+                                Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
+                                for (int i = 0; i < songsListForCurrentSong.size(); i++){
+                                    Song songFromPlaylist = songsListForCurrentSong.get(i);
+                                    if (track.name.equals(songFromPlaylist.getTitle())){
+                                        songFromPlaylist.setCurrentSong(songFromPlaylist);
+                                        songSaved = true;
+                                    }
+                                }
+                                if (!songSaved){
+                                    String spotifyLogoURL = "https://www.macworld.com/wp-content/uploads/2021/03/spotify-logo-100779042-orig-3.jpg?quality=50&strip=all&w=1024";
+                                    Song song = new Song(track.uri, track.name, track.album.name, artistName, "1/1/2011", spotifyLogoURL, "album", true);
+                                    //save this song as the current song
+                                    song.setCurrentSong(song);
+                                }
                             });
                     //change icon to pause button
                     Glide.with(PlaylistDetails.this).load(R.drawable.ic_baseline_pause_24).circleCrop().into(ibPlayButtonPD);
@@ -129,7 +152,7 @@ public class PlaylistDetails extends AppCompatActivity {
         mAccessToken = MainActivity.getmAccessToken();
 
         //get playlist songs from SpotifyDataManager
-        SpotifyDataManager.getTracks("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks", playlistSongs, adapter, mAccessToken);
+        SpotifyDataManager.getTracks("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks", playlistSongs, adapter, mAccessToken, true);
     }
 
     @Override
