@@ -7,4 +7,9 @@
   <path
       android:fillColor="@android:color/black"
       android:pathData="M8,5v14l11,-7z"/>
+
+<!--  <corners android:bottomRightRadius="50dp"-->
+<!--      android:bottomLeftRadius="50dp"-->
+<!--      android:topLeftRadius="50dp"-->
+<!--      android:topRightRadius="50dp"/>-->
 </vector>

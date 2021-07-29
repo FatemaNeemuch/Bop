@@ -42,23 +42,14 @@ public class BrowseFragment extends Fragment {
 
     //class constants
     public static final String TAG = "Browse Fragment";
-    private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
-    private static final String REDIRECT_URI = "com.codepath.bop://callback";
 
     //instance variables
-    private static SpotifyAppRemote mSpotifyAppRemote;
-//    private List<Song> songs;
+    private List<Song> songs;
     private RecyclerView rvSongs;
-//    private SongAdapter adapter;
     private static String mAccessToken;
     private boolean premium;
-    private List<Song> musicItems;
     private MusicAdapter musicAdapter;
-    private List<? extends Music> musicSearchResults;
-    private String staticQuery;
-    private EndlessRecyclerViewScrollListener scrollListener;
-//    private final FragmentManager fragmentManager = getChildFragmentManager();
-//    private FragmentManager fragmentManager;
+    private List<Music> musicSearchResults;
 
     public BrowseFragment() {
         // Required empty public constructor
@@ -89,22 +80,19 @@ public class BrowseFragment extends Fragment {
         premium = SpotifyDataManager.getProduct().equals("premium");
 
         //Initialize the list of songs and adapter
-//        songs = new ArrayList<>();
-        musicItems = new ArrayList<>();
-//        adapter = new SongAdapter(songs, getContext(), premium);
-        musicAdapter = new MusicAdapter(musicItems, getContext());
+        songs = new ArrayList<>();
+        musicAdapter = new MusicAdapter(songs, getContext());
 
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvSongs.setLayoutManager(linearLayoutManager);
-//        rvSongs.setAdapter(adapter);
         rvSongs.setAdapter(musicAdapter);
 
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
         //get top hits from SpotifyDataManager
-        SpotifyDataManager.getTracks(getString(R.string.topHitsURL), (List<Song>) musicItems, musicAdapter, mAccessToken, false);
+        SpotifyDataManager.getTracks(getString(R.string.topHitsURL), songs, musicAdapter, mAccessToken, false);
     }
 
     @Override
@@ -114,44 +102,12 @@ public class BrowseFragment extends Fragment {
         //find view
         MenuItem searchItem = menu.findItem(R.id.maSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        if (isAdded()){
-//            fragmentManager = getChildFragmentManager();
-//        }
-//        searchView.setOnSearchClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //launch the Search Fragment here
-//                //move all query code over to new fragment
-//                Log.i(TAG, isAdded() + "");
-////                if (isVisible()){
-//                Log.i(TAG, "browse fragment: " + getParentFragmentManager().findFragmentByTag("browse"));
-//                    getParentFragmentManager().beginTransaction().hide(getParentFragmentManager().findFragmentByTag("browse"));
-////                }
-//                if(isAdded()){
-//                    if(fragmentManager.findFragmentByTag("search") != null) {
-//                        //if the fragment exists, show it.
-//                        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("search")).addToBackStack(null).commit();
-//                    } else {
-//                        //if the fragment does not exist, add it to fragment manager.
-//                        fragmentManager.beginTransaction().add(R.id.flContainerSF, new SearchFragment(), "search").addToBackStack(null).commit();
-//                    }
-//                }
-//            }
-//        });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                musicItems.clear();
+                songs.clear();
                 musicAdapter.notifyDataSetChanged();
-                SpotifyDataManager.getTracks(getString(R.string.topHitsURL), (List<Song>) musicItems, musicAdapter, mAccessToken, false);
-//                songs.clear();
-//                adapter.notifyDataSetChanged();
-//                if (isAdded()){
-//                    Log.i(TAG, "search fragment: " + fragmentManager.findFragmentByTag("search"));
-//                    if (fragmentManager.findFragmentByTag("search").isAdded() && fragmentManager.findFragmentByTag("search").isVisible()){
-//                        fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search"));
-//                    }
-//                }
+                SpotifyDataManager.getTracks(getString(R.string.topHitsURL), songs, musicAdapter, mAccessToken, false);
                 return false;
             }
         });
@@ -159,8 +115,6 @@ public class BrowseFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-                staticQuery = query;
 
                 //create url for search query
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
@@ -170,8 +124,10 @@ public class BrowseFragment extends Fragment {
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 String url = urlBuilder.build().toString();
 
+                musicSearchResults = new ArrayList<>();
+
                 //get search results from DataManager
-                SpotifyDataManager.SearchResults(url, musicAdapter);
+                SpotifyDataManager.SearchResults(url, musicAdapter, musicSearchResults);
                 return true;
             }
 

@@ -121,6 +121,26 @@ public class Song extends ParseObject implements Parcelable, Music {
         return song;
     }
 
+    public static Song fromAlbumAPI(JSONObject jsonObject, Album album) throws JSONException {
+        Song song = new Song();
+        song.albumType = "album";
+        song.album = album.getAlbumName();
+        song.title = jsonObject.getString("name");
+        song.artist = jsonObject.getJSONArray("artists").getJSONObject(0).getString("name");
+        if (jsonObject.getJSONArray("artists").length() > 1){
+            String artistName = "";
+            for (int i = 1; i < jsonObject.getJSONArray("artists").length(); i++){
+                artistName = artistName + ", " + jsonObject.getJSONArray("artists").getJSONObject(i).getString("name");
+            }
+            song.artist = song.artist + artistName;
+        }
+        song.coverURL = album.getCoverURL();
+        song.releaseDate = album.getAlbumReleaseDate();
+        song.songURI = jsonObject.getString("uri");
+        song.isCurrentSong = false;
+        return song;
+    }
+
     @Override
     public int getType() {
         return Music.TYPE_SONG;

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.codepath.bop.Details.AlbumDetails;
 import com.codepath.bop.Details.PlaylistDetails;
 import com.codepath.bop.Music;
 import com.codepath.bop.activities.LoginActivity;
@@ -15,6 +16,7 @@ import com.codepath.bop.adapters.ProfileAdapter;
 import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.dialog.CreateNewPlaylistDialogFragment;
 import com.codepath.bop.fragments.ProfileFragment;
+import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
@@ -162,7 +164,7 @@ public class SpotifyDataManager {
                     if (isPlaylistDetails){
                         PlaylistDetails.songsListForCurrentSong.addAll(staticSongs);
                     }
-                    Log.i(TAG, "onResponse getTopHits");
+                    Log.i(TAG, "onResponse getTracks");
                     //update the views on the main thread in a static method
                     Handler mainHandler = new Handler(Looper.getMainLooper());
                     mainHandler.post(new Runnable() {
@@ -174,13 +176,64 @@ public class SpotifyDataManager {
                         }
                     });
                 } catch (JSONException e) {
-                    Log.e(TAG, "TopHits Failed to parse data: " + e);
+                    Log.e(TAG, "getTracks Failed to parse data: " + e);
                 }
             }
         });
     }
 
-    public static void SearchResults(String url, MusicAdapter adapter){
+    public static void getTracksfromAlbum(String url, List<Song> songs, MusicAdapter adapter, String mAccessToken, boolean isAlbumDetails, Album album) {
+
+        //instantiate instance variables
+        staticSongs = songs;
+        staticAdapter = adapter;
+        staticMAccessToken = mAccessToken;
+
+        //build request
+        final Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + staticMAccessToken)
+                .build();
+
+        //make call
+        mCall = mOkHttpClient.newCall(request);
+
+        //asynch call enqueued
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "onFailure" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    final JSONObject jsonObjectHits = new JSONObject(response.body().string());
+                    Log.i(TAG, "onResponse: " + jsonObjectHits.getJSONArray("items"));
+                    //parse data to get song objects and add them to staticSongs list
+                    staticSongs.addAll(fromAlbum(jsonObjectHits.getJSONArray("items"), album));
+                    if (isAlbumDetails){
+                        AlbumDetails.songsListForCurrentSong.addAll(staticSongs);
+                    }
+                    Log.i(TAG, "onResponse getTracksfromAlbum");
+                    //update the views on the main thread in a static method
+                    Handler mainHandler = new Handler(Looper.getMainLooper());
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Update UI
+//                            staticAdapter.notifyDataSetChanged();
+                            staticAdapter.setMusicList(staticSongs);
+                        }
+                    });
+                } catch (JSONException e) {
+                    Log.e(TAG, "getTracksfromAlbum Failed to parse data: " + e);
+                }
+            }
+        });
+    }
+
+    public static void SearchResults(String url, MusicAdapter adapter, List<Music> musicSearchResults){
 
         //build request
         final Request request = new Request.Builder()
@@ -204,8 +257,19 @@ public class SpotifyDataManager {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
                     // Remove all songs from the adapter
                     staticSongs.clear();
+                    List<Song> songsfromarray = fromSearchArraySongs(jsonObject.getJSONObject("tracks").getJSONArray("items"));
+                    List<Album> albumsfromarray = fromSearchArrayAlbums(jsonObject.getJSONObject("albums").getJSONArray("items"));
                     //parse data to get song objects and add them to staticSongs list
-                    staticSongs.addAll(fromSearchArray(jsonObject.getJSONObject("tracks").getJSONArray("items")));
+                    int i = 0;
+                    while (i < songsfromarray.size() || i < albumsfromarray.size()){
+                        if (i  < songsfromarray.size()){
+                            musicSearchResults.add(songsfromarray.get(i));
+                        }
+                        if (i < albumsfromarray.size()){
+                            musicSearchResults.add(albumsfromarray.get(i));
+                        }
+                        i++;
+                    }
                     Log.i(TAG, "Search Query onResponse" + jsonObject.toString());
                     //update the views on the main thread in a static method
                     Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -215,7 +279,7 @@ public class SpotifyDataManager {
                             Log.i(TAG, "adpater updated");
                             //Update UI
 //                            adapter.notifyDataSetChanged();
-                            adapter.setMusicList(staticSongs);
+                            adapter.setMusicList(musicSearchResults);
                         }
                     });
                 } catch (JSONException e) {
@@ -411,7 +475,17 @@ public class SpotifyDataManager {
         return songs;
     }
 
-    public static List<Song> fromSearchArray(JSONArray jsonArray) throws JSONException {
+    public static List<Song> fromAlbum(JSONArray jsonArray, Album album) throws JSONException {
+        //jsonArray is "items"
+        List<Song> songs = new ArrayList<>();
+        //make song objects and add them to songs list
+        for (int i = 0; i < jsonArray.length(); i++) {
+            songs.add(Song.fromAlbumAPI(jsonArray.getJSONObject(i), album));
+        }
+        return songs;
+    }
+
+    public static List<Song> fromSearchArraySongs(JSONArray jsonArray) throws JSONException {
         //jsonArray is "items"
         List<Song> songs = new ArrayList<>();
         //make song objects and add them to songs list
@@ -419,5 +493,15 @@ public class SpotifyDataManager {
             songs.add(Song.fromAPI(jsonArray.getJSONObject(i)));
         }
         return songs;
+    }
+
+    public static List<Album> fromSearchArrayAlbums(JSONArray jsonArray) throws JSONException {
+        //jsonArray is "items"
+        List<Album> albums = new ArrayList<>();
+        //make song objects and add them to songs list
+        for (int i = 0; i < jsonArray.length(); i++) {
+            albums.add(Album.fromAPI(jsonArray.getJSONObject(i)));
+        }
+        return albums;
     }
 }

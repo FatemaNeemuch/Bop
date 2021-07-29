@@ -1,11 +1,14 @@
 package com.codepath.bop.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.bop.Details.AlbumDetails;
+import com.codepath.bop.Details.PlaylistDetails;
 import com.codepath.bop.Music;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
@@ -202,14 +207,47 @@ public class MusicAdapter extends RecyclerView.Adapter {
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder{
 
+        //instance variables
+        private ImageView ivAlbumCover;
+        private TextView tvAlbumTitle;
+        private TextView tvAlbumArtistName;
+        private ImageView ivGoToDetails;
+
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivAlbumCover = itemView.findViewById(R.id.ivAlbumCover);
+            tvAlbumTitle = itemView.findViewById(R.id.tvAlbumTitle);
+            tvAlbumArtistName = itemView.findViewById(R.id.tvAlbumArtistName);
+            ivGoToDetails = itemView.findViewById(R.id.ivGoToDetails);
         }
 
         void bindView(int position) {
             Album album = (Album) musicList.get(position);
-            // bind data to the views
-            // textView.setText()...
+            //set album name
+            tvAlbumTitle.setText(album.getAlbumName());
+            //set album artist
+            tvAlbumArtistName.setText(album.getArtist());
+            //set album cover
+            Glide.with(context).load(album.getCoverURL()).transform(new RoundedCornersTransformation(30, 5)).into(ivAlbumCover);
+            //show details arrow
+            Glide.with(context).load(R.drawable.ic_baseline_arrow_forward_ios_24).into(ivGoToDetails);
+
+            ivGoToDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putParcelable(Album.class.getSimpleName(), album);
+                        // create intent for the new activity
+                        Intent intent = new Intent(context, AlbumDetails.class);
+                        //send in playlist object
+                        intent.putExtras(bundle1);
+                        // show the activity
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
     }
 }

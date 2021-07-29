@@ -165,7 +165,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                         //add song to favs playlist
                         SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + ParseUser.getCurrentUser().get("defaultPlaylistID") + "/tracks",
                                 MainActivity.getmAccessToken(), songs.get(getAdapterPosition()));
-                        Toast.makeText(context, context.getString(R.string.added_song) + " " + ParseUser.getCurrentUser().getUsername() + context.getString(R.string.default_favs), Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "song name: " + song.getTitle());
+                        Toast.makeText(context, song.getTitle() + " " + context.getString(R.string.added_song) + " " + ParseUser.getCurrentUser().getUsername() + context.getString(R.string.default_favs), Toast.LENGTH_SHORT).show();
                         isDoubleClicked = false;
                         //remove callbacks for Handlers
                         handler.removeCallbacks(r);

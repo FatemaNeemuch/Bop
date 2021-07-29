@@ -15,8 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Bop">
-        <activity android:name=".Details.PlaylistDetails"></activity>
-        <activity android:name=".activities.SignUpActivity"></activity>
+        <activity android:name=".Details.AlbumDetails"></activity>
+        <activity android:name=".Details.PlaylistDetails" />
+        <activity android:name=".activities.SignUpActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -37,8 +38,7 @@
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activities.LoginActivity">
-        </activity>
+        <activity android:name=".activities.LoginActivity"></activity>
         <activity android:name=".activities.MainActivity" />
     </application>
 

@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -21,31 +20,29 @@ import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.MusicAdapter;
-import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
+import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.types.Artist;
 import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistDetails extends AppCompatActivity {
+public class AlbumDetails extends AppCompatActivity {
 
     //class constants
-    public static final String TAG = "Playlist Details";
+    public static final String TAG = "Album Details";
 
     //instance variables
-    private RecyclerView rvPlaylistSongs;
-    private List<? extends Music> playlistSongs;
-//    private SongAdapter adapter;
-    private ImageButton ibBackPD;
-    private TextView tvPlaylistNameDetails;
-    private ImageButton ibPlayButtonPD;
-    private Playlist playlist;
+    private RecyclerView rvAlbumSongs;
+    private List<? extends Music> albumSongs;
+    private ImageButton ibBackAD;
+    private TextView tvAlbumNameDetails;
+    private ImageButton ibPlayButtonAD;
+    private Album album;
     private SpotifyAppRemote mSpotifyAppRemote;
     private boolean playing;
     private static String mAccessToken;
@@ -55,66 +52,61 @@ public class PlaylistDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playlist_details);
+        setContentView(R.layout.activity_album_details);
 
         //references to the views
-        rvPlaylistSongs = findViewById(R.id.rvPlaylistSongs);
-        ibBackPD = findViewById(R.id.ibBackPD);
-        tvPlaylistNameDetails = findViewById(R.id.tvPlaylistNameDetails);
-        ibPlayButtonPD = findViewById(R.id.ibPlayButtonPD);
+        rvAlbumSongs = findViewById(R.id.rvAlbumSongs);
+        ibBackAD = findViewById(R.id.ibBackAD);
+        tvAlbumNameDetails = findViewById(R.id.tvAlbumNameDetails);
+        ibPlayButtonAD = findViewById(R.id.ibPlayButtonAD);
 
-        boolean premium = SpotifyDataManager.getProduct().equals("premium");
-
-        playlistSongs = new ArrayList<>();
-//        adapter = new SongAdapter(playlistSongs, this, premium);
-        musicAdapter = new MusicAdapter(playlistSongs, this);
+        albumSongs = new ArrayList<>();
+        musicAdapter = new MusicAdapter(albumSongs, this);
 
         //Recycler view setup: layout manager and the adapter
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvPlaylistSongs.setLayoutManager(linearLayoutManager);
-//        rvPlaylistSongs.setAdapter(adapter);
-        rvPlaylistSongs.setAdapter(musicAdapter);
+        LinearLayoutManager linearLayoutManagerAlbums = new LinearLayoutManager(this);
+        rvAlbumSongs.setLayoutManager(linearLayoutManagerAlbums);
+        rvAlbumSongs.setAdapter(musicAdapter);
 
-        //unwrap the playlist passed by the intent, using the simple name as key
-        playlist = getIntent().getExtras().getParcelable(Playlist.class.getSimpleName());
+        //unwrap the album passed by the intent, using the simple name as key
+        album = getIntent().getExtras().getParcelable(Album.class.getSimpleName());
 
-        //set playlist name
-        tvPlaylistNameDetails.setText(playlist.getName());
+        //set album name
+        tvAlbumNameDetails.setText(album.getAlbumName());
 
         songsListForCurrentSong = new ArrayList<>();
 
         //go back to the profile fragment
-        ibBackPD.setOnClickListener(new View.OnClickListener() {
+        ibBackAD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
             }
         });
 
         // set play button
-        Glide.with(this).load(R.drawable.ic_baseline_play_arrow_24).circleCrop().into(ibPlayButtonPD);
+        Glide.with(this).load(R.drawable.ic_baseline_play_arrow_24).circleCrop().into(ibPlayButtonAD);
 
         playing = false;
 
         //play the playlist
-        ibPlayButtonPD.setOnClickListener(new View.OnClickListener() {
+        ibPlayButtonAD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //pause song if button is clicked when song is playing
                 if (playing){
                     mSpotifyAppRemote.getPlayerApi().pause();
                     //change icon back to play button
-                    Glide.with(PlaylistDetails.this).load(R.drawable.ic_baseline_play_arrow_24).circleCrop().into(ibPlayButtonPD);
+                    Glide.with(AlbumDetails.this).load(R.drawable.ic_baseline_play_arrow_24).circleCrop().into(ibPlayButtonAD);
                     //update variable
                     playing = false;
                 }else{
                     //update variable
                     playing = true;
-                    Log.i(TAG, playlist.getName());
+                    Log.i(TAG, album.getAlbumName());
                     //play song from spotify
                     mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
-                    mSpotifyAppRemote.getPlayerApi().play(playlist.getPlaylistURI());
+                    mSpotifyAppRemote.getPlayerApi().play(album.getAlbumURI());
                     mSpotifyAppRemote.getPlayerApi().setShuffle(true);
                     // Subscribe to PlayerState
                     mSpotifyAppRemote.getPlayerApi()
@@ -133,9 +125,9 @@ public class PlaylistDetails extends AppCompatActivity {
                                 boolean songSaved = false;
                                 Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
                                 for (int i = 0; i < songsListForCurrentSong.size(); i++){
-                                    Song songFromPlaylist = (Song) songsListForCurrentSong.get(i);
-                                    if (track.uri.equals(songFromPlaylist.getSongURI())){
-                                        songFromPlaylist.setCurrentSong(songFromPlaylist);
+                                    Song songFromAlbum = (Song) songsListForCurrentSong.get(i);
+                                    if (track.uri.equals(songFromAlbum.getSongURI())){
+                                        songFromAlbum.setCurrentSong(songFromAlbum);
                                         songSaved = true;
                                     }
                                 }
@@ -147,7 +139,7 @@ public class PlaylistDetails extends AppCompatActivity {
                                 }
                             });
                     //change icon to pause button
-                    Glide.with(PlaylistDetails.this).load(R.drawable.ic_baseline_pause_24).circleCrop().into(ibPlayButtonPD);
+                    Glide.with(AlbumDetails.this).load(R.drawable.ic_baseline_pause_24).circleCrop().into(ibPlayButtonAD);
                 }
             }
         });
@@ -156,7 +148,7 @@ public class PlaylistDetails extends AppCompatActivity {
         mAccessToken = MainActivity.getmAccessToken();
 
         //get playlist songs from SpotifyDataManager
-        SpotifyDataManager.getTracks("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks", (List<Song>) playlistSongs, musicAdapter, mAccessToken, true);
+        SpotifyDataManager.getTracksfromAlbum("https://api.spotify.com/v1/albums/" + album.getAlbumID() + "/tracks", (List<Song>) albumSongs, musicAdapter, mAccessToken, true, album);
     }
 
     @Override

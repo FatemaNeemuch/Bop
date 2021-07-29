@@ -23,10 +23,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     //instance variables
     private List<Album> albums;
     private Context context;
-    private ImageView ivAlbumCover;
-    private TextView tvAlbumTitle;
-    private TextView tvAlbumArtistName;
-    private ImageView ivGoToDetails;
 
     public AlbumAdapter (List<Album> albums, Context context){
         this.albums = albums;
