@@ -2,7 +2,6 @@ package com.codepath.bop.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,24 +13,17 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.bop.Music;
-import com.codepath.bop.activities.SplashActivity;
 import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
-import com.codepath.bop.EndlessRecyclerViewScrollListener;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
-import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import java.util.ArrayList;
 import java.util.List;

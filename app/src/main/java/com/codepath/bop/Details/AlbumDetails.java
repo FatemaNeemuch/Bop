@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -41,7 +42,7 @@ public class AlbumDetails extends AppCompatActivity {
     private List<? extends Music> albumSongs;
     private ImageButton ibBackAD;
     private TextView tvAlbumNameDetails;
-    private ImageButton ibPlayButtonAD;
+    private ImageView ibPlayButtonAD;
     private Album album;
     private SpotifyAppRemote mSpotifyAppRemote;
     private boolean playing;

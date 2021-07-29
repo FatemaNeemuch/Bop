@@ -2,6 +2,7 @@ package com.codepath.bop.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -126,6 +127,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
             //set song cover
             Glide.with(context).load(song.getCoverURL()).transform(new RoundedCornersTransformation(30, 5)).into(ivCover);
             if (premium){
+                ivPlayButton.setBackgroundResource(R.drawable.circle_background);
                 //set play button based on whether the song is playing
                 if (song.getisCurrentSong()){
                     Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
@@ -190,7 +192,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
                         //add song to favs playlist
                         SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + ParseUser.getCurrentUser().get("defaultPlaylistID") + "/tracks",
                                 MainActivity.getmAccessToken(), (Song) musicList.get(getAdapterPosition()));
-                        Toast.makeText(context, context.getString(R.string.added_song) + " " + ParseUser.getCurrentUser().getUsername() + context.getString(R.string.default_favs), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, song.getTitle() + " " + context.getString(R.string.added_song) + " " + ParseUser.getCurrentUser().getUsername() + context.getString(R.string.default_favs), Toast.LENGTH_SHORT).show();
                         isDoubleClicked = false;
                         //remove callbacks for Handlers
                         handler.removeCallbacks(r);

@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/parent"
     android:layout_margin="5dp"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:background="@drawable/rounded_corners">
 
     <ImageView
@@ -25,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="13dp"
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/ivPlayButton"
         android:layout_toEndOf="@+id/ivCover"
@@ -47,12 +49,12 @@
 
     <ImageView
         android:id="@+id/ivPlayButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="5dp"
         tools:srcCompat="@drawable/ic_baseline_play_arrow_24" />
 </RelativeLayout>

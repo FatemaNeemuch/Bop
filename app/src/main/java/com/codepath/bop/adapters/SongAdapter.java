@@ -31,6 +31,7 @@ import java.util.Random;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
+//need to keep this for play button consistency in recycler view (idk why)
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
 
     //class constants
