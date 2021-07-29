@@ -25,7 +25,7 @@
         android:layout_marginEnd="25dp"
         android:layout_toStartOf="@+id/ibPlayButtonAD"
         android:layout_toEndOf="@+id/ibBackAD"
-        android:fontFamily="@font/cormorant_sc"
+        android:fontFamily="@font/croissant_one"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="@string/playlist_name_example" />

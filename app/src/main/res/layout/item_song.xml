@@ -31,6 +31,7 @@
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/ivPlayButton"
         android:layout_toEndOf="@+id/ivCover"
+        android:fontFamily="@font/croissant_one"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Crying in the Club" />
 
@@ -44,6 +45,7 @@
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/ivPlayButton"
         android:layout_toEndOf="@+id/ivCover"
+        android:fontFamily="sans-serif-smallcaps"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Camilla Cabello" />
 

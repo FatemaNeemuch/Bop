@@ -29,6 +29,7 @@
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/ivGoToDetails"
         android:layout_toEndOf="@+id/ivAlbumCover"
+        android:fontFamily="@font/croissant_one"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Crying in the Club" />
 
@@ -42,6 +43,7 @@
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/ivGoToDetails"
         android:layout_toEndOf="@+id/ivAlbumCover"
+        android:fontFamily="sans-serif-smallcaps"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Camilla Cabello" />
 

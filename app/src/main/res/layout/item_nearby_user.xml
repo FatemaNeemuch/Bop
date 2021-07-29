@@ -22,24 +22,25 @@
         android:id="@+id/tvUsernameNU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/tvDistance"
         android:layout_toEndOf="@+id/ivCover"
+        android:fontFamily="@font/dancing_script"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="Fatema5352 is listening to..."
-        />
+        tools:text="Fatema5352 is listening to..." />
 
     <TextView
         android:id="@+id/tvSongTitleNU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUsernameNU"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_below="@+id/tvUsernameNU"
         android:layout_toStartOf="@+id/tvDistance"
         android:layout_toEndOf="@+id/ivCover"
+        android:fontFamily="@font/croissant_one"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Crying in the Club" />
 
@@ -53,6 +54,7 @@
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/tvDistance"
         android:layout_toEndOf="@+id/ivCover"
+        android:fontFamily="sans-serif-smallcaps"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Camilla Cabello" />
 

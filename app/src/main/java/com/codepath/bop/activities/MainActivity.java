@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                         if(fragmentManager.findFragmentByTag("browse") != null) {
                             //if the fragment exists, show it.
                             fragmentManager.beginTransaction()
-//                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("browse"))
                                     .commit();
                         } else {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null) {
                             //if the fragment exists, show it.
                             fragmentManager.beginTransaction()
-//                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("nearbyUsers"))
                                     .commit();
                         } else {
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                         if(fragmentManager.findFragmentByTag("profile") != null) {
                             //if the fragment exists, show it.
                             fragmentManager.beginTransaction()
-//                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("profile"))
                                     .commit();
                         } else {
