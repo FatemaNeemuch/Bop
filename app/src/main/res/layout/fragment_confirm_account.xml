@@ -3,17 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/purple_200">
 
     <TextView
         android:id="@+id/tvQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
         android:layout_marginTop="20dp"
-        android:text="Is this your Spotify Account?"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center"
+        android:text="@string/is_this_your_spotify_account"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
     <ImageView
         android:id="@+id/ivProfilePicCA"
@@ -32,6 +34,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="24dp"
         android:layout_toEndOf="@+id/ivProfilePicCA"
+        android:fontFamily="@font/adamina"
         android:hint="fatema_neemuchwala"
         android:inputType="textMultiLine"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />

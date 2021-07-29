@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/adamina</item>
+        <item>@font/allura</item>
+        <item>@font/cardo</item>
+        <item>@font/cormorant_sc</item>
+        <item>@font/dancing_script</item>
+        <item>@font/dynalight</item>
+        <item>@font/great_vibes</item>
+        <item>@font/mr_bedfort</item>
+        <item>@font/niconne</item>
+    </array>
+</resources>

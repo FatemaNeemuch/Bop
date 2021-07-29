@@ -21,10 +21,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="25dp"
         android:layout_marginTop="33dp"
-        android:layout_toEndOf="@+id/ibBackPD"
+        android:layout_marginEnd="25dp"
         android:layout_toStartOf="@+id/ibPlayButtonPD"
+        android:layout_toEndOf="@+id/ibBackPD"
+        android:fontFamily="@font/cormorant_sc"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="@string/playlist_name_example" />

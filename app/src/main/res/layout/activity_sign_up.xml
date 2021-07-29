@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.SignUpActivity">
 
@@ -15,6 +14,8 @@
         android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:backgroundTint="@color/white"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/cancelButtonDescription"
         app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
 
@@ -23,6 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_below="@+id/btnCancelSignUp"
         android:hint="@string/fullName"
         android:inputType="textPersonName"/>
@@ -31,6 +34,8 @@
         android:id="@+id/etUsernameSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_below="@+id/etFullNameSignUp"
         android:hint="@string/username"
         android:inputType="text"/>
@@ -39,6 +44,8 @@
         android:id="@+id/etPasswordSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_below="@+id/etUsernameSignUp"
         android:layout_alignParentEnd="true"
         android:hint="@string/password"
@@ -48,6 +55,8 @@
         android:id="@+id/etConfirmPasswordSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_below="@+id/etPasswordSignUp"
         android:layout_alignParentEnd="true"
         android:hint="@string/confirm_password"
@@ -60,6 +69,8 @@
         android:layout_below="@+id/etConfirmPasswordSignUp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:text="@string/you_must_allow_bop_access_to_your_location_while_using_app"/>
 
@@ -67,6 +78,8 @@
         android:id="@+id/btnSignUpModal"
         android:layout_below="@+id/needLocation"
         android:layout_width="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_height="wrap_content"
         android:text="@string/sign_up"/>
 

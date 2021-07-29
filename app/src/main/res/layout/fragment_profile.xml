@@ -25,6 +25,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:layout_toEndOf="@+id/ivProfilePic"
+            android:fontFamily="@font/cardo"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             tools:text="@string/profile_greeting" />
 
