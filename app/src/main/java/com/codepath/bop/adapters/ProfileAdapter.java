@@ -2,28 +2,21 @@ package com.codepath.bop.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.codepath.bop.Details.PlaylistDetails;
+import com.codepath.bop.details.PlaylistDetails;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
-import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.models.Playlist;
-
-import org.parceler.Parcels;
 
 import java.util.List;
 

@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Details.ArtistDetails">
+    tools:context=".details.ArtistDetails">
+
+    <ImageButton
+        android:id="@+id/ibBackArtD"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_baseline_arrow_back_ios_24"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvArtistNameArtD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello Details World"
-        tools:layout_editor_absoluteX="167dp"
-        tools:layout_editor_absoluteY="105dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="25dp"
+        android:fontFamily="@font/croissant_one"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="@string/artist_name" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAlbums"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/tvArtistNameArtD"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

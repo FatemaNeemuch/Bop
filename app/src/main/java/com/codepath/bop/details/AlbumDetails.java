@@ -1,4 +1,4 @@
-package com.codepath.bop.Details;
+package com.codepath.bop.details;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,6 @@ import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Album;
-import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;

@@ -6,14 +6,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.codepath.bop.Details.AlbumDetails;
-import com.codepath.bop.Details.PlaylistDetails;
+import com.codepath.bop.details.AlbumDetails;
+import com.codepath.bop.details.ArtistDetails;
+import com.codepath.bop.details.PlaylistDetails;
 import com.codepath.bop.Music;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.SplashActivity;
 import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.adapters.ProfileAdapter;
-import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.dialog.CreateNewPlaylistDialogFragment;
 import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.models.Album;
@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import okhttp3.Call;
@@ -229,6 +230,49 @@ public class SpotifyDataManager {
                     });
                 } catch (JSONException e) {
                     Log.e(TAG, "getTracksfromAlbum Failed to parse data: " + e);
+                }
+            }
+        });
+    }
+
+    public static void getArtistAlbums(String url, List<Album> albums, MusicAdapter musicAdapter, String mAccessToken) {
+
+        //build request
+        final Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + mAccessToken)
+                .build();
+
+        //make call
+        mCall = mOkHttpClient.newCall(request);
+
+        //asynch call enqueued
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "onFailure" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    final JSONObject jsonObjectHits = new JSONObject(response.body().string());
+                    Log.i(TAG, "ArtistAlbums onResponse: " + jsonObjectHits.getJSONArray("items"));
+                    //parse data to get song objects and add them to staticSongs list
+                    albums.addAll(fromArtist(jsonObjectHits.getJSONArray("items")));
+                    Log.i(TAG, "onResponse ArtistAlbums");
+                    //update the views on the main thread in a static method
+                    Handler mainHandler = new Handler(Looper.getMainLooper());
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Update UI
+//                            staticAdapter.notifyDataSetChanged();
+                            musicAdapter.setMusicList(albums);
+                        }
+                    });
+                } catch (JSONException e) {
+                    Log.e(TAG, "ArtistAlbums Failed to parse data: " + e);
                 }
             }
         });
@@ -496,6 +540,16 @@ public class SpotifyDataManager {
             songs.add(Song.fromAlbumAPI(jsonArray.getJSONObject(i), album));
         }
         return songs;
+    }
+
+    private static List<Album> fromArtist(JSONArray jsonArray) throws JSONException {
+        //jsonArray is "items"
+        List<Album> albums = new ArrayList<>();
+        //make song objects and add them to songs list
+        for (int i = 0; i < jsonArray.length(); i++) {
+            albums.add(Album.fromAPI(jsonArray.getJSONObject(i)));
+        }
+        return albums;
     }
 
     public static List<Song> fromSearchArraySongs(JSONArray jsonArray) throws JSONException {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Details.PlaylistDetails">
+    tools:context=".details.PlaylistDetails">
 
     <ImageButton
         android:id="@+id/ibBackPD"

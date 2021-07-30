@@ -15,9 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Bop">
-        <activity android:name=".Details.ArtistDetails"></activity>
-        <activity android:name=".Details.AlbumDetails" />
-        <activity android:name=".Details.PlaylistDetails" />
+        <activity android:name=".details.ArtistDetails"></activity>
+        <activity android:name=".details.AlbumDetails" />
+        <activity android:name=".details.PlaylistDetails" />
         <activity android:name=".activities.SignUpActivity" />
 
         <meta-data
