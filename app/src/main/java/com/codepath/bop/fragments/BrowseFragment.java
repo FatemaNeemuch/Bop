@@ -2,6 +2,7 @@ package com.codepath.bop.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -104,6 +105,14 @@ public class BrowseFragment extends Fragment {
                 return false;
             }
         });
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //figure out how to clear adpater here
+                Toast.makeText(getContext(), "onSearchClick SearchView", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "onSearchClick SearchView");
+            }
+        });
         //call a query on the search view
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -113,7 +122,7 @@ public class BrowseFragment extends Fragment {
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
                 urlBuilder.addQueryParameter("q", query);
 //                urlBuilder.addQueryParameter("type", "track,artist,album,playlist");
-                urlBuilder.addQueryParameter("type", "track,album");
+                urlBuilder.addQueryParameter("type", "track,artist,album");
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 String url = urlBuilder.build().toString();
 

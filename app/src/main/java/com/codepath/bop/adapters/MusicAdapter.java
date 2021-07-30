@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.bop.Details.AlbumDetails;
+import com.codepath.bop.Details.ArtistDetails;
 import com.codepath.bop.Details.PlaylistDetails;
 import com.codepath.bop.Music;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Album;
+import com.codepath.bop.models.Artist;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
 import com.parse.ParseUser;
@@ -63,6 +66,9 @@ public class MusicAdapter extends RecyclerView.Adapter {
             case Music.TYPE_SONG:
                 itemView = LayoutInflater.from(context).inflate(R.layout.item_song, parent, false);
                 return new SongViewHolder(itemView);
+            case Music.TYPE_ARTIST:
+                itemView = LayoutInflater.from(context).inflate(R.layout.item_artist, parent, false);
+                return new ArtistViewHolder(itemView);
             default: // TYPE_ALBUM
                 itemView = LayoutInflater.from(context).inflate(R.layout.item_album, parent, false);
                 return new AlbumViewHolder(itemView);
@@ -77,6 +83,9 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 break;
             case Music.TYPE_ALBUM:
                 ((AlbumViewHolder) holder).bindView(position);
+                break;
+            case Music.TYPE_ARTIST:
+                ((ArtistViewHolder) holder).bindView(position);
                 break;
         }
     }
@@ -240,6 +249,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
             //show details arrow
             Glide.with(context).load(R.drawable.ic_baseline_arrow_forward_ios_24).into(ivGoToDetails);
 
+            //go to details page button
             ivGoToDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -249,6 +259,52 @@ public class MusicAdapter extends RecyclerView.Adapter {
                         bundle1.putParcelable(Album.class.getSimpleName(), album);
                         // create intent for the new activity
                         Intent intent = new Intent(context, AlbumDetails.class);
+                        //send in playlist object
+                        intent.putExtras(bundle1);
+                        // show the activity
+                        context.startActivity(intent);
+                    }
+                }
+            });
+        }
+    }
+
+    public class ArtistViewHolder extends RecyclerView.ViewHolder{
+
+        //instance variables
+        private ImageView ivArtistImage;
+        private TextView tvArtistNameItem;
+        private ImageView ivGoToDetailsArtist;
+
+        public ArtistViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivArtistImage = itemView.findViewById(R.id.ivArtistImage);
+            tvArtistNameItem = itemView.findViewById(R.id.tvArtistNameItem);
+            ivGoToDetailsArtist = itemView.findViewById(R.id.ivGoToDetailsArtist);
+        }
+
+        public void bindView(int position) {
+            Artist artist = (Artist) musicList.get(position);
+            //set the Artist name
+            tvArtistNameItem.setText(artist.getArtistName());
+            //set the artist image
+            if (artist.getArtistImageURL().equals("")){
+                Glide.with(context).load(R.drawable.generic_profile_pic).transform(new RoundedCornersTransformation(30, 5)).into(ivArtistImage);
+            }else{
+                Glide.with(context).load(artist.getArtistImageURL()).transform(new RoundedCornersTransformation(30, 5)).into(ivArtistImage);
+            }
+            //show details arrow
+            Glide.with(context).load(R.drawable.ic_baseline_arrow_forward_ios_24).into(ivGoToDetailsArtist);
+            //go to details page button
+            ivGoToDetailsArtist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putParcelable(Artist.class.getSimpleName(), artist);
+                        // create intent for the new activity
+                        Intent intent = new Intent(context, ArtistDetails.class);
                         //send in playlist object
                         intent.putExtras(bundle1);
                         // show the activity

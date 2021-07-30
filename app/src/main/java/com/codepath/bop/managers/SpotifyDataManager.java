@@ -17,6 +17,7 @@ import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.dialog.CreateNewPlaylistDialogFragment;
 import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.models.Album;
+import com.codepath.bop.models.Artist;
 import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
@@ -259,14 +260,18 @@ public class SpotifyDataManager {
                     staticSongs.clear();
                     List<Song> songsfromarray = fromSearchArraySongs(jsonObject.getJSONObject("tracks").getJSONArray("items"));
                     List<Album> albumsfromarray = fromSearchArrayAlbums(jsonObject.getJSONObject("albums").getJSONArray("items"));
-                    //parse data to get song objects and add them to staticSongs list
+                    List<Artist> artistsfromarray = fromSearchArrayArtists(jsonObject.getJSONObject("artists").getJSONArray("items"));
+                    //parse data to get Music objects and add them to musicSearchResults list
                     int i = 0;
-                    while (i < songsfromarray.size() || i < albumsfromarray.size()){
+                    while (i < songsfromarray.size() || i < albumsfromarray.size() || i < artistsfromarray.size()){
                         if (i  < songsfromarray.size()){
                             musicSearchResults.add(songsfromarray.get(i));
                         }
                         if (i < albumsfromarray.size()){
                             musicSearchResults.add(albumsfromarray.get(i));
+                        }
+                        if (i < artistsfromarray.size()){
+                            musicSearchResults.add(artistsfromarray.get(i));
                         }
                         i++;
                     }
@@ -288,6 +293,14 @@ public class SpotifyDataManager {
             }
         });
 
+    }
+
+    public static List<Song> getStaticSongs(){
+        return staticSongs;
+    }
+
+    public static MusicAdapter getStaticAdapter(){
+        return staticAdapter;
     }
 
     public static void getPlaylists(String url, String mAccessToken, List<Playlist> playlists, ProfileAdapter profileAdapter, boolean fromCreatePlaylist, CreateNewPlaylistDialogFragment createNewPlaylistDialogFragment) {
@@ -503,5 +516,15 @@ public class SpotifyDataManager {
             albums.add(Album.fromAPI(jsonArray.getJSONObject(i)));
         }
         return albums;
+    }
+
+    public static List<Artist> fromSearchArrayArtists(JSONArray jsonArray) throws JSONException {
+        //jsonArray is "items"
+        List<Artist> artists = new ArrayList<>();
+        //make song objects and add them to songs list
+        for (int i = 0; i < jsonArray.length(); i++) {
+            artists.add(Artist.fromAPI(jsonArray.getJSONObject(i)));
+        }
+        return artists;
     }
 }
