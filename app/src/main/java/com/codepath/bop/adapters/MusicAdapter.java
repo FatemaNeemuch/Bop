@@ -26,6 +26,7 @@ import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Song;
+import com.codepath.bop.models.User;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
@@ -134,6 +135,12 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 }else{
                     Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
                 }
+//                Song currentSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
+//                if (currentSong.getSongURI().equals(song.getSongURI())){
+//                    Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
+//                }else{
+//                    Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
+//                }
                 //play song here as well
                 ivPlayButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -180,6 +187,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 @Override
                 public void run(){
                     //Actions when Single Clicked
+                    Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
                     isDoubleClicked = false;
                 }
             };
@@ -197,8 +205,6 @@ public class MusicAdapter extends RecyclerView.Adapter {
                         //remove callbacks for Handlers
                         handler.removeCallbacks(r);
                     }else{
-                        //Toast.makeText(context, "Double clicked else", Toast.LENGTH_SHORT).show();
-                        //single click I think
                         isDoubleClicked=true;
                         handler.postDelayed(r,500);
                     }

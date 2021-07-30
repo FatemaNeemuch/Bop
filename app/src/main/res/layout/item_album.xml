@@ -30,6 +30,7 @@
         android:layout_toStartOf="@+id/ivGoToDetails"
         android:layout_toEndOf="@+id/ivAlbumCover"
         android:fontFamily="@font/croissant_one"
+        android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Crying in the Club" />
 

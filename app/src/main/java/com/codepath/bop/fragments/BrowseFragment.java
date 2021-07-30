@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
@@ -120,6 +121,7 @@ public class BrowseFragment extends Fragment {
 
                 //get search results from DataManager
                 SpotifyDataManager.SearchResults(url, musicAdapter, musicSearchResults);
+                searchView.clearFocus();
                 return true;
             }
 

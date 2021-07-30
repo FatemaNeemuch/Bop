@@ -1,12 +1,14 @@
 package com.codepath.bop.adapters;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,7 @@ import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.fragments.BrowseFragment;
 import com.codepath.bop.fragments.NearbyUsersFragment;
+import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
 import com.parse.ParseObject;
@@ -73,6 +76,7 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
         TextView tvArtistNameNU;
         TextView tvDistance;
         ImageView ivPlayButtonNU;
+        private boolean isDoubleClicked;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -146,6 +150,40 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
                     }
                 }
             });
+
+//            //Double click post to like:
+//            isDoubleClicked=false;
+//
+//            Handler handler=new Handler();
+//            Runnable r=new Runnable(){
+//                @Override
+//                public void run(){
+//                    //Actions when Single Clicked
+//                    Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
+//                    isDoubleClicked = false;
+//                }
+//            };
+//
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (isDoubleClicked){
+//                        //actions when double clicked
+//                        //add song to favs playlist
+//                        Song song = (Song) nearbyUsers.get(getAdapterPosition()).get(User.KEY_CURRENT_SONG);
+//                        Log.i(TAG, "song objects for user: " + ((Song) nearbyUsers.get(getAdapterPosition()).get(User.KEY_CURRENT_SONG)).getTitle());
+//                        SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + ParseUser.getCurrentUser().get("defaultPlaylistID") + "/tracks",
+//                                MainActivity.getmAccessToken(), song);
+//                        Toast.makeText(context, song.getTitle() + " " + context.getString(R.string.added_song) + " " + ParseUser.getCurrentUser().getUsername() + context.getString(R.string.default_favs), Toast.LENGTH_SHORT).show();
+//                        isDoubleClicked = false;
+//                        //remove callbacks for Handlers
+//                        handler.removeCallbacks(r);
+//                    }else{
+//                        isDoubleClicked=true;
+//                        handler.postDelayed(r,500);
+//                    }
+//                }
+//            });
 
         }
 

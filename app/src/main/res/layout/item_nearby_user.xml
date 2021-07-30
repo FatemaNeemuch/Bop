@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:background="@drawable/rounded_corners">
 
     <ImageView
@@ -41,6 +43,7 @@
         android:layout_toStartOf="@+id/tvDistance"
         android:layout_toEndOf="@+id/ivCover"
         android:fontFamily="@font/croissant_one"
+        android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Crying in the Club" />
 

@@ -175,9 +175,20 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         //check if app is running in background and only pause music if its not
         //use the getActivity().isFinishing method
-//        if (getActivity().isFinishing() || getActivity().isDestroyed()){
-//
+//        if (isDestroyed()){
+//            mSpotifyAppRemote.getPlayerApi().getPlayerState()
+//                    .setResultCallback(playerState -> {
+//                        mSpotifyAppRemote.getPlayerApi().pause();
+//                    })
+//                    .setErrorCallback(throwable -> {
+//                        Log.e(TAG, throwable.getMessage(), throwable);
+//                    });
 //        }
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
         mSpotifyAppRemote.getPlayerApi().getPlayerState()
                 .setResultCallback(playerState -> {
                     mSpotifyAppRemote.getPlayerApi().pause();
@@ -185,12 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 .setErrorCallback(throwable -> {
                     Log.e(TAG, throwable.getMessage(), throwable);
                 });
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.i(TAG, "onDestroy");
-        super.onDestroy();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+        super.onDestroy();
     }
 }

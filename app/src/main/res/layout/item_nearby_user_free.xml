@@ -40,6 +40,7 @@
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/FtvDistance"
         android:layout_toEndOf="@+id/FivCover"
+        android:singleLine="true"
         android:fontFamily="@font/croissant_one"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Crying in the Club" />
