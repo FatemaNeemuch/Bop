@@ -127,7 +127,7 @@ public class AlbumDetails extends AppCompatActivity {
                                 Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
                                 for (int i = 0; i < songsListForCurrentSong.size(); i++){
                                     Song songFromAlbum = (Song) songsListForCurrentSong.get(i);
-                                    if (track.uri.equals(songFromAlbum.getSongURI())){
+                                    if (track.uri.equals(songFromAlbum.getSongURI()) && !songSaved){
                                         songFromAlbum.setCurrentSong(songFromAlbum);
                                         songSaved = true;
                                     }

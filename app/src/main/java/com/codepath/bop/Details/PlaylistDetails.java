@@ -135,7 +135,7 @@ public class PlaylistDetails extends AppCompatActivity {
                                 Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
                                 for (int i = 0; i < songsListForCurrentSong.size(); i++){
                                     Song songFromPlaylist = (Song) songsListForCurrentSong.get(i);
-                                    if (track.uri.equals(songFromPlaylist.getSongURI())){
+                                    if (track.uri.equals(songFromPlaylist.getSongURI()) && !songSaved){
                                         songFromPlaylist.setCurrentSong(songFromPlaylist);
                                         songSaved = true;
                                     }
