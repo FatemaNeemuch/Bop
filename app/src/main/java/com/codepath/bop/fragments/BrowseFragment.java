@@ -129,7 +129,7 @@ public class BrowseFragment extends Fragment {
                 musicSearchResults = new ArrayList<>();
 
                 //get search results from DataManager
-                SpotifyDataManager.SearchResults(url, musicAdapter, musicSearchResults);
+                SpotifyDataManager.SearchResults(url, musicAdapter, musicSearchResults, premium);
                 searchView.clearFocus();
                 return true;
             }
