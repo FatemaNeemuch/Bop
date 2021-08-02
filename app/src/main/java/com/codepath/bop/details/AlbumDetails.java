@@ -30,6 +30,7 @@ import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AlbumDetails extends AppCompatActivity {
 
@@ -111,6 +112,7 @@ public class AlbumDetails extends AppCompatActivity {
                     mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
                     mSpotifyAppRemote.getPlayerApi().play(album.getAlbumURI());
                     mSpotifyAppRemote.getPlayerApi().setShuffle(true);
+                    AtomicBoolean songSaved = new AtomicBoolean(false);
                     // Subscribe to PlayerState
                     mSpotifyAppRemote.getPlayerApi()
                             .subscribeToPlayerState()
@@ -125,16 +127,15 @@ public class AlbumDetails extends AppCompatActivity {
                                         artistName = artistName + ", " + track.artists.get(i).name;
                                     }
                                 }
-                                boolean songSaved = false;
                                 Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
                                 for (int i = 0; i < songsListForCurrentSong.size(); i++){
                                     Song songFromAlbum = (Song) songsListForCurrentSong.get(i);
-                                    if (track.uri.equals(songFromAlbum.getSongURI()) && !songSaved){
+                                    if (track.uri.equals(songFromAlbum.getSongURI()) && !songSaved.get()){
                                         songFromAlbum.setCurrentSong(songFromAlbum);
-                                        songSaved = true;
+                                        songSaved.set(true);
                                     }
                                 }
-                                if (!songSaved){
+                                if (!songSaved.get()){
                                     String spotifyLogoURL = "https://www.macworld.com/wp-content/uploads/2021/03/spotify-logo-100779042-orig-3.jpg?quality=50&strip=all&w=1024";
                                     Song song = new Song(track.uri, track.name, track.album.name, artistName, "1/1/2011", spotifyLogoURL, "album", true);
                                     //save this song as the current song
