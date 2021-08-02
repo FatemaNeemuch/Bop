@@ -13,6 +13,7 @@ import com.codepath.bop.R;
 import com.codepath.bop.fragments.NearbyUsersFragment;
 import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.fragments.BrowseFragment;
+import com.codepath.bop.fragments.SearchFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -79,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
                         if(fragmentManager.findFragmentByTag("profile") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("profile")).commit();
                         }
+                        if(fragmentManager.findFragmentByTag("search") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
+                        }
                         break;
 
                     case R.id.bnNearbyUsers:
@@ -104,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(fragmentManager.findFragmentByTag("profile") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("profile")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("search") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
                         }
                         break;
 
@@ -131,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("search") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("search")).commit();
                         }
                         break;
                 }

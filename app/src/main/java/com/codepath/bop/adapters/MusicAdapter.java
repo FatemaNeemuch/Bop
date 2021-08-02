@@ -137,7 +137,8 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 //set play button based on whether the song is playing
                 Song currentUserSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
                 Log.i(TAG, "current user song title: " + currentUserSong.getTitle());
-                if (song.getisCurrentSong() || currentUserSong != null && song.getSongURI().equals(currentUserSong.getSongURI())){
+//                if (song.getisCurrentSong() || currentUserSong != null && song.getSongURI().equals(currentUserSong.getSongURI())){
+                if (song.getisCurrentSong()){
                     Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
                 }else{
                     Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);

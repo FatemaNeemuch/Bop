@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/maSearch"
+        android:id="@+id/startSearch"
         android:icon="@drawable/ic_search_black_24dp"
-        android:title="@string/search"
-        app:actionViewClass="android.widget.SearchView"
+        android:title="startSearch"
         app:showAsAction="always" />
     <item
-        android:id="@+id/Slogout"
+        android:id="@+id/Blogout"
         android:icon="@drawable/outline_logout_24"
         android:title="@string/logout"
         app:showAsAction="always" />
+
 </menu>
