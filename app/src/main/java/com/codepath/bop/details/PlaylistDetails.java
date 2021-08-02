@@ -140,6 +140,7 @@ public class PlaylistDetails extends AppCompatActivity {
                                         songSaved = true;
                                     }
                                 }
+//                                mSpotifyAppRemote.getImagesApi().getImage(track.imageUri); //get cover image as a bitmap
                                 if (!songSaved){
                                     String spotifyLogoURL = "https://www.macworld.com/wp-content/uploads/2021/03/spotify-logo-100779042-orig-3.jpg?quality=50&strip=all&w=1024";
                                     Song song = new Song(track.uri, track.name, track.album.name, artistName, "1/1/2011", spotifyLogoURL, "album", true);

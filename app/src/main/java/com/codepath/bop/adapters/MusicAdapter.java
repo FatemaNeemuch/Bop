@@ -25,6 +25,7 @@ import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Artist;
 import com.codepath.bop.models.Song;
+import com.codepath.bop.models.User;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
@@ -134,15 +135,14 @@ public class MusicAdapter extends RecyclerView.Adapter {
             if (premium){
                 ivPlayButton.setBackgroundResource(R.drawable.circle_background);
                 //set play button based on whether the song is playing
-                if (song.getisCurrentSong()){
+                Song currentUserSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
+                Log.i(TAG, "current user song title: " + currentUserSong.getTitle());
+                if (song.getisCurrentSong() || currentUserSong != null && song.getSongURI().equals(currentUserSong.getSongURI())){
                     Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
                 }else{
                     Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
                 }
-//                Song currentSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
-//                if (currentSong.getSongURI().equals(song.getSongURI())){
-//                    Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
-//                }else{
+//                if (!playing){
 //                    Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
 //                }
                 //play song here as well
@@ -174,6 +174,14 @@ public class MusicAdapter extends RecyclerView.Adapter {
                                         final Track track = playerState.track;
                                         if (track != null) {
                                             Log.i(TAG, track.name + " by " + track.artist.name);
+//                                            if (playerState.isPaused){
+//                                                Log.i(TAG, "player state paused");
+//                                                song.setKeyIsCurrentSong(false);
+//                                                ParseUser.getCurrentUser().put(User.KEY_CURRENT_SONG, null);
+//                                                ParseUser.getCurrentUser().saveInBackground();
+//                                                Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
+//                                            }
+
                                         }
                                     });
                             //change icon to pause button
