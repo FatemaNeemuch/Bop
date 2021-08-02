@@ -55,6 +55,12 @@ public class PlaylistDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_details);
 
+        //unwrap the playlist passed by the intent, using the simple name as key
+        playlist = getIntent().getExtras().getParcelable(Playlist.class.getSimpleName());
+
+        //set action bar title
+        setTitle(playlist.getName());
+
         //references to the views
         rvPlaylistSongs = findViewById(R.id.rvPlaylistSongs);
         ibBackPD = findViewById(R.id.ibBackPD);
@@ -72,9 +78,6 @@ public class PlaylistDetails extends AppCompatActivity {
         rvPlaylistSongs.setLayoutManager(linearLayoutManager);
 //        rvPlaylistSongs.setAdapter(adapter);
         rvPlaylistSongs.setAdapter(musicAdapter);
-
-        //unwrap the playlist passed by the intent, using the simple name as key
-        playlist = getIntent().getExtras().getParcelable(Playlist.class.getSimpleName());
 
         //set playlist name
         tvPlaylistNameDetails.setText(playlist.getName());

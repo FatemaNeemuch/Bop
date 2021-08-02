@@ -54,6 +54,12 @@ public class AlbumDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_details);
 
+        //unwrap the album passed by the intent, using the simple name as key
+        album = getIntent().getExtras().getParcelable(Album.class.getSimpleName());
+
+        //set action bar title
+        setTitle(album.getAlbumName());
+
         //references to the views
         rvAlbumSongs = findViewById(R.id.rvAlbumSongs);
         ibBackAD = findViewById(R.id.ibBackAD);
@@ -67,9 +73,6 @@ public class AlbumDetails extends AppCompatActivity {
         LinearLayoutManager linearLayoutManagerAlbums = new LinearLayoutManager(this);
         rvAlbumSongs.setLayoutManager(linearLayoutManagerAlbums);
         rvAlbumSongs.setAdapter(musicAdapter);
-
-        //unwrap the album passed by the intent, using the simple name as key
-        album = getIntent().getExtras().getParcelable(Album.class.getSimpleName());
 
         //set album name
         tvAlbumNameDetails.setText(album.getAlbumName());

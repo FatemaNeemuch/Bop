@@ -58,12 +58,16 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.bnSearch:
                         if(fragmentManager.findFragmentByTag("browse") != null) {
+                            //set action bar title
+                            setTitle("Browse");
                             //if the fragment exists, show it.
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("browse"))
                                     .commit();
                         } else {
+                            //set action bar title
+                            setTitle("Browse");
                             //if the fragment does not exist, add it to fragment manager.
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainer, new BrowseFragment(), "browse")
@@ -79,12 +83,16 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.bnNearbyUsers:
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null) {
+                            //set action bar title
+                            setTitle("Nearby Users");
                             //if the fragment exists, show it.
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("nearbyUsers"))
                                     .commit();
                         } else {
+                            //set action bar title
+                            setTitle("Nearby Users");
                             //if the fragment does not exist, add it to fragment manager.
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainer, new NearbyUsersFragment(), "nearbyUsers")
@@ -102,12 +110,16 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bnProfile:
                     default:
                         if(fragmentManager.findFragmentByTag("profile") != null) {
+                            //set action bar title
+                            setTitle("Account");
                             //if the fragment exists, show it.
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("profile"))
                                     .commit();
                         } else {
+                            //set action bar title
+                            setTitle("Account");
                             //if the fragment does not exist, add it to fragment manager.
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainer, new ProfileFragment(), "profile")

@@ -52,6 +52,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //set action bar title
+        setTitle("Login");
+
+        //initialize location manager
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         //if user is already logged in, stay logged in (persistence)

@@ -50,6 +50,9 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        //set action bar title
+        setTitle("Sign Up");
+
         // Get field from view
         etFullNameSignUp = findViewById(R.id.etFullNameSignUp);
         etUsernameSignUp = findViewById(R.id.etUsernameSignUp);
