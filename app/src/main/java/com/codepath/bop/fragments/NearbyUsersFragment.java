@@ -1,6 +1,12 @@
 package com.codepath.bop.fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +24,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
@@ -34,8 +45,7 @@ public class NearbyUsersFragment extends Fragment {
 
     //class constants
     public static final String TAG = "Nearby Users Fragment";
-    private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
-    private static final String REDIRECT_URI = "com.codepath.bop://callback";
+    private final int TEN_SECONDS = 1000 * 10;
 
     //instance variables
     private static SpotifyAppRemote mSpotifyAppRemote;
@@ -43,6 +53,9 @@ public class NearbyUsersFragment extends Fragment {
     private RecyclerView rvNearbyUsers;
     private NearbyUsersAdapter adapter;
     private NearbyUsersFreeAdapter freeAdapter;
+    private boolean premium;
+    private Handler handler;
+    private Runnable runnable;
 
     public NearbyUsersFragment() {
         // Required empty public constructor
@@ -55,8 +68,6 @@ public class NearbyUsersFragment extends Fragment {
                              Bundle savedInstanceState) {
         //update the presence of a menu
         setHasOptionsMenu(true);
-        //set title
-//        getActivity().setTitle("Nearby Users");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_nearby_users, container, false);
     }
@@ -77,7 +88,7 @@ public class NearbyUsersFragment extends Fragment {
         rvNearbyUsers.setLayoutManager(linearLayoutManager);
 
         //check if account is premium
-        boolean premium = SpotifyDataManager.getProduct().equals("premium");
+        premium = SpotifyDataManager.getProduct().equals("premium");
 
         if (premium){
             //Initialize the adapter
@@ -86,7 +97,7 @@ public class NearbyUsersFragment extends Fragment {
             //setup the adapter
             rvNearbyUsers.setAdapter(adapter);
 
-            ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
+//            ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
         }else{
             //Initialize the adapter
             freeAdapter = new NearbyUsersFreeAdapter(nearbyUsers, getContext());
@@ -94,8 +105,30 @@ public class NearbyUsersFragment extends Fragment {
             //setup the adapter
             rvNearbyUsers.setAdapter(freeAdapter);
 
-            ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
+//            ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
         }
+    }
+
+    public void scheduleUpdateNearbyUsers() {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (premium){
+                    nearbyUsers.clear();
+                    adapter.notifyDataSetChanged();
+                    ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
+                    Toast.makeText(getContext(), "nearby users premium", Toast.LENGTH_SHORT).show();
+                }else{
+                    nearbyUsers.clear();
+                    freeAdapter.notifyDataSetChanged();
+                    ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
+                    Toast.makeText(getContext(), "nearby users free", Toast.LENGTH_SHORT).show();
+                }
+                handler.postDelayed(this, TEN_SECONDS);
+            }
+        };
+        handler.postDelayed(runnable, TEN_SECONDS);
     }
 
     @Override
@@ -118,67 +151,25 @@ public class NearbyUsersFragment extends Fragment {
         return true;
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        // Set the connection parameters - get user authorization
-//        ConnectionParams connectionParams =
-//                new ConnectionParams.Builder(CLIENT_ID)
-//                        .setRedirectUri(REDIRECT_URI)
-//                        .showAuthView(true)
-//                        .build();
-//
-//        //connect to spotify
-//        SpotifyAppRemote.connect(getContext(), connectionParams,
-//                new Connector.ConnectionListener() {
-//
-//                    @Override
-//                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-//                        mSpotifyAppRemote = spotifyAppRemote;
-//                        Log.i(TAG, "Connected! Yay!");
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable throwable) {
-//                        Log.e(TAG, throwable.getMessage(), throwable);
-//
-//                        // Something went wrong when attempting to connect! Handle errors here
-//                    }
-//                });
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (premium){
+            nearbyUsers.clear();
+            adapter.notifyDataSetChanged();
+            ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
+        }else{
+            nearbyUsers.clear();
+            freeAdapter.notifyDataSetChanged();
+            ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
+        }
+        //constantly update nearby users
+        scheduleUpdateNearbyUsers();
+    }
 
-//    public static SpotifyAppRemote getmSpotifyAppRemote(){
-//        return mSpotifyAppRemote;
-//    }
-
-//    @Override
-//    public void onStop() {
-//        Log.i(TAG, "stopping the music");
-//        super.onStop();
-//        //check if app is running in background and only pause music if its not
-//        //use the getActivity().isFinishing method
-////        if (getActivity().isFinishing() || getActivity().isDestroyed()){
-////
-////        }
-//        if (SpotifyDataManager.getProduct().equals("premium")){
-//            mSpotifyAppRemote.getPlayerApi().getPlayerState()
-//                    .setResultCallback(playerState -> {
-//                        mSpotifyAppRemote.getPlayerApi().pause();
-//                    })
-//                    .setErrorCallback(throwable -> {
-//                        Log.e(TAG, throwable.getMessage(), throwable);
-//                    });
-//        }
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        Log.i(TAG, "onDestroy");
-//        super.onDestroy();
-//        if (SpotifyDataManager.getProduct().equals("premium")){
-//            SpotifyAppRemote.disconnect(mSpotifyAppRemote);
-//        }
-//
-//    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        handler.removeCallbacks(runnable);
+    }
 }
