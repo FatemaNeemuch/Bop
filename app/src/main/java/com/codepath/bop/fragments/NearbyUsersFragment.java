@@ -125,6 +125,7 @@ public class NearbyUsersFragment extends Fragment {
                     ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
                     Toast.makeText(getContext(), "nearby users free", Toast.LENGTH_SHORT).show();
                 }
+                ParseDatabaseManager.queryClearParseSongs();
                 handler.postDelayed(this, TEN_SECONDS);
             }
         };

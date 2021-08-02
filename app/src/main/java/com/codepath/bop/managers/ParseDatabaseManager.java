@@ -14,6 +14,7 @@ import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
@@ -32,32 +33,27 @@ public class ParseDatabaseManager {
     private static List<ParseUser> staticNearbyUsers;
     private static NearbyUsersAdapter staticAdapter;
     private static NearbyUsersFreeAdapter staticFreeAdapter;
+    private static List<ParseUser> allUsers;
 
     public static void queryNearbyUsers(List<ParseUser> nearbyUsers, NearbyUsersAdapter adapter){
         staticNearbyUsers = nearbyUsers;
         staticAdapter = adapter;
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.include(User.KEY_CURRENT_SONG);
-        query.whereNear("location", LoginActivity.getCurrentUserLocation());
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override  public void done(List<ParseUser> nearUsers, ParseException e) {
                 if (e == null) {
+                    allUsers = new ArrayList<>();
+                    allUsers.addAll(nearUsers);
                     // avoiding null pointer
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     // set the closestUser to the one that isn't the current user
                     for(int i = 0; i < nearUsers.size(); i++) {
                         if (!nearUsers.get(i).getObjectId().equals(currentUser.getObjectId()) && nearUsers.get(i).get(User.KEY_CURRENT_SONG) != null) {
                             staticNearbyUsers.add(nearUsers.get(i));
-                        }else{
-//                            ParseUser queryCurrentUser = nearUsers.get(i);
-//                            Song song = (Song) queryCurrentUser.get(User.KEY_CURRENT_SONG);
-//                            if(song != null){
-//                                Log.i(TAG, song.getKEY_TITLE());
-//                            }
-                            //other option:
-//                            staticNearbyUsers.add(0, nearUsers.get(i));
                         }
                     }
+                    sortOnDistance(staticNearbyUsers);
                     //update the views on the main thread in a static method
                     Handler mainHandler = new Handler(Looper.getMainLooper());
                     mainHandler.post(new Runnable() {
@@ -104,6 +100,33 @@ public class ParseDatabaseManager {
                     });
                 } else {
                     Log.e(TAG, "error getting nearby users", e);
+                    return;
+                }
+            }
+        });
+        ParseQuery.clearAllCachedResults();
+    }
+
+    public static void queryClearParseSongs() {
+        ParseQuery<Song> query = ParseQuery.getQuery(Song.class);
+        query.findInBackground(new FindCallback<Song>() {
+            @Override
+            public void done(List<Song> songs, ParseException e) {
+                if (e == null) {
+                    ArrayList<String> userSongIDs = new ArrayList<>();
+                    for (int i = 0; i < allUsers.size(); i++){
+                        Song userSong = (Song) allUsers.get(i).get(User.KEY_CURRENT_SONG);
+                        userSongIDs.add(userSong.getObjectId());
+                        Log.i(TAG, "User song ids: " + userSongIDs.toString());
+                    }
+                    // set the closestUser to the one that isn't the current user
+                    for(Song song: songs) {
+                        if (!userSongIDs.contains(song.getObjectId())){
+                            song.deleteInBackground();
+                        }
+                    }
+                } else {
+                    Log.e(TAG, "error getting songs to clear", e);
                     return;
                 }
             }
