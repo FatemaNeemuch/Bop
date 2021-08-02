@@ -200,7 +200,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 @Override
                 public void run(){
                     //Actions when Single Clicked
-                    Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
                     isDoubleClicked = false;
                 }
             };

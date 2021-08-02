@@ -30,7 +30,6 @@ import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlaylistDetails extends AppCompatActivity {
 
@@ -118,7 +117,6 @@ public class PlaylistDetails extends AppCompatActivity {
                     mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
                     mSpotifyAppRemote.getPlayerApi().play(playlist.getPlaylistURI());
                     mSpotifyAppRemote.getPlayerApi().setShuffle(true);
-                    AtomicBoolean songSaved = new AtomicBoolean(false);
                     // Subscribe to PlayerState
                     mSpotifyAppRemote.getPlayerApi()
                             .subscribeToPlayerState()
@@ -133,16 +131,17 @@ public class PlaylistDetails extends AppCompatActivity {
                                         artistName = artistName + ", " + track.artists.get(i).name;
                                     }
                                 }
+                                boolean songSaved = false;
                                 Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
                                 for (int i = 0; i < songsListForCurrentSong.size(); i++){
                                     Song songFromPlaylist = (Song) songsListForCurrentSong.get(i);
-                                    if (track.uri.equals(songFromPlaylist.getSongURI()) && !songSaved.get()){
+                                    if (track.uri.equals(songFromPlaylist.getSongURI()) && !songSaved){
                                         songFromPlaylist.setCurrentSong(songFromPlaylist);
-                                        songSaved.set(true);
+                                        songSaved = true;
                                     }
                                 }
 //                                mSpotifyAppRemote.getImagesApi().getImage(track.imageUri); //get cover image as a bitmap
-                                if (!songSaved.get()){
+                                if (!songSaved){
                                     String spotifyLogoURL = "https://www.macworld.com/wp-content/uploads/2021/03/spotify-logo-100779042-orig-3.jpg?quality=50&strip=all&w=1024";
                                     Song song = new Song(track.uri, track.name, track.album.name, artistName, "1/1/2011", spotifyLogoURL, "album", true);
                                     //save this song as the current song
