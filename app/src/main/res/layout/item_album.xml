@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/parent"
     android:layout_margin="5dp"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:background="@drawable/rounded_corners">
 
     <ImageView
