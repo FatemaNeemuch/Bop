@@ -80,6 +80,8 @@ public class ParseDatabaseManager {
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override  public void done(List<ParseUser> nearUsers, ParseException e) {
                 if (e == null) {
+                    allUsers = new ArrayList<>();
+                    allUsers.addAll(nearUsers);
                     // avoiding null pointer
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     // set the closestUser to the one that isn't the current user
