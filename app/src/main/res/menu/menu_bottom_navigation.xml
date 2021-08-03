@@ -5,7 +5,7 @@
     <item
         android:id="@+id/bnSearch"
         android:icon="@drawable/ic_search_black_24dp"
-        android:title="@string/search"
+        android:title="@string/browse"
         app:showAsAction="always" />
     <item
         android:id="@+id/bnNearbyUsers"

@@ -302,38 +302,27 @@ public class SpotifyDataManager {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
                     // Remove all songs from the adapter
                     staticSongs.clear();
+                    List<Album> albumsfromarray = fromSearchArrayAlbums(jsonObject.getJSONObject("albums").getJSONArray("items"));
+                    List<Artist> artistsfromarray = fromSearchArrayArtists(jsonObject.getJSONObject("artists").getJSONArray("items"));
+                    List<Song> songsfromarray;
                     if (premium){
-                        List<Song> songsfromarray = fromSearchArraySongs(jsonObject.getJSONObject("tracks").getJSONArray("items"));
-                        List<Album> albumsfromarray = fromSearchArrayAlbums(jsonObject.getJSONObject("albums").getJSONArray("items"));
-                        List<Artist> artistsfromarray = fromSearchArrayArtists(jsonObject.getJSONObject("artists").getJSONArray("items"));
-                        //parse data to get Music objects and add them to musicSearchResults list
-                        int i = 0;
-                        while (i < songsfromarray.size() || i < albumsfromarray.size() || i < artistsfromarray.size()){
-                            if (i < artistsfromarray.size()){
-                                musicSearchResults.add(artistsfromarray.get(i));
-                            }
-                            if (i < albumsfromarray.size()){
-                                musicSearchResults.add(albumsfromarray.get(i));
-                            }
-                            if (i  < songsfromarray.size()){
-                                musicSearchResults.add(songsfromarray.get(i));
-                            }
-                            i++;
-                        }
+                        songsfromarray = fromSearchArraySongs(jsonObject.getJSONObject("tracks").getJSONArray("items"));
                     }else{
-                        List<Album> albumsfromarray = fromSearchArrayAlbums(jsonObject.getJSONObject("albums").getJSONArray("items"));
-                        List<Artist> artistsfromarray = fromSearchArrayArtists(jsonObject.getJSONObject("artists").getJSONArray("items"));
-                        //parse data to get Music objects and add them to musicSearchResults list
-                        int i = 0;
-                        while (i < albumsfromarray.size() || i < artistsfromarray.size()){
-                            if (i < artistsfromarray.size()){
-                                musicSearchResults.add(artistsfromarray.get(i));
-                            }
-                            if (i < albumsfromarray.size()){
-                                musicSearchResults.add(albumsfromarray.get(i));
-                            }
-                            i++;
+                        songsfromarray = new ArrayList<>();
+                    }
+                    //parse data to get Music objects and add them to musicSearchResults list
+                    int i = 0;
+                    while (i < songsfromarray.size() || i < albumsfromarray.size() || i < artistsfromarray.size()){
+                        if (i < artistsfromarray.size()){
+                            musicSearchResults.add(artistsfromarray.get(i));
                         }
+                        if (i < albumsfromarray.size()){
+                            musicSearchResults.add(albumsfromarray.get(i));
+                        }
+                        if (i  < songsfromarray.size()){
+                            musicSearchResults.add(songsfromarray.get(i));
+                        }
+                        i++;
                     }
                     Log.i(TAG, "Search Query onResponse" + jsonObject.toString());
                     //update the views on the main thread in a static method

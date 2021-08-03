@@ -45,7 +45,7 @@ public class NearbyUsersFragment extends Fragment {
 
     //class constants
     public static final String TAG = "Nearby Users Fragment";
-    private final int DELAY = 1000 * 30;
+    private final int DELAY = 1000 * 180;
 
     //instance variables
     private static SpotifyAppRemote mSpotifyAppRemote;
@@ -96,16 +96,12 @@ public class NearbyUsersFragment extends Fragment {
 
             //setup the adapter
             rvNearbyUsers.setAdapter(adapter);
-
-//            ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
         }else{
             //Initialize the adapter
             freeAdapter = new NearbyUsersFreeAdapter(nearbyUsers, getContext());
 
             //setup the adapter
             rvNearbyUsers.setAdapter(freeAdapter);
-
-//            ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
         }
     }
 
@@ -114,13 +110,12 @@ public class NearbyUsersFragment extends Fragment {
         runnable = new Runnable() {
             @Override
             public void run() {
+                nearbyUsers.clear();
                 if (premium){
-                    nearbyUsers.clear();
                     adapter.notifyDataSetChanged();
                     ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
                     Toast.makeText(getContext(), "nearby users premium", Toast.LENGTH_SHORT).show();
                 }else{
-                    nearbyUsers.clear();
                     freeAdapter.notifyDataSetChanged();
                     ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
                     Toast.makeText(getContext(), "nearby users free", Toast.LENGTH_SHORT).show();

@@ -38,4 +38,5 @@
     <string name="default_favs">\'s Favs</string>
     <string name="is_this_your_spotify_account">Is this your Spotify Account?</string>
     <string name="artist_name">Olivia Rodrigo</string>
+    <string name="browse">Browse</string>
 </resources>
