@@ -293,9 +293,9 @@ public class MusicAdapter extends RecyclerView.Adapter {
             tvArtistNameItem.setText(artist.getArtistName());
             //set the artist image
             if (artist.getArtistImageURL().equals("")){
-                Glide.with(context).load(R.drawable.generic_profile_pic).transform(new RoundedCornersTransformation(30, 5)).into(ivArtistImage);
+                Glide.with(context).load(R.drawable.generic_profile_pic).circleCrop().into(ivArtistImage);
             }else{
-                Glide.with(context).load(artist.getArtistImageURL()).transform(new RoundedCornersTransformation(30, 5)).into(ivArtistImage);
+                Glide.with(context).load(artist.getArtistImageURL()).circleCrop().into(ivArtistImage);
             }
             //show details arrow
             Glide.with(context).load(R.drawable.ic_baseline_arrow_forward_ios_24).into(ivGoToDetailsArtist);
