@@ -45,7 +45,7 @@ public class NearbyUsersFragment extends Fragment {
 
     //class constants
     public static final String TAG = "Nearby Users Fragment";
-    private final int TEN_SECONDS = 1000 * 10;
+    private final int DELAY = 1000 * 30;
 
     //instance variables
     private static SpotifyAppRemote mSpotifyAppRemote;
@@ -126,10 +126,10 @@ public class NearbyUsersFragment extends Fragment {
                     Toast.makeText(getContext(), "nearby users free", Toast.LENGTH_SHORT).show();
                 }
                 ParseDatabaseManager.queryClearParseSongs();
-                handler.postDelayed(this, TEN_SECONDS);
+                handler.postDelayed(this, DELAY);
             }
         };
-        handler.postDelayed(runnable, TEN_SECONDS);
+        handler.postDelayed(runnable, DELAY);
     }
 
     @Override
