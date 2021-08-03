@@ -116,9 +116,11 @@ public class ParseDatabaseManager {
                     ArrayList<String> userSongIDs = new ArrayList<>();
                     for (int i = 0; i < allUsers.size(); i++){
                         Song userSong = (Song) allUsers.get(i).get(User.KEY_CURRENT_SONG);
-                        userSongIDs.add(userSong.getObjectId());
-                        Log.i(TAG, "User song ids: " + userSongIDs.toString());
+                        if (userSong != null){
+                            userSongIDs.add(userSong.getObjectId());
+                        }
                     }
+                    Log.i(TAG, "User song ids: " + userSongIDs.toString());
                     // set the closestUser to the one that isn't the current user
                     for(Song song: songs) {
                         if (!userSongIDs.contains(song.getObjectId())){
