@@ -24,6 +24,7 @@ import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Artist;
+import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
 import com.parse.ParseUser;
@@ -226,7 +227,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class AlbumViewHolder extends RecyclerView.ViewHolder{
+    public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         //instance variables
         private ImageView ivAlbumCover;
@@ -240,6 +241,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
             tvAlbumTitle = itemView.findViewById(R.id.tvAlbumTitle);
             tvAlbumArtistName = itemView.findViewById(R.id.tvAlbumArtistName);
             ivGoToDetails = itemView.findViewById(R.id.ivGoToDetails);
+            itemView.setOnClickListener(this);
         }
 
         void bindView(int position) {
@@ -271,9 +273,28 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 }
             });
         }
+
+        @Override
+        public void onClick(View v) {
+            // gets item position
+            int position = getAdapterPosition();
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the artist at the position, this won't work if the class is static
+                Album album = (Album) musicList.get(position);
+                Bundle bundle1 = new Bundle();
+                bundle1.putParcelable(Album.class.getSimpleName(), album);
+                // create intent for the new activity
+                Intent intent = new Intent(context, AlbumDetails.class);
+                //send in playlist object
+                intent.putExtras(bundle1);
+                // show the activity
+                context.startActivity(intent);
+            }
+        }
     }
 
-    public class ArtistViewHolder extends RecyclerView.ViewHolder{
+    public class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         //instance variables
         private ImageView ivArtistImage;
@@ -285,6 +306,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
             ivArtistImage = itemView.findViewById(R.id.ivArtistImage);
             tvArtistNameItem = itemView.findViewById(R.id.tvArtistNameItem);
             ivGoToDetailsArtist = itemView.findViewById(R.id.ivGoToDetailsArtist);
+            itemView.setOnClickListener(this);
         }
 
         public void bindView(int position) {
@@ -316,6 +338,25 @@ public class MusicAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+        }
+
+        @Override
+        public void onClick(View v) {
+            // gets item position
+            int position = getAdapterPosition();
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the artist at the position, this won't work if the class is static
+                Artist artist = (Artist) musicList.get(position);
+                Bundle bundle1 = new Bundle();
+                bundle1.putParcelable(Artist.class.getSimpleName(), artist);
+                // create intent for the new activity
+                Intent intent = new Intent(context, ArtistDetails.class);
+                //send in playlist object
+                intent.putExtras(bundle1);
+                // show the activity
+                context.startActivity(intent);
+            }
         }
     }
 }
