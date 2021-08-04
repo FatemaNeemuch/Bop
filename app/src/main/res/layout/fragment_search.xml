@@ -11,11 +11,17 @@
         android:layout_alignParentTop="true"
         app:menu="@menu/menu_search_tabs" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearchResults"
+    <FrameLayout
+        android:id="@+id/flContainerSF"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tabs"
-        android:layout_marginBottom="0dp" />
+        android:layout_below="@id/tabs" />
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/rvSearchResults"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@+id/tabs"-->
+<!--        android:layout_marginBottom="0dp" />-->
 
 </RelativeLayout>

@@ -18,7 +18,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/songResults"
-        android:title="Song"
+        android:title="Songs"
         android:icon="@drawable/outline_music_note_24"
         app:showAsAction="always" />
 </menu>

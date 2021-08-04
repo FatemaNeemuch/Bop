@@ -2,6 +2,7 @@ package com.codepath.bop.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,17 +14,25 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.bop.Music;
 import com.codepath.bop.R;
+import com.codepath.bop.SearchResultFragments.AlbumResultsFragment;
+import com.codepath.bop.SearchResultFragments.AllResultsFragment;
+import com.codepath.bop.SearchResultFragments.ArtistResultsFragment;
+import com.codepath.bop.SearchResultFragments.SongResultsFragment;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
+import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Song;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -43,6 +52,10 @@ public class SearchFragment extends Fragment {
     private boolean premium;
     private MusicAdapter musicAdapter;
     private List<Music> musicSearchResults;
+    private BottomNavigationView tabs;
+    private FragmentManager fragmentManager;
+    private static String url;
+    private String currentURL;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -65,22 +78,170 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //reference to views
-        rvSearchResults = view.findViewById(R.id.rvSearchResults);
+//        rvSearchResults = view.findViewById(R.id.rvSearchResults);
+        tabs = view.findViewById(R.id.tabs);
 
         //check if account is premium
         premium = SpotifyDataManager.getProduct().equals("premium");
 
         //Initialize the list of songs and adapter
-        songs = new ArrayList<>();
-        musicAdapter = new MusicAdapter(songs, getContext());
+//        songs = new ArrayList<>();
+//        musicAdapter = new MusicAdapter(songs, getContext());
 
         //Recycler view setup: layout manager and the adapter
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvSearchResults.setLayoutManager(linearLayoutManager);
-        rvSearchResults.setAdapter(musicAdapter);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        rvSearchResults.setLayoutManager(linearLayoutManager);
+//        rvSearchResults.setAdapter(musicAdapter);
 
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
+
+        currentURL = "";
+        url = "";
+    }
+
+    public void tabs(){
+        tabs.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                fragmentManager = getChildFragmentManager();
+                //show fragment based on the tab that was clicked:
+                switch (item.getItemId()){
+                    case R.id.allResults:
+                        if(fragmentManager.findFragmentByTag("allResults") != null) {
+                            if (currentURL.equals(url)){
+                                //if the fragment exists, show it w/ animation
+                                fragmentManager.beginTransaction()
+                                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                        .show(fragmentManager.findFragmentByTag("allResults"))
+                                        .commit();
+                            }else{
+                                //create a new fragment for a new query
+                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new AllResultsFragment(), "allResults").commit();
+                                currentURL = url;
+                            }
+                        } else {
+                            //if the fragment does not exist, add it to fragment manager.
+                            fragmentManager.beginTransaction()
+                                    .add(R.id.flContainerSF, new AllResultsFragment(), "allResults")
+                                    .commit();
+                            currentURL = url;
+                        }
+                        //if the other fragments are visible, hide them.
+                        if(fragmentManager.findFragmentByTag("artistResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("artistResults")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("albumResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("albumResults")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("songResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("songResults")).commit();
+                        }
+                        break;
+
+                    case R.id.artistResults:
+                        if(fragmentManager.findFragmentByTag("artistResults") != null) {
+                            if (currentURL.equals(url)){
+                                //if the fragment exists, show it w/ animation
+                                fragmentManager.beginTransaction()
+                                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                        .show(fragmentManager.findFragmentByTag("artistResults"))
+                                        .commit();
+                            }else{
+                                //create a new fragment for a new query
+                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ArtistResultsFragment(), "artistResults").commit();
+                                currentURL = url;
+                            }
+                        } else {
+                            //if the fragment does not exist, add it to fragment manager.
+                            fragmentManager.beginTransaction()
+                                    .add(R.id.flContainerSF, new ArtistResultsFragment(), "artistResults")
+                                    .commit();
+                            currentURL = url;
+                        }
+                        //if the other fragments are visible, hide them.
+                        if(fragmentManager.findFragmentByTag("allResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("allResults")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("albumResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("albumResults")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("songResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("songResults")).commit();
+                        }
+                        break;
+
+                    case R.id.albumResults:
+                        if(fragmentManager.findFragmentByTag("albumResults") != null) {
+                            if (currentURL.equals(url)){
+                                //if the fragment exists, show it w/ animation
+                                fragmentManager.beginTransaction()
+                                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                        .show(fragmentManager.findFragmentByTag("albumResults"))
+                                        .commit();
+                            }else{
+                                //create a new fragment for a new query
+                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new AlbumResultsFragment(), "albumResults").commit();
+                                currentURL = url;
+                            }
+                        } else {
+                            //if the fragment does not exist, add it to fragment manager.
+                            fragmentManager.beginTransaction()
+                                    .add(R.id.flContainerSF, new AlbumResultsFragment(), "albumResults")
+                                    .commit();
+                            currentURL = url;
+                        }
+                        //if the other fragments are visible, hide them.
+                        if(fragmentManager.findFragmentByTag("allResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("allResults")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("artistResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("artistResults")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("songResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("songResults")).commit();
+                        }
+                        break;
+
+                    case R.id.songResults:
+                    default:
+                        if(fragmentManager.findFragmentByTag("songResults") != null) {
+                            if (currentURL.equals(url)){
+                                //if the fragment exists, show it w/ animation
+                                fragmentManager.beginTransaction()
+                                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                        .show(fragmentManager.findFragmentByTag("songResults"))
+                                        .commit();
+                            }else{
+                                //create a new fragment for a new query
+                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new SongResultsFragment(), "songResults").commit();
+                                currentURL = url;
+                            }
+                        } else {
+                            //if the fragment does not exist, add it to fragment manager.
+                            fragmentManager.beginTransaction()
+                                    .add(R.id.flContainerSF, new SongResultsFragment(), "songResults")
+                                    .commit();
+                            currentURL = url;
+                        }
+                        //if the other fragments are visible, hide them.
+                        if(fragmentManager.findFragmentByTag("allResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("allResults")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("artistResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("artistResults")).commit();
+                        }
+                        if(fragmentManager.findFragmentByTag("albumResults") != null){
+                            fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("albumResults")).commit();
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
+
+        // Set default selection
+        tabs.setSelectedItemId(R.id.allResults);
     }
 
     @Override
@@ -103,19 +264,21 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 //create url for search query
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(getString(R.string.searchURL)).newBuilder();
                 urlBuilder.addQueryParameter("q", query);
                 urlBuilder.addQueryParameter("type", "track,artist,album");
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
-                String url = urlBuilder.build().toString();
-
-                musicSearchResults = new ArrayList<>();
-
-                //get search results from DataManager
-                SpotifyDataManager.SearchResults(url, musicAdapter, musicSearchResults, premium);
+                url = urlBuilder.build().toString();
+//
+//                musicSearchResults = new ArrayList<>();
+//
+//                //get search results from DataManager
+//                SpotifyDataManager.SearchResults(url, musicAdapter, musicSearchResults, premium);
                 searchView.clearFocus();
+
+                tabs();
+
                 return true;
             }
 
@@ -139,5 +302,9 @@ public class SearchFragment extends Fragment {
             startActivity(intent);
         }
         return true;
+    }
+
+    public static String getURL(){
+        return url;
     }
 }
