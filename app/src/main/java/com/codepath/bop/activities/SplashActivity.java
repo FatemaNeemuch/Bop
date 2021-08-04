@@ -31,12 +31,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void authenticateSpotify() {
-        Log.i(TAG, "authenticate Spotify");
         //build request with correct scopes
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
         builder.setScopes(new String[]{SCOPES});
         AuthenticationRequest request = builder.build();
-        Log.i(TAG, "open Login Activity");
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
 
     }
@@ -44,14 +42,9 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-
-        Log.i(TAG, "onActivity Result");
-        Log.i(TAG, "requestCode: " + requestCode);
-
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
@@ -62,12 +55,10 @@ public class SplashActivity extends AppCompatActivity {
                     //get User profile information
                     SpotifyDataManager.getUserProfile("https://api.spotify.com/v1/me", mAccessToken, SplashActivity.this);
                     break;
-
                 // Auth flow returned an error
                 case ERROR:
                     Log.i(TAG, "error when getting response");
                     break;
-
                 // Most likely auth flow was cancelled
                 default:
                     Log.i(TAG, "auth flow was cancelled");

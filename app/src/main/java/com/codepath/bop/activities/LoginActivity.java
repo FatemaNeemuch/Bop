@@ -76,7 +76,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick login button");
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 //method checks if valid username and password entered
@@ -110,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Log.i(TAG, "done user: " + user.getUsername() + ", currentUser: " + ParseUser.getCurrentUser().getUsername());
                 //check if correct Spotify account
                 boolean correctAccount = correctAccount();
                 //only move forward if correct spotify account
