@@ -1,6 +1,5 @@
 package com.codepath.bop.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -10,19 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.codepath.bop.R;
+import com.codepath.bop.fragments.BrowseFragment;
 import com.codepath.bop.fragments.NearbyUsersFragment;
 import com.codepath.bop.fragments.ProfileFragment;
-import com.codepath.bop.fragments.BrowseFragment;
-import com.codepath.bop.fragments.SearchFragment;
-import com.codepath.bop.managers.SpotifyDataManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "Main Activity";
     private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
     private static final String REDIRECT_URI = "com.codepath.bop://callback";
-    private static final int REQUEST_CODE = 873;
-    private static final String SCOPES = "user-read-recently-played,user-library-modify,user-read-email,user-read-private,streaming,playlist-read-private,user-top-read";
 
     //instance variables
     private static SpotifyAppRemote mSpotifyAppRemote;
@@ -47,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
         //reference to views
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+        //get access token from Splash Activity
         mAccessToken = SplashActivity.getmAccessToken();
+
+        //show correct tabs and fragments
         bottomNavigationView();
     }
 
@@ -55,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+                //show fragment based on the tab that was clicked:
                 switch (item.getItemId()){
                     case R.id.bnSearch:
                         if(fragmentManager.findFragmentByTag("browse") != null) {
                             //set action bar title
                             setTitle("Browse");
-                            //if the fragment exists, show it.
+                            //if the fragment exists, show it w/ animation
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("browse"))
@@ -74,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                                     .add(R.id.flContainer, new BrowseFragment(), "browse")
                                     .commit();
                         }
+                        //if the other fragments are visible, hide them.
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null){
                             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("nearbyUsers")).commit();
                         }
@@ -89,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         if(fragmentManager.findFragmentByTag("nearbyUsers") != null) {
                             //set action bar title
                             setTitle("Nearby Users");
-                            //if the fragment exists, show it.
+                            //if the fragment exists, show it w/ animation
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("nearbyUsers"))
@@ -119,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                         if(fragmentManager.findFragmentByTag("profile") != null) {
                             //set action bar title
                             setTitle("Account");
-                            //if the fragment exists, show it.
+                            //if the fragment exists, show it w/ animation
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                                     .show(fragmentManager.findFragmentByTag("profile"))
@@ -160,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
         // Set the connection parameters - get user authorization
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
@@ -181,8 +176,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Throwable throwable) {
                         Log.e(TAG, throwable.getMessage(), throwable);
-
-                        // Something went wrong when attempting to connect! Handle errors here
                     }
                 });
     }
@@ -196,16 +189,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "stopping the music");
         super.onStop();
         //check if app is running in background and only pause music if its not
-        //use the getActivity().isFinishing method
-//        if (isDestroyed()){
-//            mSpotifyAppRemote.getPlayerApi().getPlayerState()
-//                    .setResultCallback(playerState -> {
-//                        mSpotifyAppRemote.getPlayerApi().pause();
-//                    })
-//                    .setErrorCallback(throwable -> {
-//                        Log.e(TAG, throwable.getMessage(), throwable);
-//                    });
-//        }
+        //use the isFinishing() or isDestroyed() method?
     }
 
     @Override

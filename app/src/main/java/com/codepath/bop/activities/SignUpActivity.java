@@ -1,32 +1,18 @@
 package com.codepath.bop.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
-
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.codepath.bop.R;
 import com.codepath.bop.dialog.ConfirmSpotifyDialogFragment;
-import com.codepath.bop.dialog.CreateNewPlaylistDialogFragment;
-import com.codepath.bop.managers.SpotifyDataManager;
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -61,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUpModal = findViewById(R.id.btnSignUpModal);
         btnCancelSignUp = findViewById(R.id.btnCancelSignUp);
 
+        //cancel button to go back to login activity
         btnCancelSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,9 +64,12 @@ public class SignUpActivity extends AppCompatActivity {
                 username = etUsernameSignUp.getText().toString();
                 password = etPasswordSignUp.getText().toString();
                 confirmPassword = etConfirmPasswordSignUp.getText().toString();
+                //check all fields have been entered properly
                 if (samePassword() && notEmpty()){
+                    //ask user if the currently logged in spotify account is correct for them
                     showConfirmSpotifyDialog();
                 }else{
+                    //clear password boxes if they don't match
                     etPasswordSignUp.setText("");
                     etConfirmPasswordSignUp.setText("");
                     Toast.makeText(SignUpActivity.this, getString(R.string.mismatch_passwords), Toast.LENGTH_SHORT).show();

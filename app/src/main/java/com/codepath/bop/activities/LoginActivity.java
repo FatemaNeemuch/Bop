@@ -1,10 +1,5 @@
 package com.codepath.bop.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,25 +13,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.codepath.bop.R;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 public class LoginActivity extends AppCompatActivity {
 
     //class constants
     public static final String TAG = "LoginActivity";
     private static final int REQUEST_LOCATION = 1;
-    private static final String CLIENT_ID = "8d28149b161f40d1b429b265bcf79e4b";
-    private static final String REDIRECT_URI = "com.codepath.bop://callback";
-    private static final int REQUEST_CODE = 873;
-    private static final String SCOPES = "user-read-recently-played,user-library-modify,user-read-email,user-read-private,streaming,playlist-read-private,user-top-read";
 
 
     //instance variables
@@ -45,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView tvSignUp;
     private LocationManager locationManager;
-    private static String mAccessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +51,17 @@ public class LoginActivity extends AppCompatActivity {
 
         //if user is already logged in, stay logged in (persistence)
         if(ParseUser.getCurrentUser() != null){
+            //check if the correct spotify account it logged in
             if (correctAccount()){
+                //get the user's current location
                 if (saveCurrentUserLocation()){
                     goToMainActivity();
                 }else{
+                    //logout if no location
                     logout();
                 }
             }else{
+                //logout if incorrect account
                 logout();
             }
         }
@@ -95,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
+                //can't swipe backwards to login page
                 finish();
             }
         });
@@ -110,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e(TAG, "issue with login", e);
                     etUsername.setText("");
                     etPassword.setText("");
+                    //inform user why they can't log in
                     Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -127,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, getString(R.string.logged_in), Toast.LENGTH_SHORT).show();
                     }
                 }else{
+                    //inform user that spotify account is incorrect
                     Toast.makeText(LoginActivity.this, getString(R.string.wrong_spotify_account) + " " +SpotifyDataManager.getDisplayName(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -158,6 +156,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
+                //save user location in database
                 if (currentUser != null) {
                     currentUser.put("location", currentUserLocation);
                     currentUser.saveInBackground();
@@ -179,7 +178,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         switch (requestCode){
             case REQUEST_LOCATION:
                 saveCurrentUserLocation();
@@ -188,10 +186,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public static ParseGeoPoint getCurrentUserLocation(){
-
         // finding currentUser
         ParseUser currentUser = ParseUser.getCurrentUser();
-
         if (currentUser == null) {
             Log.i(TAG, "current user is null");
         }

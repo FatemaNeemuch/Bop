@@ -79,6 +79,5 @@ public class SplashActivity extends AppCompatActivity {
     public static String getmAccessToken() {
         return mAccessToken;
     }
-
 }
 
