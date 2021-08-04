@@ -142,7 +142,7 @@ public class PlaylistDetails extends AppCompatActivity {
                                 }
 //                                mSpotifyAppRemote.getImagesApi().getImage(track.imageUri); //get cover image as a bitmap
                                 if (!songSaved){
-                                    String spotifyLogoURL = "https://www.macworld.com/wp-content/uploads/2021/03/spotify-logo-100779042-orig-3.jpg?quality=50&strip=all&w=1024";
+                                    String spotifyLogoURL = "https://pbs.twimg.com/profile_images/560739405543907328/kOWO3V15.png";
                                     Song song = new Song(track.uri, track.name, track.album.name, artistName, "1/1/2011", spotifyLogoURL, "album", true);
                                     //save this song as the current song
                                     song.setCurrentSong(song);
