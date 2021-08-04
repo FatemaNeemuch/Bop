@@ -1,10 +1,5 @@
 package com.codepath.bop.details;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.bop.Music;
 import com.codepath.bop.R;
@@ -21,7 +21,6 @@ import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Artist;
-import com.codepath.bop.models.Song;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -57,6 +56,7 @@ public class ArtistDetails extends AppCompatActivity {
         ibBackArtD = findViewById(R.id.ibBackArtD);
         tvArtistNameArtD = findViewById(R.id.tvArtistNameArtD);
 
+        //instantiate list and adapter
         albums = new ArrayList<>();
         musicAdapter = new MusicAdapter(albums, this);
 
@@ -79,7 +79,7 @@ public class ArtistDetails extends AppCompatActivity {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
-        //get playlist songs from SpotifyDataManager
+        //get artist's albums from SpotifyDataManager
         SpotifyDataManager.getArtistAlbums("https://api.spotify.com/v1/artists/" + artist.getArtistID() + "/albums", (List<Album>) albums, musicAdapter, mAccessToken);
     }
 

@@ -66,7 +66,9 @@ public class AlbumDetails extends AppCompatActivity {
         tvAlbumNameDetails = findViewById(R.id.tvAlbumNameDetails);
         ibPlayButtonAD = findViewById(R.id.ibPlayButtonAD);
 
+        //instantiate lists and adapter
         albumSongs = new ArrayList<>();
+        songsListForCurrentSong = new ArrayList<>();
         musicAdapter = new MusicAdapter(albumSongs, this);
 
         //Recycler view setup: layout manager and the adapter
@@ -77,9 +79,7 @@ public class AlbumDetails extends AppCompatActivity {
         //set album name
         tvAlbumNameDetails.setText(album.getAlbumName());
 
-        songsListForCurrentSong = new ArrayList<>();
-
-        //go back to the profile fragment
+        //go back to the search fragment
         ibBackAD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +92,7 @@ public class AlbumDetails extends AppCompatActivity {
 
         playing = false;
 
-        //play the playlist
+        //play the album
         ibPlayButtonAD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +106,6 @@ public class AlbumDetails extends AppCompatActivity {
                 }else{
                     //update variable
                     playing = true;
-                    Log.i(TAG, album.getAlbumName());
                     //play song from spotify
                     mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
                     mSpotifyAppRemote.getPlayerApi().play(album.getAlbumURI());
@@ -119,6 +118,7 @@ public class AlbumDetails extends AppCompatActivity {
                                 if (track != null) {
                                     Log.i(TAG, track.name + " by " + track.artist.name);
                                 }
+                                //get full list of artists
                                 String artistName = track.artists.get(0).name;;
                                 if (track.artists.size() > 1){
                                     for (int i = 1; i < track.artists.size(); i++){
@@ -126,14 +126,17 @@ public class AlbumDetails extends AppCompatActivity {
                                     }
                                 }
                                 boolean songSaved = false;
-                                Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
+                                //save song to Parse
                                 for (int i = 0; i < songsListForCurrentSong.size(); i++){
                                     Song songFromAlbum = (Song) songsListForCurrentSong.get(i);
                                     if (track.uri.equals(songFromAlbum.getSongURI()) && !songSaved){
+                                        //save this song as current song
                                         songFromAlbum.setCurrentSong(songFromAlbum);
                                         songSaved = true;
                                     }
                                 }
+                                //create song object from track to save to Parse if song not in album
+                                //this is for free users mainly because Spotify plays random songs
                                 if (!songSaved){
                                     String spotifyLogoURL = "https://pbs.twimg.com/profile_images/560739405543907328/kOWO3V15.png";
                                     Song song = new Song(track.uri, track.name, track.album.name, artistName, "1/1/2011", spotifyLogoURL, "album", true);
@@ -150,7 +153,7 @@ public class AlbumDetails extends AppCompatActivity {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
-        //get playlist songs from SpotifyDataManager
+        //get album songs from SpotifyDataManager
         SpotifyDataManager.getTracksfromAlbum("https://api.spotify.com/v1/albums/" + album.getAlbumID() + "/tracks", (List<Song>) albumSongs, musicAdapter, mAccessToken, true, album);
     }
 
@@ -172,10 +175,6 @@ public class AlbumDetails extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-//        else if (item.getItemId() == R.id.addSong){
-//            SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks",
-//                    MainActivity.getmAccessToken(), new Song());
-//        }
         return super.onOptionsItemSelected(item);
     }
 }

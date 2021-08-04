@@ -39,7 +39,6 @@ public class PlaylistDetails extends AppCompatActivity {
     //instance variables
     private RecyclerView rvPlaylistSongs;
     private List<? extends Music> playlistSongs;
-//    private SongAdapter adapter;
     private ImageButton ibBackPD;
     private TextView tvPlaylistNameDetails;
     private ImageView ibPlayButtonPD;
@@ -67,28 +66,25 @@ public class PlaylistDetails extends AppCompatActivity {
         tvPlaylistNameDetails = findViewById(R.id.tvPlaylistNameDetails);
         ibPlayButtonPD = findViewById(R.id.ibPlayButtonPD);
 
-        boolean premium = SpotifyDataManager.getProduct().equals("premium");
-
+        //instantiate lists and adapter
         playlistSongs = new ArrayList<>();
-//        adapter = new SongAdapter(playlistSongs, this, premium);
+        songsListForCurrentSong = new ArrayList<>();
         musicAdapter = new MusicAdapter(playlistSongs, this);
 
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvPlaylistSongs.setLayoutManager(linearLayoutManager);
-//        rvPlaylistSongs.setAdapter(adapter);
         rvPlaylistSongs.setAdapter(musicAdapter);
 
         //set playlist name
         tvPlaylistNameDetails.setText(playlist.getName());
-
-        songsListForCurrentSong = new ArrayList<>();
 
         //go back to the profile fragment
         ibBackPD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+                //show animation when transitioning
                 overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
             }
         });
@@ -112,8 +108,7 @@ public class PlaylistDetails extends AppCompatActivity {
                 }else{
                     //update variable
                     playing = true;
-                    Log.i(TAG, playlist.getName());
-                    //play song from spotify
+                    //shuffle play playlist from spotify
                     mSpotifyAppRemote = MainActivity.getmSpotifyAppRemote();
                     mSpotifyAppRemote.getPlayerApi().play(playlist.getPlaylistURI());
                     mSpotifyAppRemote.getPlayerApi().setShuffle(true);
@@ -125,6 +120,7 @@ public class PlaylistDetails extends AppCompatActivity {
                                 if (track != null) {
                                     Log.i(TAG, track.name + " by " + track.artist.name);
                                 }
+                                //get full list of artists
                                 String artistName = track.artists.get(0).name;;
                                 if (track.artists.size() > 1){
                                     for (int i = 1; i < track.artists.size(); i++){
@@ -132,15 +128,17 @@ public class PlaylistDetails extends AppCompatActivity {
                                     }
                                 }
                                 boolean songSaved = false;
-                                Log.i(TAG, "songsListForCurrentSong size: " + songsListForCurrentSong.size());
+                                //save song to Parse
                                 for (int i = 0; i < songsListForCurrentSong.size(); i++){
                                     Song songFromPlaylist = (Song) songsListForCurrentSong.get(i);
                                     if (track.uri.equals(songFromPlaylist.getSongURI()) && !songSaved){
+                                        //save this song as current song
                                         songFromPlaylist.setCurrentSong(songFromPlaylist);
                                         songSaved = true;
                                     }
                                 }
-//                                mSpotifyAppRemote.getImagesApi().getImage(track.imageUri); //get cover image as a bitmap
+                                //create song object from track to save to Parse if song not in playlist
+                                //this is for free users mainly because Spotify plays random songs
                                 if (!songSaved){
                                     String spotifyLogoURL = "https://pbs.twimg.com/profile_images/560739405543907328/kOWO3V15.png";
                                     Song song = new Song(track.uri, track.name, track.album.name, artistName, "1/1/2011", spotifyLogoURL, "album", true);
@@ -179,10 +177,6 @@ public class PlaylistDetails extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-//        else if (item.getItemId() == R.id.addSong){
-//            SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + playlist.getPlaylistID() + "/tracks",
-//                    MainActivity.getmAccessToken(), new Song());
-//        }
         return super.onOptionsItemSelected(item);
     }
 }
