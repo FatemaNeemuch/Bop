@@ -72,6 +72,10 @@ public class ResultsFragment extends Fragment {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
-        SpotifyDataManager.SearchResults(SearchFragment.getURL(), musicAdapter, musicSearchResults, premium, artists, albums, songs);
+        if (premium){
+            SpotifyDataManager.SearchResults(SearchFragment.getURL(), musicAdapter, musicSearchResults, premium, artists, albums, songs);
+        }else{
+            SpotifyDataManager.SearchResults(SearchFreeFragment.getURL(), musicAdapter, musicSearchResults, premium, artists, albums, songs);
+        }
     }
 }

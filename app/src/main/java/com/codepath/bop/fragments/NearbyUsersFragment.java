@@ -45,7 +45,7 @@ public class NearbyUsersFragment extends Fragment {
 
     //class constants
     public static final String TAG = "Nearby Users Fragment";
-    private final int DELAY = 1000 * 180;
+    private final int DELAY = 1000 * 60;
 
     //instance variables
     private static SpotifyAppRemote mSpotifyAppRemote;
