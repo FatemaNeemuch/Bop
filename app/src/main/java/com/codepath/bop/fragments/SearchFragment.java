@@ -2,7 +2,6 @@ package com.codepath.bop.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,28 +13,20 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.bop.Music;
 import com.codepath.bop.R;
-import com.codepath.bop.SearchResultFragments.AlbumResultsFragment;
-import com.codepath.bop.SearchResultFragments.AllResultsFragment;
-import com.codepath.bop.SearchResultFragments.ArtistResultsFragment;
-import com.codepath.bop.SearchResultFragments.SongResultsFragment;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.managers.SpotifyDataManager;
-import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Song;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.HttpUrl;
@@ -117,13 +108,13 @@ public class SearchFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new AllResultsFragment(), "allResults").commit();
+                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ResultsFragment(true, true, true), "allResults").commit();
                                 currentURL = url;
                             }
                         } else {
                             //if the fragment does not exist, add it to fragment manager.
                             fragmentManager.beginTransaction()
-                                    .add(R.id.flContainerSF, new AllResultsFragment(), "allResults")
+                                    .add(R.id.flContainerSF, new ResultsFragment(true, true, true), "allResults")
                                     .commit();
                             currentURL = url;
                         }
@@ -149,13 +140,13 @@ public class SearchFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ArtistResultsFragment(), "artistResults").commit();
+                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ResultsFragment(true, false, false), "artistResults").commit();
                                 currentURL = url;
                             }
                         } else {
                             //if the fragment does not exist, add it to fragment manager.
                             fragmentManager.beginTransaction()
-                                    .add(R.id.flContainerSF, new ArtistResultsFragment(), "artistResults")
+                                    .add(R.id.flContainerSF, new ResultsFragment(true, false, false), "artistResults")
                                     .commit();
                             currentURL = url;
                         }
@@ -181,13 +172,13 @@ public class SearchFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new AlbumResultsFragment(), "albumResults").commit();
+                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ResultsFragment(false, true, false), "albumResults").commit();
                                 currentURL = url;
                             }
                         } else {
                             //if the fragment does not exist, add it to fragment manager.
                             fragmentManager.beginTransaction()
-                                    .add(R.id.flContainerSF, new AlbumResultsFragment(), "albumResults")
+                                    .add(R.id.flContainerSF, new ResultsFragment(false, true, false), "albumResults")
                                     .commit();
                             currentURL = url;
                         }
@@ -214,13 +205,13 @@ public class SearchFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new SongResultsFragment(), "songResults").commit();
+                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ResultsFragment(false, false, true), "songResults").commit();
                                 currentURL = url;
                             }
                         } else {
                             //if the fragment does not exist, add it to fragment manager.
                             fragmentManager.beginTransaction()
-                                    .add(R.id.flContainerSF, new SongResultsFragment(), "songResults")
+                                    .add(R.id.flContainerSF, new ResultsFragment(false, false, true), "songResults")
                                     .commit();
                             currentURL = url;
                         }

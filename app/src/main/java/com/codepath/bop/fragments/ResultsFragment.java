@@ -1,4 +1,4 @@
-package com.codepath.bop.SearchResultFragments;
+package com.codepath.bop.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,15 +15,14 @@ import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.MusicAdapter;
 import com.codepath.bop.fragments.SearchFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
-import com.codepath.bop.models.Song;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllResultsFragment extends Fragment {
+public class ResultsFragment extends Fragment {
 
     //class constants
-    public static final String TAG = "All Results";
+    public static final String TAG = "Results";
 
     //instance variables
     private List<Music> musicSearchResults;
@@ -31,8 +30,15 @@ public class AllResultsFragment extends Fragment {
     private RecyclerView rvSearchResults;
     private static String mAccessToken;
     private boolean premium;
+    private boolean artists;
+    private boolean albums;
+    private boolean songs;
 
-    public AllResultsFragment() {}
+    public ResultsFragment(boolean artists, boolean albums, boolean songs) {
+        this.artists = artists;
+        this.albums = albums;
+        this.songs = songs;
+    }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
     // either dynamically or via XML layout inflation.
@@ -66,6 +72,6 @@ public class AllResultsFragment extends Fragment {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
-        SpotifyDataManager.SearchResults(SearchFragment.getURL(), musicAdapter, musicSearchResults, premium, true, true, true);
+        SpotifyDataManager.SearchResults(SearchFragment.getURL(), musicAdapter, musicSearchResults, premium, artists, albums, songs);
     }
 }
