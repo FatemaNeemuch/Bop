@@ -1,31 +1,19 @@
 package com.codepath.bop.fragments;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
-import android.os.Looper;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
@@ -34,9 +22,6 @@ import com.codepath.bop.adapters.NearbyUsersFreeAdapter;
 import com.codepath.bop.managers.ParseDatabaseManager;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.parse.ParseUser;
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +33,6 @@ public class NearbyUsersFragment extends Fragment {
     private final int DELAY = 1000 * 60;
 
     //instance variables
-    private static SpotifyAppRemote mSpotifyAppRemote;
     private List<ParseUser> nearbyUsers;
     private RecyclerView rvNearbyUsers;
     private NearbyUsersAdapter adapter;
@@ -91,16 +75,12 @@ public class NearbyUsersFragment extends Fragment {
         premium = SpotifyDataManager.getProduct().equals("premium");
 
         if (premium){
-            //Initialize the adapter
+            //Initialize and set up the adapter
             adapter = new NearbyUsersAdapter(nearbyUsers, getContext());
-
-            //setup the adapter
             rvNearbyUsers.setAdapter(adapter);
         }else{
-            //Initialize the adapter
+            //Initialize and set up the free adapter
             freeAdapter = new NearbyUsersFreeAdapter(nearbyUsers, getContext());
-
-            //setup the adapter
             rvNearbyUsers.setAdapter(freeAdapter);
         }
     }
@@ -113,14 +93,16 @@ public class NearbyUsersFragment extends Fragment {
                 nearbyUsers.clear();
                 if (premium){
                     adapter.notifyDataSetChanged();
+                    //update nearby users for premium
                     ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
-                    Toast.makeText(getContext(), "nearby users premium", Toast.LENGTH_SHORT).show();
                 }else{
                     freeAdapter.notifyDataSetChanged();
+                    //update nearby users for free
                     ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
-                    Toast.makeText(getContext(), "nearby users free", Toast.LENGTH_SHORT).show();
                 }
+                //clear all songs from Parse that aren't a user's current song
                 ParseDatabaseManager.queryClearParseSongs();
+                //perform these calls after the delay
                 handler.postDelayed(this, DELAY);
             }
         };
@@ -150,12 +132,13 @@ public class NearbyUsersFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        nearbyUsers.clear();
         if (premium){
-            nearbyUsers.clear();
+            //show nearby users for premium
             adapter.notifyDataSetChanged();
             ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
         }else{
-            nearbyUsers.clear();
+            //show nearby users for free
             freeAdapter.notifyDataSetChanged();
             ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
         }
@@ -166,6 +149,7 @@ public class NearbyUsersFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        //stop updating nearby users
         handler.removeCallbacks(runnable);
     }
 }

@@ -14,20 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.codepath.bop.Music;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
-import com.codepath.bop.activities.MainActivity;
-import com.codepath.bop.adapters.MusicAdapter;
-import com.codepath.bop.managers.SpotifyDataManager;
-import com.codepath.bop.models.Song;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 import okhttp3.HttpUrl;
 
@@ -37,12 +29,6 @@ public class SearchFreeFragment extends Fragment {
     public static final String TAG = "Search Free Fragment";
 
     //instance variables
-    private List<Song> songs;
-    private RecyclerView rvSearchResults;
-    private static String mAccessToken;
-    private boolean premium;
-    private MusicAdapter musicAdapter;
-    private List<Music> musicSearchResults;
     private BottomNavigationView tabsFree;
     private FragmentManager fragmentManager;
     private static String url;
@@ -71,12 +57,7 @@ public class SearchFreeFragment extends Fragment {
         //reference to views
         tabsFree = view.findViewById(R.id.tabsFree);
 
-        //check if account is premium
-        premium = SpotifyDataManager.getProduct().equals("premium");
-
-        //get access token
-        mAccessToken = MainActivity.getmAccessToken();
-
+        //initialize variables
         currentURL = "";
         url = "";
     }
@@ -98,7 +79,10 @@ public class SearchFreeFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerFSF, new ResultsFragment(true, true, false), "allResults").commit();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flContainerFSF, new ResultsFragment(true, true, false), "allResults")
+                                        .commit();
+                                //update current URL
                                 currentURL = url;
                             }
                         } else {
@@ -106,6 +90,7 @@ public class SearchFreeFragment extends Fragment {
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainerFSF, new ResultsFragment(true, true, false), "allResults")
                                     .commit();
+                            //update current URL
                             currentURL = url;
                         }
                         //if the other fragments are visible, hide them.
@@ -127,7 +112,10 @@ public class SearchFreeFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerFSF, new ResultsFragment(true, false, false), "artistResults").commit();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flContainerFSF, new ResultsFragment(true, false, false), "artistResults")
+                                        .commit();
+                                //update current URL
                                 currentURL = url;
                             }
                         } else {
@@ -135,6 +123,7 @@ public class SearchFreeFragment extends Fragment {
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainerFSF, new ResultsFragment(true, false, false), "artistResults")
                                     .commit();
+                            //update current URL
                             currentURL = url;
                         }
                         //if the other fragments are visible, hide them.
@@ -157,7 +146,10 @@ public class SearchFreeFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerFSF, new ResultsFragment(false, true, false), "albumResults").commit();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flContainerFSF, new ResultsFragment(false, true, false), "albumResults")
+                                        .commit();
+                                //update current URL
                                 currentURL = url;
                             }
                         } else {
@@ -165,6 +157,7 @@ public class SearchFreeFragment extends Fragment {
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainerFSF, new ResultsFragment(false, true, false), "albumResults")
                                     .commit();
+                            //update current URL
                             currentURL = url;
                         }
                         //if the other fragments are visible, hide them.
@@ -194,8 +187,11 @@ public class SearchFreeFragment extends Fragment {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                // hide search fragment
                 getActivity().getSupportFragmentManager().beginTransaction().hide(SearchFreeFragment.this).commit();
+                //set title back to Browse
                 getActivity().setTitle("Browse");
+                //show Browse fragment
                 getActivity().getSupportFragmentManager().beginTransaction().show(getActivity().getSupportFragmentManager().findFragmentByTag("browse")).commit();
                 return false;
             }
@@ -210,13 +206,11 @@ public class SearchFreeFragment extends Fragment {
                 urlBuilder.addQueryParameter("type", "track,artist,album");
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 url = urlBuilder.build().toString();
-//
-//                musicSearchResults = new ArrayList<>();
-//
-//                //get search results from DataManager
-//                SpotifyDataManager.SearchResults(url, musicAdapter, musicSearchResults, premium);
+
+                //dismiss keyboard
                 searchView.clearFocus();
 
+                //show correct tabs and fragments
                 tabs();
 
                 return true;

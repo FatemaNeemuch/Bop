@@ -14,20 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.codepath.bop.Music;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
-import com.codepath.bop.activities.MainActivity;
-import com.codepath.bop.adapters.MusicAdapter;
-import com.codepath.bop.managers.SpotifyDataManager;
-import com.codepath.bop.models.Song;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 import okhttp3.HttpUrl;
 
@@ -37,12 +29,6 @@ public class SearchFragment extends Fragment {
     public static final String TAG = "Search Fragment";
 
     //instance variables
-    private List<Song> songs;
-    private RecyclerView rvSearchResults;
-    private static String mAccessToken;
-    private boolean premium;
-    private MusicAdapter musicAdapter;
-    private List<Music> musicSearchResults;
     private BottomNavigationView tabs;
     private FragmentManager fragmentManager;
     private static String url;
@@ -69,24 +55,9 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //reference to views
-//        rvSearchResults = view.findViewById(R.id.rvSearchResults);
         tabs = view.findViewById(R.id.tabs);
 
-        //check if account is premium
-        premium = SpotifyDataManager.getProduct().equals("premium");
-
-        //Initialize the list of songs and adapter
-//        songs = new ArrayList<>();
-//        musicAdapter = new MusicAdapter(songs, getContext());
-
-        //Recycler view setup: layout manager and the adapter
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//        rvSearchResults.setLayoutManager(linearLayoutManager);
-//        rvSearchResults.setAdapter(musicAdapter);
-
-        //get access token
-        mAccessToken = MainActivity.getmAccessToken();
-
+        //initialize variables
         currentURL = "";
         url = "";
     }
@@ -108,7 +79,10 @@ public class SearchFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ResultsFragment(true, true, true), "allResults").commit();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flContainerSF, new ResultsFragment(true, true, true), "allResults")
+                                        .commit();
+                                //update current URL
                                 currentURL = url;
                             }
                         } else {
@@ -116,6 +90,7 @@ public class SearchFragment extends Fragment {
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainerSF, new ResultsFragment(true, true, true), "allResults")
                                     .commit();
+                            //update current URL
                             currentURL = url;
                         }
                         //if the other fragments are visible, hide them.
@@ -140,7 +115,10 @@ public class SearchFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ResultsFragment(true, false, false), "artistResults").commit();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flContainerSF, new ResultsFragment(true, false, false), "artistResults")
+                                        .commit();
+                                //update current URL
                                 currentURL = url;
                             }
                         } else {
@@ -172,7 +150,10 @@ public class SearchFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ResultsFragment(false, true, false), "albumResults").commit();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flContainerSF, new ResultsFragment(false, true, false), "albumResults")
+                                        .commit();
+                                //update current URL
                                 currentURL = url;
                             }
                         } else {
@@ -180,6 +161,7 @@ public class SearchFragment extends Fragment {
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainerSF, new ResultsFragment(false, true, false), "albumResults")
                                     .commit();
+                            //update current URL
                             currentURL = url;
                         }
                         //if the other fragments are visible, hide them.
@@ -205,7 +187,10 @@ public class SearchFragment extends Fragment {
                                         .commit();
                             }else{
                                 //create a new fragment for a new query
-                                fragmentManager.beginTransaction().replace(R.id.flContainerSF, new ResultsFragment(false, false, true), "songResults").commit();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flContainerSF, new ResultsFragment(false, false, true), "songResults")
+                                        .commit();
+                                //update current URL
                                 currentURL = url;
                             }
                         } else {
@@ -213,6 +198,7 @@ public class SearchFragment extends Fragment {
                             fragmentManager.beginTransaction()
                                     .add(R.id.flContainerSF, new ResultsFragment(false, false, true), "songResults")
                                     .commit();
+                            //update current URL
                             currentURL = url;
                         }
                         //if the other fragments are visible, hide them.
@@ -245,8 +231,11 @@ public class SearchFragment extends Fragment {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                //hide search fragment
                 getActivity().getSupportFragmentManager().beginTransaction().hide(SearchFragment.this).commit();
+                //set title back to browse
                 getActivity().setTitle("Browse");
+                //show browse fragment
                 getActivity().getSupportFragmentManager().beginTransaction().show(getActivity().getSupportFragmentManager().findFragmentByTag("browse")).commit();
                 return false;
             }
@@ -261,13 +250,11 @@ public class SearchFragment extends Fragment {
                 urlBuilder.addQueryParameter("type", "track,artist,album");
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 url = urlBuilder.build().toString();
-//
-//                musicSearchResults = new ArrayList<>();
-//
-//                //get search results from DataManager
-//                SpotifyDataManager.SearchResults(url, musicAdapter, musicSearchResults, premium);
+
+                //dismiss keyboard
                 searchView.clearFocus();
 
+                //show correct tabs and fragments
                 tabs();
 
                 return true;

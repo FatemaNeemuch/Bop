@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.bop.Music;
 import com.codepath.bop.R;
-import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.MusicAdapter;
-import com.codepath.bop.fragments.SearchFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ public class ResultsFragment extends Fragment {
     private List<Music> musicSearchResults;
     private MusicAdapter musicAdapter;
     private RecyclerView rvSearchResults;
-    private static String mAccessToken;
     private boolean premium;
     private boolean artists;
     private boolean albums;
@@ -69,12 +66,11 @@ public class ResultsFragment extends Fragment {
         rvSearchResults.setLayoutManager(linearLayoutManager);
         rvSearchResults.setAdapter(musicAdapter);
 
-        //get access token
-        mAccessToken = MainActivity.getmAccessToken();
-
         if (premium){
+            //get URL from SearchFragment for API call
             SpotifyDataManager.SearchResults(SearchFragment.getURL(), musicAdapter, musicSearchResults, premium, artists, albums, songs);
         }else{
+            //get URL from SearchFreeFragment for API call
             SpotifyDataManager.SearchResults(SearchFreeFragment.getURL(), musicAdapter, musicSearchResults, premium, artists, albums, songs);
         }
     }

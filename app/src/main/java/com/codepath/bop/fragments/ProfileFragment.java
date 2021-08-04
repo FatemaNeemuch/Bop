@@ -2,14 +2,6 @@ package com.codepath.bop.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
@@ -44,10 +42,9 @@ public class ProfileFragment extends Fragment {
     //instance variables
     private RecyclerView rvPlaylists;
     private static ProfileAdapter adapter;
-    private static List<Playlist> playlists; //figure out if you should post Playlist to spotify or upload to Parse
+    private static List<Playlist> playlists;
     private TextView tvUsernameProfile;
     private ImageView ivProfilePic;
-    private Button btnEditProfile;
     private static String mAccessToken;
 
     public ProfileFragment() {
@@ -61,8 +58,6 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         //update the presence of a menu
         setHasOptionsMenu(true);
-        //set title
-//        getActivity().setTitle("Account");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
@@ -77,8 +72,8 @@ public class ProfileFragment extends Fragment {
         rvPlaylists = view.findViewById(R.id.rvPlaylists);
         tvUsernameProfile = view.findViewById(R.id.tvUsernameProfile);
         ivProfilePic = view.findViewById(R.id.ivProfilePic);
-        btnEditProfile = view.findViewById(R.id.btnEditProfile);
 
+        //instantiate list and adapter
         playlists = new ArrayList<>();
         adapter = new ProfileAdapter(getContext(), playlists);
 
@@ -89,16 +84,8 @@ public class ProfileFragment extends Fragment {
 
         //set username and profile pic
         tvUsernameProfile.setText("Hi " + ParseUser.getCurrentUser().getUsername() + "!");
-        //to get profile pic:
-            //add a ParseFile profilePic property to User
-            //launch camera functionality
-            //save profile pic to parse database
-            //ParseFile profilePic = ParseUser.getCurrentUser().get("profilePic")
-            //Glide.with(getContext()).load(profilePic.getURl()).into(ivProfilePic);
-        //for now add a placeholder
 
-        //THIS WILL CAUSE AN ISSUE WHEN USER WANTS TO SAVE PROFILE PIC BECAUSE SPOTIFY PIC WILL
-        //STILL HAVE A URL SO IT WON'T GET THE PICTURE THE USER TOOK FROM PARSE
+        //set User profile pic
         if (SpotifyDataManager.getProfilePicURl().equals(".")){
             //use generic profile pic saved on parse if no Spotify profile picture
             Glide.with(getContext())
@@ -113,25 +100,10 @@ public class ProfileFragment extends Fragment {
                     .into(ivProfilePic);
         }
 
-//        //use Spotify profile picture if available
-//        Glide.with(getContext())
-//                .load(ParseUser.getCurrentUser().getParseFile(User.KEY_PROFILE_PIC_FILE).getUrl())
-//                .circleCrop()
-//                .into(ivProfilePic);
-
-        //AMEND CODE WHEN IMPLEMENTING OPTIONAL FEATURE OF USER CHANGING PROFILE PICTURE
-
-        btnEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //start an intent to either a modal overlay or another activity where you can
-                //edit the User model fields and then save to Parse Database
-            }
-        });
-
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
+        //method makes API call- created to avoid redundant code
         getPlaylists(false, null);
     }
 
@@ -140,9 +112,8 @@ public class ProfileFragment extends Fragment {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.spotify.com/v1/me/playlists").newBuilder();
         urlBuilder.addQueryParameter("limit", String.valueOf(50));
         String playlistUrl = urlBuilder.build().toString();
-
         //get user's playlists from SpotifyDataManager
-        SpotifyDataManager.getPlaylists("https://api.spotify.com/v1/me/playlists?limit=50", mAccessToken, playlists, adapter, fromCreatePlaylist, createNewPlaylistDialogFragment);
+        SpotifyDataManager.getPlaylists(playlistUrl, mAccessToken, playlists, adapter, fromCreatePlaylist, createNewPlaylistDialogFragment);
     }
 
     @Override
