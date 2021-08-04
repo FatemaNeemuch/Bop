@@ -16,17 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.codepath.bop.details.AlbumDetails;
-import com.codepath.bop.details.ArtistDetails;
 import com.codepath.bop.Music;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
+import com.codepath.bop.details.AlbumDetails;
+import com.codepath.bop.details.ArtistDetails;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Artist;
-import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
-import com.codepath.bop.models.User;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
@@ -52,6 +50,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        //figure out what object the item is
         return musicList.get(position).getType();
     }
 
@@ -59,6 +58,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView;
+        //inflate correct view based on object type
         switch (viewType) {
             case Music.TYPE_SONG:
                 itemView = LayoutInflater.from(context).inflate(R.layout.item_song, parent, false);
@@ -74,6 +74,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        //go to correct viewholder's bind method based on object type
         switch (getItemViewType(position)) {
             case Music.TYPE_SONG:
                 ((SongViewHolder) holder).bindView(position);
@@ -120,8 +121,8 @@ public class MusicAdapter extends RecyclerView.Adapter {
             tvArtistName = itemView.findViewById(R.id.tvArtistName);
             ivCover = itemView.findViewById(R.id.ivCover);
             ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
+            //initialize variables
             premium = SpotifyDataManager.getProduct().equals("premium");
-            //initialize variable
             playing = false;
         }
 
@@ -136,17 +137,11 @@ public class MusicAdapter extends RecyclerView.Adapter {
             if (premium){
                 ivPlayButton.setBackgroundResource(R.drawable.circle_background);
                 //set play button based on whether the song is playing
-                Song currentUserSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
-                Log.i(TAG, "current user song title: " + currentUserSong.getTitle());
-//                if (song.getisCurrentSong() || currentUserSong != null && song.getSongURI().equals(currentUserSong.getSongURI())){
                 if (song.getisCurrentSong()){
                     Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
                 }else{
                     Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
                 }
-//                if (!playing){
-//                    Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
-//                }
                 //play song here as well
                 ivPlayButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -176,14 +171,6 @@ public class MusicAdapter extends RecyclerView.Adapter {
                                         final Track track = playerState.track;
                                         if (track != null) {
                                             Log.i(TAG, track.name + " by " + track.artist.name);
-//                                            if (playerState.isPaused){
-//                                                Log.i(TAG, "player state paused");
-//                                                song.setKeyIsCurrentSong(false);
-//                                                ParseUser.getCurrentUser().put(User.KEY_CURRENT_SONG, null);
-//                                                ParseUser.getCurrentUser().saveInBackground();
-//                                                Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);
-//                                            }
-
                                         }
                                     });
                             //change icon to pause button
@@ -200,8 +187,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
             Runnable r=new Runnable(){
                 @Override
                 public void run(){
-                    //Actions when Single Clicked
-//                    Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
+                    //single click actions
                     isDoubleClicked = false;
                 }
             };
@@ -237,10 +223,12 @@ public class MusicAdapter extends RecyclerView.Adapter {
 
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
+            //reference views
             ivAlbumCover = itemView.findViewById(R.id.ivAlbumCover);
             tvAlbumTitle = itemView.findViewById(R.id.tvAlbumTitle);
             tvAlbumArtistName = itemView.findViewById(R.id.tvAlbumArtistName);
             ivGoToDetails = itemView.findViewById(R.id.ivGoToDetails);
+            //set listener
             itemView.setOnClickListener(this);
         }
 
@@ -303,9 +291,11 @@ public class MusicAdapter extends RecyclerView.Adapter {
 
         public ArtistViewHolder(@NonNull View itemView) {
             super(itemView);
+            //reference to views
             ivArtistImage = itemView.findViewById(R.id.ivArtistImage);
             tvArtistNameItem = itemView.findViewById(R.id.tvArtistNameItem);
             ivGoToDetailsArtist = itemView.findViewById(R.id.ivGoToDetailsArtist);
+            //set listener
             itemView.setOnClickListener(this);
         }
 

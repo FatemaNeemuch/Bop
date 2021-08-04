@@ -211,6 +211,10 @@ public class Song extends ParseObject implements Parcelable, Music {
         return isCurrentSong;
     }
 
+    public void setIsCurrentSong(Song song, boolean status){
+        song.isCurrentSong = status;
+    }
+
     //parse getter and setter methods
 
     public String getKEY_TITLE() {

@@ -1,27 +1,21 @@
 package com.codepath.bop.managers;
 
-import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.adapters.NearbyUsersAdapter;
 import com.codepath.bop.adapters.NearbyUsersFreeAdapter;
-import com.codepath.bop.adapters.SongAdapter;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ParseDatabaseManager {

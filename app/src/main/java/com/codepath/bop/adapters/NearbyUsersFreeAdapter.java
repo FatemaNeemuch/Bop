@@ -1,7 +1,6 @@
 package com.codepath.bop.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
-import com.codepath.bop.fragments.BrowseFragment;
-import com.codepath.bop.fragments.NearbyUsersFragment;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.types.Track;
 
 import java.util.List;
 
@@ -72,6 +66,7 @@ public class NearbyUsersFreeAdapter extends RecyclerView.Adapter<NearbyUsersFree
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            //reference views
             FivCover = itemView.findViewById(R.id.FivCover);
             FtvUsernameNU = itemView.findViewById(R.id.FtvUsernameNU);
             FtvSongTitleNU = itemView.findViewById(R.id.FtvSongTitleNU);
@@ -87,7 +82,6 @@ public class NearbyUsersFreeAdapter extends RecyclerView.Adapter<NearbyUsersFree
             FtvDistance.setText(Math.round(distance * 100.0) / 100.0 + " m");
             //get song object
             Song pUserSong = (Song) pUser.get(User.KEY_CURRENT_SONG);
-            Log.i(TAG, ParseUser.getCurrentUser().getUsername());
             //set song title
             FtvSongTitleNU.setText(pUserSong.getKEY_TITLE());
             //set artist

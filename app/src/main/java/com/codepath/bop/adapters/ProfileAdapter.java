@@ -24,6 +24,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     //class constants
     public static final String TAG = "Profile Adapter";
+
     //instance variables
     Context context;
     List<Playlist> playlists;
@@ -61,17 +62,22 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            //reference views
             ivPlaylistCover = (ImageView)itemView.findViewById(R.id.ivPlaylistCover);
             tvPlaylistName = (TextView)itemView.findViewById(R.id.tvPlaylistName);
+            //set listener
             itemView.setOnClickListener(this);
         }
 
         public void bind(Playlist playlist) {
-            //get playlist name and cover from Spotify API
+            //set playlist name
             tvPlaylistName.setText(playlist.getName());
+            //set playlist cover
             if (playlist.getCoverURL().equals("")){
+                //if no cover from spotify, use generic image
                 Glide.with(context).load(R.drawable.sample_record_image).into(ivPlaylistCover);
             }else{
+                //show cover from spotify if available
                 Glide.with(context).load(playlist.getCoverURL()).centerCrop().into(ivPlaylistCover);
             }
         }
@@ -92,6 +98,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
                 intent.putExtras(bundle1);
                 // show the activity
                 context.startActivity(intent);
+                //show animation when transitioning
                 ((MainActivity) context).overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
             }
         }

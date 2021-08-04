@@ -1,14 +1,12 @@
 package com.codepath.bop.adapters;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,12 +15,8 @@ import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
-import com.codepath.bop.fragments.BrowseFragment;
-import com.codepath.bop.fragments.NearbyUsersFragment;
-import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
@@ -76,16 +70,17 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
         TextView tvArtistNameNU;
         TextView tvDistance;
         ImageView ivPlayButtonNU;
-        private boolean isDoubleClicked;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            //reference to views
             ivCover = itemView.findViewById(R.id.ivCover);
             tvUsernameNU = itemView.findViewById(R.id.tvUsernameNU);
             tvSongTitleNU = itemView.findViewById(R.id.tvSongTitleNU);
             tvArtistNameNU = itemView.findViewById(R.id.tvArtistNameNU);
             tvDistance = itemView.findViewById(R.id.tvDistance);
             ivPlayButtonNU = itemView.findViewById(R.id.ivPlayButtonNU);
+            //initialize variables
             playing = false;
         }
 
@@ -97,23 +92,15 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
             tvDistance.setText(Math.round(distance * 100.0) / 100.0 + " m");
             //get song object
             Song pUserSong = (Song) pUser.get(User.KEY_CURRENT_SONG);
-            //get current user's song object
-//            Song currentUserSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
-            Log.i(TAG, ParseUser.getCurrentUser().getUsername());
             //set song title
             tvSongTitleNU.setText(pUserSong.getKEY_TITLE());
             //set artist
             tvArtistNameNU.setText(pUserSong.getKEY_ARTIST());
             //set song cover
             Glide.with(context).load(pUserSong.getKEY_COVER_URL()).transform(new RoundedCornersTransformation(30, 5)).into(ivCover);
-            //set play button based on whether the song is playing in recycler view
-//            if (sameSong(pUserSong, currentUserSong)){
-//                Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButtonNU);
-//            }else{
-//                Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
-//            }
+            //set play button
             Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
-            //play song here as well
+            //play song
             ivPlayButtonNU.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -122,12 +109,15 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
                         mSpotifyAppRemote.getPlayerApi().pause();
                         //change icon back to play button
                         Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
-                        //update current song playing
-//                        ParseUser.getCurrentUser().put(User.KEY_CURRENT_SONG, null); //not sure this line works
                         //update variable
                         playing = false;
                     }else{
                         //update current song playing
+                        Song currentSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
+                        if (currentSong != null){
+                            currentSong.setIsCurrentSong(currentSong, false);
+                        }
+                        //save new current song to parse
                         ParseUser.getCurrentUser().put(User.KEY_CURRENT_SONG, pUser.get(User.KEY_CURRENT_SONG));
                         ParseUser.getCurrentUser().saveInBackground();
                         //play song if button is clicked when the song is not playing
@@ -150,50 +140,6 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
                     }
                 }
             });
-
-//            //Double click post to like:
-//            isDoubleClicked=false;
-//
-//            Handler handler=new Handler();
-//            Runnable r=new Runnable(){
-//                @Override
-//                public void run(){
-//                    //Actions when Single Clicked
-//                    Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
-//                    isDoubleClicked = false;
-//                }
-//            };
-//
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (isDoubleClicked){
-//                        //actions when double clicked
-//                        //add song to favs playlist
-//                        Song song = (Song) nearbyUsers.get(getAdapterPosition()).get(User.KEY_CURRENT_SONG);
-//                        Log.i(TAG, "song objects for user: " + ((Song) nearbyUsers.get(getAdapterPosition()).get(User.KEY_CURRENT_SONG)).getTitle());
-//                        SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + ParseUser.getCurrentUser().get("defaultPlaylistID") + "/tracks",
-//                                MainActivity.getmAccessToken(), song);
-//                        Toast.makeText(context, song.getTitle() + " " + context.getString(R.string.added_song) + " " + ParseUser.getCurrentUser().getUsername() + context.getString(R.string.default_favs), Toast.LENGTH_SHORT).show();
-//                        isDoubleClicked = false;
-//                        //remove callbacks for Handlers
-//                        handler.removeCallbacks(r);
-//                    }else{
-//                        isDoubleClicked=true;
-//                        handler.postDelayed(r,500);
-//                    }
-//                }
-//            });
-
-        }
-
-        private boolean sameSong(Song pUserSong, Song currentUserSong){
-            if (pUserSong.getObjectId().equals(currentUserSong.getObjectId())){
-                Log.i(TAG, "pUserSong object ID: " + pUserSong.getObjectId());
-                Log.i(TAG, "currentUserSong object ID: " + currentUserSong.getObjectId());
-                return true;
-            }
-            return false;
         }
     }
 }
