@@ -278,7 +278,7 @@ public class SpotifyDataManager {
         });
     }
 
-    public static void SearchResults(String url, MusicAdapter adapter, List<Music> musicSearchResults, boolean premium){
+    public static void SearchResults(String url, MusicAdapter adapter, List<Music> musicSearchResults, boolean premium, boolean artists, boolean albums, boolean songs){
 
         //build request
         final Request request = new Request.Builder()
@@ -313,13 +313,13 @@ public class SpotifyDataManager {
                     //parse data to get Music objects and add them to musicSearchResults list
                     int i = 0;
                     while (i < songsfromarray.size() || i < albumsfromarray.size() || i < artistsfromarray.size()){
-                        if (i < artistsfromarray.size()){
+                        if (artists && i < artistsfromarray.size()){
                             musicSearchResults.add(artistsfromarray.get(i));
                         }
-                        if (i < albumsfromarray.size()){
+                        if (albums && i < albumsfromarray.size()){
                             musicSearchResults.add(albumsfromarray.get(i));
                         }
-                        if (i  < songsfromarray.size()){
+                        if (songs && i  < songsfromarray.size()){
                             musicSearchResults.add(songsfromarray.get(i));
                         }
                         i++;

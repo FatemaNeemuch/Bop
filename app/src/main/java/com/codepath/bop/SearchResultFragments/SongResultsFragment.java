@@ -13,6 +13,7 @@ import com.codepath.bop.Music;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.adapters.MusicAdapter;
+import com.codepath.bop.fragments.SearchFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
 
 import java.util.ArrayList;
@@ -64,6 +65,6 @@ public class SongResultsFragment extends Fragment {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
-        //make API call here?
+        SpotifyDataManager.SearchResults(SearchFragment.getURL(), musicAdapter, musicSearchResults, premium, false, false, true);
     }
 }

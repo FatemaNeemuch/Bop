@@ -66,6 +66,6 @@ public class AllResultsFragment extends Fragment {
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
 
-        SpotifyDataManager.SearchResults(SearchFragment.getURL(), musicAdapter, musicSearchResults, premium);
+        SpotifyDataManager.SearchResults(SearchFragment.getURL(), musicAdapter, musicSearchResults, premium, true, true, true);
     }
 }
