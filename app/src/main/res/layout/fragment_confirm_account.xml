@@ -34,7 +34,7 @@
         android:layout_marginTop="24dp"
         android:layout_toEndOf="@+id/ivProfilePicCA"
         android:fontFamily="@font/adamina"
-        android:hint="fatema_neemuchwala"
+        android:hint="@string/display_name"
         android:inputType="textMultiLine"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

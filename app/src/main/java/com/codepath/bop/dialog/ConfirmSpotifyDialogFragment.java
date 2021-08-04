@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,20 +27,19 @@ import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.activities.SignUpActivity;
 import com.codepath.bop.activities.SplashActivity;
 import com.codepath.bop.managers.SpotifyDataManager;
-import com.codepath.bop.models.User;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 public class ConfirmSpotifyDialogFragment extends DialogFragment {
+
     //class constants
     public static final String TAG = "Confirm Spotify Dialog";
     private static final int REQUEST_LOCATION = 1;
 
     //instance variable
     private LocationManager locationManager;
-    private TextView tvQuestion;
     private ImageView ivProfilePicCA;
     private TextView tvDisplayName;
     private Button btnYes;
@@ -73,13 +70,13 @@ public class ConfirmSpotifyDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
-        tvQuestion = view.findViewById(R.id.tvQuestion);
         tvDisplayName = view.findViewById(R.id.tvDisplayName);
         ivProfilePicCA = view.findViewById(R.id.ivProfilePicCA);
         btnYes = view.findViewById(R.id.btnYes);
         btnNo = view.findViewById(R.id.btnNo);
+
         // Fetch arguments from bundle and set title
-        String title = getArguments().getString("title", "Enter Playlist Name");
+        String title = getArguments().getString("title", "Confirm Spotify Account");
         getDialog().setTitle(title);
 
         //set display name
@@ -168,19 +165,6 @@ public class ConfirmSpotifyDialogFragment extends DialogFragment {
                 startActivity(intent);
             }
         }
-    }
-
-    private ParseGeoPoint getCurrentUserLocation(){
-
-        // finding currentUser
-        ParseUser currentUser = ParseUser.getCurrentUser();
-
-        if (currentUser == null) {
-            Log.i(TAG, "current user is null");
-        }
-        // otherwise, return the current user location
-        return currentUser.getParseGeoPoint("location");
-
     }
 
     @Override

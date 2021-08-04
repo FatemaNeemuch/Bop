@@ -1,8 +1,5 @@
 package com.codepath.bop.dialog;
 
-import android.content.Intent;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.codepath.bop.R;
-import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
-import com.codepath.bop.fragments.ProfileFragment;
 import com.codepath.bop.managers.SpotifyDataManager;
 
 public class CreateNewPlaylistDialogFragment extends DialogFragment {
@@ -81,6 +76,7 @@ public class CreateNewPlaylistDialogFragment extends DialogFragment {
                 if (!playlistName.isEmpty()){
                     //create url for posting a playlist
                     String url = String.format("https://api.spotify.com/v1/users/%s/playlists", SpotifyDataManager.getUserID());
+                    //make API call to make new playlist
                     SpotifyDataManager.createNewPlaylist(url, MainActivity.getmAccessToken(), playlistName, getContext(), CreateNewPlaylistDialogFragment.this);
                 }else{
                     Toast.makeText(getContext(), "Playlist name cannot empty", Toast.LENGTH_SHORT).show();
