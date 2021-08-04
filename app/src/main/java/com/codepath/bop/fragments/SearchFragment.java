@@ -38,7 +38,7 @@ public class SearchFragment extends Fragment {
 
     //instance variables
     private List<Song> songs;
-    private RecyclerView rvSongs;
+    private RecyclerView rvSearchResults;
     private static String mAccessToken;
     private boolean premium;
     private MusicAdapter musicAdapter;
@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment {
         //update the presence of a menu
         setHasOptionsMenu(true);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_browse, container, false);
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
     // This event is triggered soon after onCreateView().
@@ -65,7 +65,7 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //reference to views
-        rvSongs = view.findViewById(R.id.rvSongs);
+        rvSearchResults = view.findViewById(R.id.rvSearchResults);
 
         //check if account is premium
         premium = SpotifyDataManager.getProduct().equals("premium");
@@ -76,8 +76,8 @@ public class SearchFragment extends Fragment {
 
         //Recycler view setup: layout manager and the adapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvSongs.setLayoutManager(linearLayoutManager);
-        rvSongs.setAdapter(musicAdapter);
+        rvSearchResults.setLayoutManager(linearLayoutManager);
+        rvSearchResults.setAdapter(musicAdapter);
 
         //get access token
         mAccessToken = MainActivity.getmAccessToken();
