@@ -253,7 +253,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
             //set album cover
             Glide.with(context).load(album.getCoverURL()).transform(new RoundedCornersTransformation(30, 5)).into(ivAlbumCover);
             //show details arrow
-            Glide.with(context).load(R.drawable.ic_baseline_arrow_forward_ios_24).into(ivGoToDetails);
+            Glide.with(context).load(R.drawable.outline_arrow_right_24).into(ivGoToDetails);
 
             //go to details page button
             ivGoToDetails.setOnClickListener(new View.OnClickListener() {
@@ -320,7 +320,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 Glide.with(context).load(artist.getArtistImageURL()).circleCrop().into(ivArtistImage);
             }
             //show details arrow
-            Glide.with(context).load(R.drawable.ic_baseline_arrow_forward_ios_24).into(ivGoToDetailsArtist);
+            Glide.with(context).load(R.drawable.outline_chevron_right_24).into(ivGoToDetailsArtist);
             //go to details page button
             ivGoToDetailsArtist.setOnClickListener(new View.OnClickListener() {
                 @Override
