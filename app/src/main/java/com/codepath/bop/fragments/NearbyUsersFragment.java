@@ -94,11 +94,11 @@ public class NearbyUsersFragment extends Fragment {
                 if (premium){
                     adapter.notifyDataSetChanged();
                     //update nearby users for premium
-                    ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
+                    ParseDatabaseManager.queryAllNearbyUsers(nearbyUsers, adapter, null, true);
                 }else{
                     freeAdapter.notifyDataSetChanged();
                     //update nearby users for free
-                    ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
+                    ParseDatabaseManager.queryAllNearbyUsers(nearbyUsers, null, freeAdapter, false);
                 }
                 //clear all songs from Parse that aren't a user's current song
                 ParseDatabaseManager.queryClearParseSongs();
@@ -136,11 +136,11 @@ public class NearbyUsersFragment extends Fragment {
         if (premium){
             //show nearby users for premium
             adapter.notifyDataSetChanged();
-            ParseDatabaseManager.queryNearbyUsers(nearbyUsers, adapter);
+            ParseDatabaseManager.queryAllNearbyUsers(nearbyUsers, adapter, null, true);
         }else{
             //show nearby users for free
             freeAdapter.notifyDataSetChanged();
-            ParseDatabaseManager.queryNearbyUsersFree(nearbyUsers, freeAdapter);
+            ParseDatabaseManager.queryAllNearbyUsers(nearbyUsers, null, freeAdapter, false);
         }
         //constantly update nearby users
         scheduleUpdateNearbyUsers();

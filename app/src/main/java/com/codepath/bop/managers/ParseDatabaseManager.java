@@ -29,45 +29,9 @@ public class ParseDatabaseManager {
     private static NearbyUsersFreeAdapter staticFreeAdapter;
     private static List<ParseUser> allUsers;
 
-    public static void queryNearbyUsers(List<ParseUser> nearbyUsers, NearbyUsersAdapter adapter){
+    public static void queryAllNearbyUsers(List<ParseUser> nearbyUsers, NearbyUsersAdapter adapter, NearbyUsersFreeAdapter freeAdapter, boolean premium){
         staticNearbyUsers = nearbyUsers;
         staticAdapter = adapter;
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.include(User.KEY_CURRENT_SONG);
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override  public void done(List<ParseUser> nearUsers, ParseException e) {
-                if (e == null) {
-                    allUsers = new ArrayList<>();
-                    allUsers.addAll(nearUsers);
-                    // avoiding null pointer
-                    ParseUser currentUser = ParseUser.getCurrentUser();
-                    // set the closestUser to the one that isn't the current user
-                    for(int i = 0; i < nearUsers.size(); i++) {
-                        if (!nearUsers.get(i).getObjectId().equals(currentUser.getObjectId()) && nearUsers.get(i).get(User.KEY_CURRENT_SONG) != null) {
-                            staticNearbyUsers.add(nearUsers.get(i));
-                        }
-                    }
-                    sortOnDistance(staticNearbyUsers);
-                    //update the views on the main thread in a static method
-                    Handler mainHandler = new Handler(Looper.getMainLooper());
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Update UI
-                            staticAdapter.notifyDataSetChanged();
-                        }
-                    });
-                } else {
-                    Log.e(TAG, "error getting nearby users", e);
-                    return;
-                }
-            }
-        });
-        ParseQuery.clearAllCachedResults();
-    }
-
-    public static void queryNearbyUsersFree(List<ParseUser> nearbyUsers, NearbyUsersFreeAdapter freeAdapter) {
-        staticNearbyUsers = nearbyUsers;
         staticFreeAdapter = freeAdapter;
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.include(User.KEY_CURRENT_SONG);
@@ -85,15 +49,27 @@ public class ParseDatabaseManager {
                         }
                     }
                     sortOnDistance(staticNearbyUsers);
-                    //update the views on the main thread in a static method
-                    Handler mainHandler = new Handler(Looper.getMainLooper());
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Update UI
-                            staticFreeAdapter.notifyDataSetChanged();
-                        }
-                    });
+                    if (premium){
+                        //update the views on the main thread in a static method
+                        Handler mainHandler = new Handler(Looper.getMainLooper());
+                        mainHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Update UI
+                                staticAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }else{
+                        //update the views on the main thread in a static method
+                        Handler mainHandler = new Handler(Looper.getMainLooper());
+                        mainHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Update UI
+                                staticFreeAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
                 } else {
                     Log.e(TAG, "error getting nearby users", e);
                     return;
@@ -116,7 +92,6 @@ public class ParseDatabaseManager {
                             userSongIDs.add(userSong.getObjectId());
                         }
                     }
-                    Log.i(TAG, "User song ids: " + userSongIDs.toString());
                     // set the closestUser to the one that isn't the current user
                     for(Song song: songs) {
                         if (!userSongIDs.contains(song.getObjectId())){
