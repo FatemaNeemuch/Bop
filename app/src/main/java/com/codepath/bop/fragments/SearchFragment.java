@@ -228,6 +228,8 @@ public class SearchFragment extends Fragment {
         //find view
         MenuItem searchItem = menu.findItem(R.id.maSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        //open search bar when fragment opens
+        searchView.onActionViewExpanded();
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -251,6 +253,8 @@ public class SearchFragment extends Fragment {
                 urlBuilder.addQueryParameter("limit", String.valueOf(50));
                 url = urlBuilder.build().toString();
 
+                //close search bar
+                searchView.onActionViewCollapsed();
                 //dismiss keyboard
                 searchView.clearFocus();
 
