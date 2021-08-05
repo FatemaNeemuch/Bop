@@ -49,6 +49,7 @@ public class Song extends ParseObject implements Parcelable, Music {
 
     public Song() {}
 
+    //implement Parcelable
     public Song(String songURI, String title, String album, String artist, String releaseDate, String coverURL, String albumType, boolean isCurrentSong){
         this.songURI = songURI;
         this.title = title;
@@ -60,6 +61,7 @@ public class Song extends ParseObject implements Parcelable, Music {
         this.isCurrentSong = isCurrentSong;
     }
 
+    //implement Parcelable
     protected Song(android.os.Parcel in) {
         songURI = in.readString();
         title = in.readString();
@@ -71,6 +73,7 @@ public class Song extends ParseObject implements Parcelable, Music {
         isCurrentSong = in.readByte() != 0;
     }
 
+    //implement Parcelable
     @Override
     public void writeToParcel(android.os.Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
@@ -84,11 +87,13 @@ public class Song extends ParseObject implements Parcelable, Music {
         dest.writeByte((byte) (isCurrentSong ? 1 : 0));
     }
 
+    //implement Parcelable
     @Override
     public int describeContents() {
         return 0;
     }
 
+    //implement Parcelable
     public static final Creator<Song> CREATOR = new Creator<Song>() {
         @Override
         public Song createFromParcel(android.os.Parcel in) {
@@ -102,11 +107,13 @@ public class Song extends ParseObject implements Parcelable, Music {
     };
 
     public static Song fromAPI(JSONObject jsonObject) throws JSONException {
+        //create new song object from API JsonObject
         Song song = new Song();
             song.albumType = jsonObject.getJSONObject("album").getString("album_type");
             song.album = jsonObject.getJSONObject("album").getString("name");
             song.title = jsonObject.getString("name");
             song.artist = jsonObject.getJSONObject("album").getJSONArray("artists").getJSONObject(0).getString("name");
+            //get all the artist names
             if (jsonObject.getJSONObject("album").getJSONArray("artists").length() > 1){
                 String artistName = "";
                 for (int i = 1; i < jsonObject.getJSONObject("album").getJSONArray("artists").length(); i++){
@@ -122,11 +129,13 @@ public class Song extends ParseObject implements Parcelable, Music {
     }
 
     public static Song fromAlbumAPI(JSONObject jsonObject, Album album) throws JSONException {
+        //create new song object from API jsonObject for an album
         Song song = new Song();
         song.albumType = "album";
         song.album = album.getAlbumName();
         song.title = jsonObject.getString("name");
         song.artist = jsonObject.getJSONArray("artists").getJSONObject(0).getString("name");
+        //get all the artist names
         if (jsonObject.getJSONArray("artists").length() > 1){
             String artistName = "";
             for (int i = 1; i < jsonObject.getJSONArray("artists").length(); i++){
@@ -141,11 +150,13 @@ public class Song extends ParseObject implements Parcelable, Music {
         return song;
     }
 
+    //implement Music
     @Override
     public int getType() {
         return Music.TYPE_SONG;
     }
 
+    //save song to Parse database
     public static void saveSong(Song song){
         song.setKeyAlbumType(song.albumType);
         song.setKeyAlbum(song.album);
@@ -174,24 +185,12 @@ public class Song extends ParseObject implements Parcelable, Music {
         return title;
     }
 
-    public String getAlbum() {
-        return album;
-    }
-
     public String getArtist() {
         return artist;
     }
 
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
     public String getCoverURL() {
         return coverURL;
-    }
-
-    public String getAlbumType() {
-        return albumType;
     }
 
     public void setCurrentSong(Song song){
@@ -225,10 +224,6 @@ public class Song extends ParseObject implements Parcelable, Music {
         put(KEY_TITLE, title);
     }
 
-    public String getKEY_ALBUM() {
-        return getString(KEY_ALBUM);
-    }
-
     public void setKeyAlbum(String album){
         put(KEY_ALBUM, album);
     }
@@ -249,10 +244,6 @@ public class Song extends ParseObject implements Parcelable, Music {
         put(KEY_ARTIST, artist);
     }
 
-    public String getKEY_RELEASE_DATE() {
-        return getString(KEY_RELEASE_DATE);
-    }
-
     public void setKeyReleaseDate(String releaseDate){
         put(KEY_RELEASE_DATE, releaseDate);
     }
@@ -265,16 +256,8 @@ public class Song extends ParseObject implements Parcelable, Music {
         put(KEY_COVER_URL, url);
     }
 
-    public String getKEY_ALBUM_TYPE() {
-        return getString(KEY_ALBUM_TYPE);
-    }
-
     public void setKeyAlbumType(String type){
         put(KEY_ALBUM_TYPE, type);
-    }
-
-    public boolean getKEY_IS_CURRENT_SONG() {
-        return getBoolean(KEY_IS_CURRENT_SONG);
     }
 
     public void setKeyIsCurrentSong(boolean status){

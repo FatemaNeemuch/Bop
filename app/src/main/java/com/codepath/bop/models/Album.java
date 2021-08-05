@@ -33,6 +33,7 @@ public class Album implements Music, Parcelable {
 
     public Album(){};
 
+    //implement Parcelable
     protected Album(android.os.Parcel in) {
         artist = in.readString();
         albumID = in.readString();
@@ -43,6 +44,7 @@ public class Album implements Music, Parcelable {
         albumURI = in.readString();
     }
 
+    //implement Parcelable
     @Override
     public void writeToParcel(android.os.Parcel dest, int flags) {
         dest.writeString(artist);
@@ -54,11 +56,13 @@ public class Album implements Music, Parcelable {
         dest.writeString(albumURI);
     }
 
+    //implement Parcelable
     @Override
     public int describeContents() {
         return 0;
     }
 
+    //implement Parcelable
     public static final Creator<Album> CREATOR = new Creator<Album>() {
         @Override
         public Album createFromParcel(android.os.Parcel in) {
@@ -71,15 +75,18 @@ public class Album implements Music, Parcelable {
         }
     };
 
+    //implement Music
     @Override
     public int getType() {
         return Music.TYPE_ALBUM;
     }
 
     public static Album fromAPI(JSONObject jsonObject) throws JSONException {
+        //create new album object from API jsonObject
         Album album = new Album();
         album.albumName = jsonObject.getString("name");
         album.artist = jsonObject.getJSONArray("artists").getJSONObject(0).getString("name");
+        //get all artist names
         if (jsonObject.getJSONArray("artists").length() > 1){
             String artistName = "";
             for (int i = 1; i < jsonObject.getJSONArray("artists").length(); i++){
@@ -113,10 +120,6 @@ public class Album implements Music, Parcelable {
 
     public String getAlbumReleaseDate() {
         return releaseDate;
-    }
-
-    public String getNumTracks() {
-        return numTracks;
     }
 
     public String getAlbumURI() {

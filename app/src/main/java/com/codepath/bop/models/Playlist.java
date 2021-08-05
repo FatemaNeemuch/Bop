@@ -2,12 +2,8 @@ package com.codepath.bop.models;
 
 import android.os.Parcelable;
 
-import com.codepath.bop.activities.MainActivity;
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,13 +11,11 @@ import org.parceler.Parcel;
 
 import java.util.List;
 
-@ParseClassName("Playlist")
 @Parcel(analyze = {Playlist.class})
-public class Playlist extends ParseObject implements Parcelable {
+public class Playlist implements Parcelable {
 
     //class constants
     public static final String KEY_NAME = "name";
-//    public static final String KEY_CREATOR = "creator";
     public static final String KEY_PLAYLIST_URI = "playlistURI";
 
     //instance variables
@@ -35,11 +29,10 @@ public class Playlist extends ParseObject implements Parcelable {
     List<Song> songs;
     @SerializedName("playlist_URI")
     String playlistURI;
-//    ParseUser creator;
 
-    public Playlist() {
-    }
+    public Playlist() {}
 
+    //implement Parcelable
     public Playlist(String name, String coverURL, String playlistURI, String playlistID){
         this.name = name;
         this.coverURL = coverURL;
@@ -48,6 +41,7 @@ public class Playlist extends ParseObject implements Parcelable {
 
     }
 
+    //implement Parcelable
     protected Playlist(android.os.Parcel in) {
         name = in.readString();
         coverURL = in.readString();
@@ -55,6 +49,7 @@ public class Playlist extends ParseObject implements Parcelable {
         playlistID = in.readString();
     }
 
+    //implement Parcelable
     @Override
     public void writeToParcel(android.os.Parcel dest, int flags) {
         dest.writeString(name);
@@ -63,11 +58,13 @@ public class Playlist extends ParseObject implements Parcelable {
         dest.writeString(playlistID);
     }
 
+    //implement Parcelable
     @Override
     public int describeContents() {
         return 0;
     }
 
+    //implement Parcelable
     public static final Creator<Playlist> CREATOR = new Creator<Playlist>() {
         @Override
         public Playlist createFromParcel(android.os.Parcel in) {
@@ -81,21 +78,19 @@ public class Playlist extends ParseObject implements Parcelable {
     };
 
     public static Playlist fromAPI(JSONObject jsonObject) throws JSONException {
+        //create new Playlist object from API jsonObject
         Playlist playlist = new Playlist();
         playlist.name = jsonObject.getString("name");
+        //check if playlist has a cover image
         if (jsonObject.getJSONArray("images").length() >= 1){
             playlist.coverURL = jsonObject.getJSONArray("images").getJSONObject(0).getString("url");
         }else{
+            //create empty string if no cover image
             playlist.coverURL = "";
         }
-//        playlist.songs.addAll() - figure out this property; can just call a preexisting request
         playlist.playlistURI = jsonObject.getString("uri");
         playlist.playlistID = jsonObject.getString("id");
         return playlist;
-    }
-
-    public void savePlaylist(){
-        //save all the fields to the parse database here
     }
 
     public String getPlaylistURI() {
@@ -113,14 +108,4 @@ public class Playlist extends ParseObject implements Parcelable {
     public String getPlaylistID(){
         return playlistID;
     }
-
-//    public List<Song> getSongs() {
-//        return songs;
-//    }
-
-    //    public ParseUser getCreator() {
-//        return creator;
-//    }
-
-    //create getter and setter methods for the keys
 }

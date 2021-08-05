@@ -1,7 +1,6 @@
 package com.codepath.bop.models;
 
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.codepath.bop.Music;
 import com.google.gson.annotations.SerializedName;
@@ -28,6 +27,7 @@ public class Artist implements Music, Parcelable{
 
     public Artist() {}
 
+    //implement Parcelable
     protected Artist(android.os.Parcel in) {
         artistName = in.readString();
         artistImageURL = in.readString();
@@ -35,6 +35,7 @@ public class Artist implements Music, Parcelable{
         artistURI = in.readString();
     }
 
+    //implement Parcelable
     @Override
     public void writeToParcel(android.os.Parcel dest, int flags) {
         dest.writeString(artistName);
@@ -43,11 +44,13 @@ public class Artist implements Music, Parcelable{
         dest.writeString(artistURI);
     }
 
+    //implement Parcelable
     @Override
     public int describeContents() {
         return 0;
     }
 
+    //implement Parcelable
     public static final Creator<Artist> CREATOR = new Creator<Artist>() {
         @Override
         public Artist createFromParcel(android.os.Parcel in) {
@@ -60,18 +63,22 @@ public class Artist implements Music, Parcelable{
         }
     };
 
+    //implement Music
     @Override
     public int getType() {
         return Music.TYPE_ARTIST;
     }
 
     public static Artist fromAPI(JSONObject jsonObject) throws JSONException {
+        //create new Artist object from API jsonObject
         Artist artist = new Artist();
         artist.artistName = jsonObject.getString("name");
         artist.artistID = jsonObject.getString("id");
+        //check if Artist has a profile pic
         if (jsonObject.getJSONArray("images").length() != 0){
             artist.artistImageURL = jsonObject.getJSONArray("images").getJSONObject(0).getString("url");
         }else{
+            //create empty string if no profile pic available
             artist.artistImageURL = "";
         }
         artist.artistURI = jsonObject.getString("uri");
@@ -88,9 +95,5 @@ public class Artist implements Music, Parcelable{
 
     public String getArtistID() {
         return artistID;
-    }
-
-    public String getArtistURI() {
-        return artistURI;
     }
 }

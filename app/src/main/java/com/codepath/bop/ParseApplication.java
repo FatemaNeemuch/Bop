@@ -2,7 +2,6 @@ package com.codepath.bop;
 
 import android.app.Application;
 
-import com.codepath.bop.models.Playlist;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
 import com.parse.Parse;
@@ -16,7 +15,6 @@ public class ParseApplication extends Application {
 
         //Register your parse models
         ParseObject.registerSubclass(Song.class);
-        ParseObject.registerSubclass(Playlist.class);
         ParseObject.registerSubclass(User.class);
         //set applicationID, and server based on the values in the back4app settings
         //client key is not needed unless explicitly configured
