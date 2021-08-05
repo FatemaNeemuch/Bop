@@ -2,6 +2,8 @@ package com.codepath.bop.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import com.bumptech.glide.Glide;
 import com.codepath.bop.Music;
@@ -109,6 +112,9 @@ public class MusicAdapter extends RecyclerView.Adapter {
         private TextView tvArtistName;
         private ImageView ivCover;
         private ImageView ivPlayButton;
+        private ImageView ivHeart;
+        private AnimatedVectorDrawableCompat avd;
+        private AnimatedVectorDrawable avd2;
         private boolean isDoubleClicked;
         private boolean premium;
         private SpotifyAppRemote mSpotifyAppRemote;
@@ -121,6 +127,7 @@ public class MusicAdapter extends RecyclerView.Adapter {
             tvArtistName = itemView.findViewById(R.id.tvArtistName);
             ivCover = itemView.findViewById(R.id.ivCover);
             ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
+            ivHeart = itemView.findViewById(R.id.ivHeart);
             //initialize variables
             premium = SpotifyDataManager.getProduct().equals("premium");
             playing = false;
@@ -180,6 +187,8 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 });
             }
 
+            final Drawable drawable = ivHeart.getDrawable();
+
             //Double click post to like:
             isDoubleClicked=false;
 
@@ -197,6 +206,15 @@ public class MusicAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     if (isDoubleClicked){
                         //actions when double clicked
+                        //show heart animation
+                        ivHeart.setAlpha(0.70f);
+                        if (drawable instanceof AnimatedVectorDrawableCompat){
+                            avd = (AnimatedVectorDrawableCompat) drawable;
+                            avd.start();
+                        }else if (drawable instanceof AnimatedVectorDrawable){
+                            avd2 = (AnimatedVectorDrawable) drawable;
+                            avd2.start();
+                        }
                         //add song to favs playlist
                         SpotifyDataManager.addSong("https://api.spotify.com/v1/playlists/" + ParseUser.getCurrentUser().get("defaultPlaylistID") + "/tracks",
                                 MainActivity.getmAccessToken(), (Song) musicList.get(getAdapterPosition()));
