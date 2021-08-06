@@ -15,9 +15,12 @@ import com.bumptech.glide.Glide;
 import com.codepath.bop.R;
 import com.codepath.bop.activities.LoginActivity;
 import com.codepath.bop.activities.MainActivity;
+import com.codepath.bop.managers.ParseDatabaseManager;
 import com.codepath.bop.models.Song;
 import com.codepath.bop.models.User;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 
@@ -99,7 +102,12 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
             //set song cover
             Glide.with(context).load(pUserSong.getKEY_COVER_URL()).transform(new RoundedCornersTransformation(30, 5)).into(ivCover);
             //set play button
-            Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
+            Song currentSong = (Song) ParseDatabaseManager.getAllUsers().get(0).get(User.KEY_CURRENT_SONG);
+            if (pUserSong.getisCurrentSong() || currentSong != null && pUserSong.getKEY_SONG_URI().equals(currentSong.getKEY_SONG_URI()) && playing){
+                Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButtonNU);
+            }else{
+                Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
+            }
             //play song
             ivPlayButtonNU.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,17 +117,31 @@ public class NearbyUsersAdapter extends RecyclerView.Adapter<NearbyUsersAdapter.
                         mSpotifyAppRemote.getPlayerApi().pause();
                         //change icon back to play button
                         Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButtonNU);
+                        //remove song from database when paused
+                        ParseUser.getCurrentUser().remove(User.KEY_CURRENT_SONG);
+                        ParseUser.getCurrentUser().saveInBackground();
                         //update variable
                         playing = false;
                     }else{
                         //update current song playing
-                        Song currentSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
+                        Song currentSong = (Song) ParseDatabaseManager.getAllUsers().get(0).get(User.KEY_CURRENT_SONG);
                         if (currentSong != null){
                             currentSong.setIsCurrentSong(currentSong, false);
                         }
+                        //set song as current song
+                        pUserSong.setIsCurrentSong(pUserSong, true);
                         //save new current song to parse
                         ParseUser.getCurrentUser().put(User.KEY_CURRENT_SONG, pUser.get(User.KEY_CURRENT_SONG));
-                        ParseUser.getCurrentUser().saveInBackground();
+                        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null){
+                                    //set Bop Song object songURI value from Database Song object
+                                    Song currentUserSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
+                                    currentUserSong.setSongURI(currentUserSong, currentUserSong.getKEY_SONG_URI());
+                                }
+                            }
+                        });
                         //play song if button is clicked when the song is not playing
                         //update variable
                         playing = true;

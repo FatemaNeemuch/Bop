@@ -90,6 +90,7 @@ public class ParseDatabaseManager {
                         Song userSong = (Song) allUsers.get(i).get(User.KEY_CURRENT_SONG);
                         if (userSong != null){
                             userSongIDs.add(userSong.getObjectId());
+//                            Log.i("debug", userSongIDs.toString());
                         }
                     }
                     // set the closestUser to the one that isn't the current user
@@ -122,5 +123,9 @@ public class ParseDatabaseManager {
                 j--;
             }
         }
+    }
+
+    public static List<ParseUser> getAllUsers(){
+        return allUsers;
     }
 }

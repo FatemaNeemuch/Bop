@@ -24,10 +24,12 @@ import com.codepath.bop.R;
 import com.codepath.bop.activities.MainActivity;
 import com.codepath.bop.details.AlbumDetails;
 import com.codepath.bop.details.ArtistDetails;
+import com.codepath.bop.managers.ParseDatabaseManager;
 import com.codepath.bop.managers.SpotifyDataManager;
 import com.codepath.bop.models.Album;
 import com.codepath.bop.models.Artist;
 import com.codepath.bop.models.Song;
+import com.codepath.bop.models.User;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
@@ -144,7 +146,8 @@ public class MusicAdapter extends RecyclerView.Adapter {
             if (premium){
                 ivPlayButton.setBackgroundResource(R.drawable.circle_background);
                 //set play button based on whether the song is playing
-                if (song.getisCurrentSong()){
+                Song currentSong = (Song) ParseUser.getCurrentUser().get(User.KEY_CURRENT_SONG);
+                if (song.getisCurrentSong() || currentSong != null && song.getSongURI().equals(currentSong.getSongURI())){
                     Glide.with(context).load(R.drawable.ic_baseline_pause_24).into(ivPlayButton);
                 }else{
                     Glide.with(context).load(R.drawable.ic_baseline_play_arrow_24).into(ivPlayButton);

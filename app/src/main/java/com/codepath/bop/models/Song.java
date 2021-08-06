@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.json.JSONException;
@@ -181,6 +182,10 @@ public class Song extends ParseObject implements Parcelable, Music {
         return songURI;
     }
 
+    public void setSongURI(Song song, String uri) {
+        song.songURI = uri;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -203,6 +208,9 @@ public class Song extends ParseObject implements Parcelable, Music {
             song.isCurrentSong = true;
             //set song as current song
             User.setCurrentSong(song);
+        }else{
+            ParseUser.getCurrentUser().remove(User.KEY_CURRENT_SONG);
+            ParseUser.getCurrentUser().saveInBackground();
         }
     }
 
