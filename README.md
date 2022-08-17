@@ -89,3 +89,12 @@ Music app with accounts for all users. User can search up songs, artists, and al
 
 ### Networking
 - ![Networks and Database Calls](https://user-images.githubusercontent.com/73396101/125350403-520f6300-e324-11eb-8448-1ecf98a2de34.jpeg)
+
+## Demos
+### Premium Bop: 
+![Premium Bop](https://github.com/FatemaNeemuch/Bop/blob/main/BopPremiumWalkthrough.gif)
+
+### Free Bop: 
+![Free Bop](https://github.com/FatemaNeemuch/Bop/blob/main/BopWalkthroughFree.gif)
+
+
