@@ -1,4 +1,4 @@
-Original App Design Project - README Template
+Bop App Design Project
 ===
 
 # Bop
